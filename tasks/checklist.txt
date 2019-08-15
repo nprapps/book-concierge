@@ -1,0 +1,6 @@
+Warning: This project is not marked as production-ready. Please make sure any
+pre-launch items in the issues queue are complete, then set `"production":
+true` in your project.json to allow live publishes.
+
+Issues:
+https://github.com/nprapps/book-concierge/issues

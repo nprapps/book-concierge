@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <%= t.include("partials/_head.html", grunt.data.json) %>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+
+    <script src="app.js" async></script>
+    <%= t.include("partials/_analytics.html") %>
+  </body>
+</html>

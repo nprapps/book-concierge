@@ -1,0 +1,46 @@
+@import "values";
+
+//defensive coding
+* {
+  //border-box, you're the best
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+
+  //Safari, you're the worst
+  -webkit-tap-highlight-color: transparent;
+}
+
+//elements
+body {
+  padding: 0;
+  margin: 0;
+  //remove 300ms click delay in Safari, AKA still the worst
+  touch-action: manipulation;
+  font-family: @sans;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+img, svg {
+  max-width: 100%;
+}
+
+h1 {
+  .gotham();
+  font-size: 20px;
+  color: #666;
+}
+
+a, a:visited {
+  color: @accent-dark;
+}
+
+a:hover, a:active, a:focus {
+  color: @accent-light;
+}
+
+img:not([alt]) {
+  outline: 3px solid red;
+}

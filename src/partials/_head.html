@@ -1,0 +1,77 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title><%= project.title %></title>
+
+<!-- Favicon -->
+<link rel="apple-touch-icon" sizes="180x180" href="https://media.npr.org/templates/favicon/favicon-180x180.png" />
+<link rel="icon" sizes="96x96" href="https://media.npr.org/templates/favicon/favicon-96x96.png" />
+<link rel="icon" sizes="32x32" href="https://media.npr.org/templates/favicon/favicon-32x32.png" />
+<link rel="icon" sizes="16x16" href="https://media.npr.org/templates/favicon/favicon-16x16.png" />
+
+<!-- Safari, you're the worst -->
+<meta name='format-detection' content='telephone=no'>
+
+<% if (!project.embedded) { %>
+<!-- GDPR compliance -->
+<script src="https://apps.npr.org/gdpr/gdprCompliance.js" async defer></script>
+
+<!-- BEGIN TWITTER SUMMARY CARD -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="<%= project.title %>">
+<meta name="twitter:site" content="@nprviz">
+<meta name="twitter:url" content="<%= project.url %>">
+<meta name="twitter:image" content="<%= project.url + project.image %>">
+<meta name="twitter:description" content="<%= project.description %>">
+
+<!-- Social sharing meta -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="<%= project.title %>">
+<meta property="og:site_name" content="NPR Visuals">
+<meta property="og:url" content="<%= project.url %>">
+<meta property="og:image" content="<%= project.url + project.image %>">
+<meta property="og:description" content="<%= project.description %>">
+<meta property="fb:app_id" content="138837436154588"/>
+
+<!-- Google structured data -->
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "NewsArticle",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "<%= project.url %>"
+  },
+  "headline": "<%= project.title %>",
+  "image": {
+    "@type": "ImageObject",
+    "url": "<%= project.url + project.image %>"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "NPR Staff"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "NPR",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "<%= project.url %>assets/logo.png",
+      "width": 2176,
+      "height": 725
+    }
+  },
+  "description": "<%= project.description %>",
+  "datePublished": "<%= new Date().toISOString() %>"
+}
+</script>
+
+<!-- Chartbeat top -->
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+
+<%
+// if !project.embedded...
+} 
+%>
+
+<%= t.include("partials/_webfonts.html") %>
