@@ -15,12 +15,12 @@
   "scripts": {
     "src/js/main.js": "build/app.js"
   },
-  "title": "",
+  "title": "NPR's Book Concierge",
   "description": "",
-  "url": "",
+  "url": "https://apps.npr.org/book-concierge",
   "image": "assets/logo.png",
-  "sheets": [],
+  "sheets": ["1su06H8CvfSHtRkoMw4TDSJI51ND8mSqoxJgC_2g3pXw"],
   "docs": [],
-  "embedded": true,
+  "embedded": false,
   "production": false
 }
