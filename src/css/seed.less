@@ -1,1 +1,28 @@
 @import "base";
+
+.book-shelf {
+  columns: 4;
+  column-gap: 0;
+
+  @media (min-width: 1200px) {
+    columns: 7;
+  }
+
+  @media @mobile {
+    columns: 2;
+  }
+
+  .book-container {
+    padding: 2px;
+  }
+
+  .cover {
+    width: 100%;
+    display: block;
+    box-shadow: 0 2px 8px -4px fade(black, 10%);
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+}
