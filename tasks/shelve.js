@@ -13,6 +13,7 @@ module.exports = function(grunt) {
         book.year = year;
         shelf.push(book);
       });
+      grunt.file.write(`build/${year}.json`, JSON.stringify(grunt.data.json[sheet]));
     }
 
     grunt.data.shelf = shelf;

@@ -1,67 +1,63 @@
 var $ = require("./lib/qsa");
 
-var processFilters = function(books) {
+var processFilters = async function() {
   var years = $(".filters .years input:checked").map(el => el.value * 1);
+  var tags = $(".filters .tags input:checked").map(el => el.value);
+
+  // lazy-load
+  var books = await getBooks(years, processFilters);
+
   books.forEach(function(b) {
-    var hidden = false;
-    if (years.length) {
-      if (years.indexOf(b.year) == -1) hidden = true;
+    var visible = true;
+    if (years.length && years.indexOf(b.year) == -1) visible = false;
+    if (tags.length) {
+      var matches = tags.some(t => b.tags.has(t));
+      if (!matches) visible = false;
     }
-    b.element.classList.toggle("hidden", hidden);
+    b.element.classList.toggle("hidden", !visible);
   });
 };
 
-var init = async function() {
-  var response = await fetch("./shelf.json");
-  var data = await response.json();
+var bookCache = null;
 
-  var years = new Set();
-  var tags = new Set();
+var getBooks = async function() {
+  if (!bookCache) {
+    bookCache = new Promise(async function(ok) {
+      var response = await fetch("./shelf.json");
+      var data = await response.json();
 
-  data.forEach(function(item) {
-    item.tags = item.tags.split(/\|\s/g).map(t => t.trim());
-    item.tags.forEach(t => tags.add(t));
-    years.add(item.year);
-  });
+      // process the data
+      data.forEach(function(book) {
+        book.tags = new Set(book.tags.split(/\|\s/g).map(t => t.trim()));
+        var element = document.createElement("div");
+        element.className = "book-container";
+        element.innerHTML = `
+    <img src="./assets/covers/${book.isbn}.jpg"
+      class="cover"
+      alt="${book.title}"
+      loading="lazy">
+    <div class="hover-data">
+      <div class="cover-text">
+        ${book.title}
+      </div>
 
-  var controls = $.one("form.filters");
-  $.one(".years", controls).innerHTML = Array.from(years).map(y => `
-<input type="checkbox" value="${y}" name="year" id="year-${y}">
-<label for="year-${y}">${y}</label>
-  `).join("");
+      <div class="read-more">
+        Read the full recommendation from ${book.reviewer} &raquo;
+      </div>
+    </div>
+        `;
+        book.element = element;
+        container.appendChild(element);
+      });
 
-  $.one(".tags", controls).innerHTML = Array.from(tags).map(t => `
-<input type="checkbox" value="${t}" name="tag" id="tag-${t}">
-<label for="tag-${t}">${t}</label>
-  `).join("");
-
-  controls.addEventListener("click", () => processFilters(data));
-
-  data = data.slice(0, 10);
-
-  var container = $.one(".book-shelf");
-  
-  for (var book of data) {
-    var element = document.createElement("div");
-    element.className = "book-container";
-    element.innerHTML = `
-<img src="./assets/covers/${book.isbn}.jpg"
-  class="cover"
-  alt="${book.title}"
-  loading="lazy">
-<div class="hover-data">
-  <div class="cover-text">
-    ${book.title}
-  </div>
-
-  <div class="read-more">
-    Read the full recommendation from ${book.reviewer} &raquo;
-  </div>
-</div>
-    `;
-    book.element = element;
-    container.appendChild(element);
+      ok(data);
+    });
   }
-}
+  return bookCache;
+};
 
-init();
+var controls = $.one("form.filters");
+controls.addEventListener("change", processFilters);
+var container = $.one(".book-shelf");
+  
+processFilters();

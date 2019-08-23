@@ -6,14 +6,30 @@
   </head>
   <body>
 
-    <form class="filters">
-      <formgroup class="years">
+    <form class="filters" autocomplete="off">
+      <%
+        // set up tagging
+        var years = new Set();
+        var tags = new Set();
+        shelf.forEach(function(item) {
+          years.add(item.year);
+          item.tags.split(/\|\s/).forEach(t => tags.add(t.trim()));
+        });
+      %>
 
-      </formgroup>
+      <fieldset class="years">
+        <% Array.from(years).forEach(function(y, i) { %>
+        <input type="checkbox" id="year-<%= y %>" value="<%= y %>" <%= !i ? "checked=checked" : "" %>>
+        <label for="year-<%= y %>"><%= y %></label>
+        <% }); %>
+      </fieldset>
 
-      <formgroup class="tags">
-
-      </formgroup>
+      <fieldset class="tags">
+        <% for (var tag of tags) { %>
+        <input type="checkbox" id="tag-<%= tag %>" value="<%= tag %>">
+        <label for="tag-<%= tag %>"><%= tag %></label>
+        <% } %>
+      </fieldset>
     </form>
 
     <div class="book-shelf"></div>
