@@ -1,5 +1,54 @@
 @import "base";
 
+.sr-only {
+  clip: inset;
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  left: -1000px;
+}
+
+main.concierge {
+  display: flex;
+}
+
+.filters {
+  flex: 0 0 200px;
+  padding: 4px;
+
+  fieldset {
+    border: none;
+    margin: 0;
+    padding: 12px 0;
+  }
+
+  input[type="checkbox"] {
+    .sr-only;
+
+    & + label {
+      display: block;
+      background: white;
+      color: #888;
+      padding: 4px;
+      .gotham();
+      position: relative;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    &:checked + label {
+      background: teal;
+      color: white;
+
+      &::after {
+        content: "×";
+        position: absolute;
+        right: 4px;
+      }
+    }
+  }
+}
+
 .book-shelf {
   columns: 4;
   column-gap: 0;
@@ -15,13 +64,37 @@
   .book-container {
     padding: 2px;
     position: relative;
+    width: 100%;
+    display: inline-block;
+    cursor: pointer;
 
-    &:hover .hover-data {
-      opacity: 1;
+    &:hover {
+      .hover-data {
+        opacity: 1;
+      }
+
+      .cover {
+        filter: blur(2px);
+      }
     }
 
     &.hidden {
       display: none;
+    }
+
+    &.loading{
+      img {
+        opacity: 0;
+        position: absolute;
+      }
+
+      &::after {
+        content: "";
+        display: block;
+        padding-bottom: 150%;
+        background: #DDD;
+        border: 2px solid #EEE;
+      }
     }
   }
 
@@ -42,12 +115,11 @@
     flex-direction: column;
     justify-content: space-between;
     color: black;
-    background: fade(white, 70%);
+    background: fade(white, 80%);
     padding: 12px;
     border: 6px solid teal;
     .gotham();
     font-size: 14px;
-    font-weight: bold;
     transition: opacity .2s linear;
   }
 }

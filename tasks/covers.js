@@ -19,8 +19,6 @@ module.exports = function(grunt) {
       console.log(`Requesting books ${i}-${i + limit}`);
       var batch = books.slice(i, i + limit);
       var requests = batch.map(async function(isbn) {
-        if (isbn.length == 9) isbn = "0" + isbn;
-        // if (isbn.length == 10) isbn = "978" + isbn;
         var params = {
           Value: isbn,
           UserID: process.env.BAKER_TAYLOR_API_USERID,
@@ -46,7 +44,7 @@ module.exports = function(grunt) {
     grunt.file.mkdir("src/assets/covers");
 
     // get all books from all sheets
-    var books = grunt.data.shelf.map(b => String(b.isbn).trim());
+    var books = grunt.data.shelf.map(b => b.isbn);
     getCovers(books).then(done);
     
   });

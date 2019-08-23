@@ -12,6 +12,9 @@ module.exports = function(grunt) {
       collection.forEach(function(book) {
         book.year = year;
         shelf.push(book);
+        var isbn = String(book.isbn).trim();
+        if (isbn.length == 9) isbn = "0" + isbn;
+        book.isbn = isbn;
       });
       grunt.file.write(`build/${year}.json`, JSON.stringify(grunt.data.json[sheet]));
     }

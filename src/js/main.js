@@ -1,3 +1,17 @@
+/*
+TODO
+
+- dynamically load by year
+  - find a way to filter once, then again when the year is loaded?
+  - alternatively, embrace a streaming model entirely
+- add transitions on filtering
+- add more precise image placeholder sizes
+- add the modal on click
+- fix a11y issues that have been introduced by lazy development
+- add URL hash routing
+
+*/
+
 var $ = require("./lib/qsa");
 
 var processFilters = async function() {
@@ -30,7 +44,7 @@ var getBooks = async function() {
       data.forEach(function(book) {
         book.tags = new Set(book.tags.split(/\|\s/g).map(t => t.trim()));
         var element = document.createElement("div");
-        element.className = "book-container";
+        element.className = "book-container loading";
         element.innerHTML = `
     <img src="./assets/covers/${book.isbn}.jpg"
       class="cover"
@@ -38,16 +52,19 @@ var getBooks = async function() {
       loading="lazy">
     <div class="hover-data">
       <div class="cover-text">
-        ${book.title}
+        <b>${book.title}</b>
+        <br>by ${book.author}
       </div>
 
       <div class="read-more">
-        Read the full recommendation from ${book.reviewer} &raquo;
+        Read the full recommendation from ${book.reviewer}&nbsp;&raquo;
       </div>
     </div>
         `;
         book.element = element;
         container.appendChild(element);
+
+        element.querySelector("img").addEventListener("load", () => element.classList.remove("loading"));
       });
 
       ok(data);
