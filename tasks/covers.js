@@ -33,7 +33,7 @@ module.exports = function(grunt) {
         grunt.file.write(`src/assets/covers/${isbn}.jpg`, contents);
       });
       await Promise.all(requests);
-      await wait(10000);
+      await wait(3000);
     }
   };
 

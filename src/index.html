@@ -6,17 +6,17 @@
   </head>
   <body>
 
-    <div class="book-shelf">
-      <% grunt.data.shelf.forEach(function(book) { %>
-        <div class="book-container">
-          <img
-            src="./assets/covers/<%= book.isbn %>.jpg"
-            alt="<%= book.title %>"
-            class="cover"
-            loading="lazy">
-        </div>
-      <% }) %>
-    </div>
+    <form class="filters">
+      <formgroup class="years">
+
+      </formgroup>
+
+      <formgroup class="tags">
+
+      </formgroup>
+    </form>
+
+    <div class="book-shelf"></div>
 
     <script src="app.js" async></script>
     <%= t.include("partials/_analytics.html") %>

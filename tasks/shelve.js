@@ -17,6 +17,8 @@ module.exports = function(grunt) {
 
     grunt.data.shelf = shelf;
 
+    grunt.file.write("build/shelf.json", JSON.stringify(shelf, null, 2));
+
   });
 
 }
