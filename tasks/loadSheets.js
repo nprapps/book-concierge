@@ -32,6 +32,7 @@ var cast = function(str) {
   if (str.match(/^-?(0?\.|[1-9])[\d\.]*$/) || str == "0") {
     var n = Number(str);
     if (isNaN(n)) return str;
+    if (n > Number.MAX_SAFE_INTEGER) return str;
     return n;
   }
   if (str.toLowerCase() == "true" || str.toLowerCase() == "false") {
