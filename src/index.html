@@ -33,7 +33,13 @@
         </fieldset>
       </form>
 
-      <div class="book-shelf"></div>
+      <div class="book-shelf">
+        
+        <% for (var i = 0; i < 100; i++) { %>
+        <div class="placeholder book-container"></div>
+        <% } %>
+
+      </div>
     </main>
 
     <script src="app.js" async></script>

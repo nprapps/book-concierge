@@ -10,6 +10,8 @@
 
 main.concierge {
   display: flex;
+  margin: auto;
+  max-width: 1000px;
 }
 
 .filters {
@@ -53,6 +55,7 @@ main.concierge {
   columns: 4;
   column-gap: 1px;
   line-height: 1;
+  flex: 1;
 
   @media (min-width: 1200px) {
     columns: 5;
@@ -67,6 +70,7 @@ main.concierge {
     width: 100%;
     display: inline-block;
     cursor: pointer;
+    background: #EEE;
 
     &:hover {
       .hover-data {
@@ -82,22 +86,39 @@ main.concierge {
       display: none;
     }
 
-    &:nth-child(2n) {
-      background: salmon;
+    &.placeholder {
+      background: lightgray;
+
+      &::after {
+        content: "";
+        display: block;
+        padding-bottom: 140%;
+      }
     }
 
-    &:nth-child(3n) {
-      background: wheat;
+    .colorized(@c, @i) {
+      &:nth-child(6n + @{i}) { background: @c }
     }
 
-    &:nth-child(4n) {
-      background: lavender;
-    }
+    .colorized(blanchedalmond, 0);
+    .colorized(honeydew, 1);
+    .colorized(lavenderblush, 2);
+    .colorized(lemonchiffon, 3);
+    .colorized(darkseagreen, 4);
+    .colorized(thistle, 5)
+  }
+
+  .cover-container {
+    width: 100%;
+    padding-bottom: 120%;
   }
 
   .cover {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
   }
 
