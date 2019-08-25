@@ -44,12 +44,17 @@ var getBooks = async function() {
       data.forEach(function(book) {
         book.tags = new Set(book.tags.split(/\|\s/g).map(t => t.trim()));
         var element = document.createElement("div");
-        element.className = "book-container loading";
+        element.className = "book-container";
         element.innerHTML = `
     <img src="./assets/covers/${book.isbn}.jpg"
       class="cover"
       alt="${book.title}"
-      loading="lazy">
+      loading="lazy"
+      decoding="async"
+      width="${book.dimensions.width}"
+      height="${book.dimensions.height}"
+      intrinsicsize="${book.dimensions.width}x${book.dimensions.height}"
+    >
     <div class="hover-data">
       <div class="cover-text">
         <b>${book.title}</b>
@@ -63,8 +68,6 @@ var getBooks = async function() {
         `;
         book.element = element;
         container.appendChild(element);
-
-        element.querySelector("img").addEventListener("load", () => element.classList.remove("loading"));
       });
 
       ok(data);

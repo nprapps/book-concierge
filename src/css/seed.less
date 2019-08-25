@@ -51,10 +51,11 @@ main.concierge {
 
 .book-shelf {
   columns: 4;
-  column-gap: 0;
+  column-gap: 1px;
+  line-height: 1;
 
   @media (min-width: 1200px) {
-    columns: 7;
+    columns: 5;
   }
 
   @media @mobile {
@@ -62,7 +63,6 @@ main.concierge {
   }
 
   .book-container {
-    padding: 2px;
     position: relative;
     width: 100%;
     display: inline-block;
@@ -82,26 +82,23 @@ main.concierge {
       display: none;
     }
 
-    &.loading{
-      img {
-        opacity: 0;
-        position: absolute;
-      }
+    &:nth-child(2n) {
+      background: salmon;
+    }
 
-      &::after {
-        content: "";
-        display: block;
-        padding-bottom: 150%;
-        background: #DDD;
-        border: 2px solid #EEE;
-      }
+    &:nth-child(3n) {
+      background: wheat;
+    }
+
+    &:nth-child(4n) {
+      background: lavender;
     }
   }
 
   .cover {
     width: 100%;
+    height: auto;
     display: block;
-    box-shadow: 0 2px 8px -4px fade(black, 10%);
   }
 
   .hover-data {
