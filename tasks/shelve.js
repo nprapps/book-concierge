@@ -1,6 +1,10 @@
 var { promisify } = require("util");
 var imageSize = promisify(require("image-size"));
 
+var normalizeTags = function(tags) {
+  return tags.toLowerCase().replace(/['’]/g, "’");
+};
+
 var shelve = async function(grunt) {
   var shelf = [];
 
@@ -11,6 +15,7 @@ var shelve = async function(grunt) {
     var lookup = {};
     for (var book of collection) {
       book.year = year;
+      book.tags = normalizeTags(book.tags);
       shelf.push(book);
       var isbn = String(book.isbn).trim();
       if (isbn.length == 9) isbn = "0" + isbn;
