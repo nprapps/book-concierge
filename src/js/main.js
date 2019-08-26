@@ -1,14 +1,3 @@
-/*
-TODO
-
-- add transitions on filtering
-- add the modal on click
-- fix a11y issues that have been introduced by lazy development
-- add URL hash routing - cover/list, modal trigger, filter setup
-- do not download covers that we already have
-
-*/
-
 var $ = require("./lib/qsa");
 var debounce = require("./lib/debounce");
 var dot = require("./lib/dot");

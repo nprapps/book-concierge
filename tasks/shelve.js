@@ -14,12 +14,16 @@ var shelve = async function(grunt) {
       if (isbn.length == 9) isbn = "0" + isbn;
       book.isbn = isbn;
       try {
-        book.dimensions = await imageSize(`src/assets/covers/${book.isbn}.jpg`);
+        var size = await imageSize(`src/assets/covers/${book.isbn}.jpg`);
+        book.dimensions = {
+          width: size.width,
+          height: size.height
+        };
       } catch (err) {
         book.dimensions = {};
       }
     };
-    grunt.file.write(`build/${year}.json`, JSON.stringify(grunt.data.json[sheet]));
+    grunt.file.write(`build/${year}.json`, JSON.stringify(grunt.data.json[sheet], null, 2));
   }
 
   grunt.data.shelf = shelf;

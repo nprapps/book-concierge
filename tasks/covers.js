@@ -19,6 +19,8 @@ module.exports = function(grunt) {
       console.log(`Requesting books ${i}-${i + limit}`);
       var batch = books.slice(i, i + limit);
       var requests = batch.map(async function(isbn) {
+        var path = `src/assets/covers/${isbn}.jpg`
+        if (grunt.file.exists(path)) return true;
         var params = {
           Value: isbn,
           UserID: process.env.BAKER_TAYLOR_API_USERID,
@@ -28,10 +30,10 @@ module.exports = function(grunt) {
         }
         var response = await fetch(getEndpoint(params));
         var contents = await response.buffer();
-        grunt.file.write(`src/assets/covers/${isbn}.jpg`, contents);
+        grunt.file.write(path, contents);
+        await wait(1000);
       });
       await Promise.all(requests);
-      await wait(3000);
     }
   };
 
