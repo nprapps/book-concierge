@@ -1,6 +1,6 @@
 <%
   var book = data.book;
-  var nativeLazy = data.nativeLazy;
+  var nativeLazy = "loading" in Image.prototype;
   var aspect = book.dimensions.height ? `padding-bottom: ${book.dimensions.height / book.dimensions.width * 100}%`: "";
 %>
 <div class="cover-container" style="<%= aspect %>">

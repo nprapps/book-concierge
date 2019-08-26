@@ -5,8 +5,7 @@ var dot = require("./lib/dot");
 var coverTemplate = dot.compile(require("./_cover.html"));
 var listTemplate = dot.compile(require("./_list.html"));
 
-var yearsLoaded = {};
-var books = [];
+var bookService = require("./bookService");
 
 var filterList = $.one("form.filters");
 var mainPanel = $.one(".books");
@@ -41,6 +40,14 @@ var renderBooks = async function() {
   var years = $(".filters .years input:checked").map(el => el.value * 1);
   var tags = $(".filters .tags input:checked").map(el => el.value);
 
+  var books = await bookService.getCatalog(years);
+
+  // clear out placeholders
+  $(".placeholder", shelfContainer).forEach(e => e.parentElement.removeChild(e));
+  books.forEach(function(b) {
+    if (!b.element.parentElement) shelfContainer.appendChild(b.element);
+  });
+
   var checkVisibility = function(b) {
     var visible = true;
     if (years.length && years.indexOf(b.year) == -1) visible = false;
@@ -52,66 +59,21 @@ var renderBooks = async function() {
   };
 
   if (mode == "covers") {
-    // lazy-load individual years
-    await getBooks(years);
-
     books.forEach(function(b) {
       b.element.classList.toggle("hidden", !checkVisibility(b));
     });
 
-    if (!nativeLazy) onScroll();
+    if (!nativeLazy) {
+      //reset lazy-loading images
+      lazyImages = $("[data-src]");
+      onScroll();
+    }
+
   } else {
     // list view just renders in bulk
     var filtered = books.filter(checkVisibility);
     listContainer.innerHTML = listTemplate({ books: filtered });
   }
-};
-
-var getBooks = async function(years) {
-  var pending = years.map(function(y) {
-    if (yearsLoaded[y]) {
-      return yearsLoaded[y].then(() => []);
-    };
-
-    yearsLoaded[y] = new Promise(async function(ok, fail) {
-
-      var response = await fetch(`./${y}.json`);
-      var data = await response.json();
-
-      // clear out placeholders
-      $(".placeholder", shelfContainer).forEach(e => e.parentElement.removeChild(e));
-
-      // process the data
-      data.forEach(function(book) {
-        book.tags = new Set(book.tags.split(/\|\s/g).map(t => t.trim()));
-        var element = document.createElement("div");
-        element.className = "book-container";
-        element.innerHTML = coverTemplate({ book, nativeLazy });
-        book.element = element;
-        shelfContainer.appendChild(element);
-      });
-
-      //reset lazy-loading images
-      if (!nativeLazy) {
-        lazyImages = $("[data-src]");
-        onScroll();
-      }
-
-      ok(data);
-    });
-
-    return yearsLoaded[y];
-
-  });
-  
-  var nested = await Promise.all(pending);
-  books = books.concat(...nested);
-  books.sort(function(a, b) {
-    if (a.title < b.title) return -1;
-    if (a.title > b.title) return 1;
-    return 0;
-  });
-
 };
 
 renderBooks();
