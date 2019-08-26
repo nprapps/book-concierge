@@ -23,14 +23,18 @@ var facade = {
       indices[year] = pending.then(function(index) {
         // process the data
         index.forEach(function(book) {
+          book.shuffle = Math.random();
           book.year = year;
           book.tags = new Set(book.tags.split(/\|\s/g).map(t => t.trim()));
-          var element = document.createElement("div");
+          var element = document.createElement("a");
+          element.href = `#!/${year}/book/${book.isbn}`;
           element.className = "book-container";
           element.innerHTML = coverTemplate({ book });
           book.element = element;
-          catalog.push(book);
         });
+        //randomize elements
+        index = index.sort((a, b) => a.shuffle - b.shuffle);
+        catalog = catalog.concat(index);
         return index;
       });
     }

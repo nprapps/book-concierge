@@ -8,22 +8,21 @@
 
     <main class="concierge">
       <form class="filters" autocomplete="off">
+
+        <fieldset class="years">
+          <% grunt.data.json.years.forEach(function(y) { %>
+          <input type="checkbox" id="year-<%= y.year %>" value="<%= y.year %>" <%= y.current ? "checked=checked" : "" %>>
+          <label for="year-<%= y.year %>"><%= y.year %></label>
+          <% }); %>
+        </fieldset>
+
         <%
           // set up tagging
-          var years = new Set();
           var tags = new Set();
           shelf.forEach(function(item) {
-            years.add(item.year);
             item.tags.split(/\|\s/).forEach(t => tags.add(t.trim()));
           });
         %>
-
-        <fieldset class="years">
-          <% Array.from(years).forEach(function(y, i) { %>
-          <input type="checkbox" id="year-<%= y %>" value="<%= y %>" <%= !i ? "checked=checked" : "" %>>
-          <label for="year-<%= y %>"><%= y %></label>
-          <% }); %>
-        </fieldset>
 
         <fieldset class="tags">
           <% Array.from(tags).sort().forEach(function(tag) { %>

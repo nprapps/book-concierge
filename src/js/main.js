@@ -5,6 +5,7 @@ var dot = require("./lib/dot");
 var coverTemplate = dot.compile(require("./_cover.html"));
 var listTemplate = dot.compile(require("./_list.html"));
 
+var hash = require("./hash");
 var bookService = require("./bookService");
 
 var filterList = $.one("form.filters");
@@ -12,26 +13,7 @@ var mainPanel = $.one(".books");
 var shelfContainer = $.one(".book-shelf");
 var listContainer = $.one(".book-list");
 
-var nativeLazy = "loading" in Image.prototype;
-var lazyImages = [];
-if (!nativeLazy) {
-  var onScroll = function() {
-    if (!lazyImages.length) return;
-    var loading = [];
-    lazyImages = lazyImages.filter(function(img) {
-      var bounds = img.getBoundingClientRect();
-      if (bounds.bottom < 0 || bounds.top > window.innerHeight * 2) return true;
-      // otherwise, lazy-load it
-      // we do this in a separate step to prevent reflow/layout issues
-      loading.push(img);
-    });
-    loading.forEach(function(img) {
-      img.src = img.dataset.src;
-      img.removeAttribute("data-src");
-    });
-  };
-  window.addEventListener("scroll", debounce(onScroll, 300));
-};
+var lazyload = require("./lazyLoading");
 
 var renderBooks = async function() {
   var mode = $.one(".view-controls input:checked").value;
@@ -63,11 +45,7 @@ var renderBooks = async function() {
       b.element.classList.toggle("hidden", !checkVisibility(b));
     });
 
-    if (!nativeLazy) {
-      //reset lazy-loading images
-      lazyImages = $("[data-src]");
-      onScroll();
-    }
+    lazyload.reset();
 
   } else {
     // list view just renders in bulk
@@ -76,8 +54,13 @@ var renderBooks = async function() {
   }
 };
 
+//update years if necessary
+var params = hash.parse();
+if (params.years) {
+  $(".filters .years input").forEach(input => input.checked = params.years.indexOf(input.value) > -1);
+}
 renderBooks();
-filterList.addEventListener("change", renderBooks);
+filterList.addEventListener("change", debounce(renderBooks));
 
 var viewToggle = $.one(".view-controls");
 viewToggle.addEventListener("change", renderBooks);
