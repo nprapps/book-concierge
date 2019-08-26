@@ -4,18 +4,25 @@ TODO
 - add transitions on filtering
 - add the modal on click
 - fix a11y issues that have been introduced by lazy development
-- add URL hash routing
+- add URL hash routing - cover/list, modal trigger, filter setup
+- do not download covers that we already have
 
 */
 
 var $ = require("./lib/qsa");
 var debounce = require("./lib/debounce");
+var dot = require("./lib/dot");
+
+var coverTemplate = dot.compile(require("./_cover.html"));
+var listTemplate = dot.compile(require("./_list.html"));
 
 var yearsLoaded = {};
 var books = [];
 
-var controls = $.one("form.filters");
-var container = $.one(".book-shelf");
+var filterList = $.one("form.filters");
+var mainPanel = $.one(".books");
+var shelfContainer = $.one(".book-shelf");
+var listContainer = $.one(".book-list");
 
 var nativeLazy = "loading" in Image.prototype;
 var lazyImages = [];
@@ -38,24 +45,37 @@ if (!nativeLazy) {
   window.addEventListener("scroll", debounce(onScroll, 300));
 };
 
-var processFilters = async function() {
+var renderBooks = async function() {
+  var mode = $.one(".view-controls input:checked").value;
+  mainPanel.setAttribute("data-mode", mode);
+
   var years = $(".filters .years input:checked").map(el => el.value * 1);
   var tags = $(".filters .tags input:checked").map(el => el.value);
 
-  // lazy-load individual years
-  await getBooks(years, processFilters);
-
-  books.forEach(function(b) {
+  var checkVisibility = function(b) {
     var visible = true;
     if (years.length && years.indexOf(b.year) == -1) visible = false;
     if (tags.length) {
       var matches = tags.some(t => b.tags.has(t));
       if (!matches) visible = false;
     }
-    b.element.classList.toggle("hidden", !visible);
-  });
+    return visible;
+  };
 
-  if (!nativeLazy) onScroll();
+  if (mode == "covers") {
+    // lazy-load individual years
+    await getBooks(years);
+
+    books.forEach(function(b) {
+      b.element.classList.toggle("hidden", !checkVisibility(b));
+    });
+
+    if (!nativeLazy) onScroll();
+  } else {
+    // list view just renders in bulk
+    var filtered = books.filter(checkVisibility);
+    listContainer.innerHTML = listTemplate({ books: filtered });
+  }
 };
 
 var getBooks = async function(years) {
@@ -70,43 +90,16 @@ var getBooks = async function(years) {
       var data = await response.json();
 
       // clear out placeholders
-      $(".placeholder", container).forEach(e => e.parentElement.removeChild(e));
+      $(".placeholder", shelfContainer).forEach(e => e.parentElement.removeChild(e));
 
       // process the data
       data.forEach(function(book) {
         book.tags = new Set(book.tags.split(/\|\s/g).map(t => t.trim()));
         var element = document.createElement("div");
         element.className = "book-container";
-        var aspect = "";
-        if (book.dimensions.height) {
-          aspect = `padding-bottom: ${book.dimensions.height / book.dimensions.width * 100}%`;
-        }
-        element.innerHTML = `
-    <div class="cover-container" style="${aspect}">
-      <img 
-        ${nativeLazy ? "src" : "data-src"}="./assets/covers/${book.isbn}.jpg"
-        class="cover"
-        alt="${book.title}"
-        decoding="async"
-        loading="lazy"
-        width="${book.dimensions.width}"
-        height="${book.dimensions.height}"
-        intrinsicsize="${book.dimensions.width}x${book.dimensions.height}"
-      >
-      </div>
-    <div class="hover-data">
-      <div class="cover-text">
-        <b>${book.title}</b>
-        <br>by ${book.author}
-      </div>
-
-      <div class="read-more">
-        Read more &raquo;
-      </div>
-    </div>
-        `;
+        element.innerHTML = coverTemplate({ book, nativeLazy });
         book.element = element;
-        container.appendChild(element);
+        shelfContainer.appendChild(element);
       });
 
       //reset lazy-loading images
@@ -124,8 +117,16 @@ var getBooks = async function(years) {
   
   var nested = await Promise.all(pending);
   books = books.concat(...nested);
+  books.sort(function(a, b) {
+    if (a.title < b.title) return -1;
+    if (a.title > b.title) return 1;
+    return 0;
+  });
 
 };
 
-processFilters();
-controls.addEventListener("change", processFilters);
+renderBooks();
+filterList.addEventListener("change", renderBooks);
+
+var viewToggle = $.one(".view-controls");
+viewToggle.addEventListener("change", renderBooks);
