@@ -16,6 +16,7 @@ var shelve = async function(grunt) {
     for (var book of collection) {
       book.year = year;
       book.tags = normalizeTags(book.tags);
+      book.text = grunt.template.renderMarkdown(book.text);
       shelf.push(book);
       var isbn = String(book.isbn).trim();
       if (isbn.length == 9) isbn = "0" + isbn;

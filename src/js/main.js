@@ -10,10 +10,10 @@ var hash = require("./hash");
 var bookService = require("./bookService");
 
 var filterList = $.one("form.filters");
-var mainPanel = $.one(".books");
-var shelfContainer = $.one(".book-shelf");
-var listContainer = $.one(".book-list");
-var bookPanel = $.one(".book-panel")
+var mainPanel = $.one(".catalog");
+var coverContainer = $.one(".catalog-covers");
+var listContainer = $.one(".catalog-list");
+var bookPanel = $.one(".book-detail")
 
 var lazyload = require("./lazyLoading");
 
@@ -21,6 +21,8 @@ var renderBook = async function(year, isbn) {
   var book = await bookService.getDetail(year, isbn);
   bookPanel.innerHTML = bookTemplate(book);
   document.body.setAttribute("data-mode", "book");
+  var h2 = $.one("h2", bookPanel);
+  h2.focus();
 };
 
 var renderCatalog = async function() {
@@ -41,11 +43,11 @@ var renderCatalog = async function() {
   var books = await bookService.getCatalog(years);
 
   // clear out placeholders
-  $(".placeholder", shelfContainer).forEach(e => e.parentElement.removeChild(e));
+  $(".placeholder", coverContainer).forEach(e => e.parentElement.removeChild(e));
 
   // add new books (if any)
   books.forEach(function(b) {
-    if (!b.element.parentElement) shelfContainer.appendChild(b.element);
+    if (!b.element.parentElement) coverContainer.appendChild(b.element);
   });
 
   // check a given book against the filters
@@ -64,14 +66,13 @@ var renderCatalog = async function() {
     books.forEach(function(b) {
       b.element.classList.toggle("hidden", !checkVisibility(b));
     });
-
-    lazyload.reset();
-
   } else {
     // list view just renders in bulk
     var filtered = books.filter(checkVisibility);
     listContainer.innerHTML = listTemplate({ books: filtered });
   }
+
+  lazyload.reset();
 };
 
 //update years if necessary
@@ -109,7 +110,7 @@ var reroute = function(params, previous) {
     }
 
     debouncedRender();
-    // restore scroll position if necessary
+    // restore scroll position if necessary?
   }
 };
 

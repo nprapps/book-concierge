@@ -1,6 +1,17 @@
 <ul>
   <% data.books.forEach(function(book) { %>
   <li>
-    <%= book.title %> by <%= book.author %>
+    <a href="#year=<%= book.year %>&book=<%= book.isbn %>">
+      <div class="cover">
+        <img
+          alt=""
+          <%= "loading" in Image.prototype ? "src" : "data-src" %>="./assets/covers/<%= book.isbn %>.jpg"
+        >
+      </div>
+      <div class="metadata">
+        <div class="title"><%= book.title %></div>
+        <div class="author"><%= book.author %></div>
+      </div>
+    </a>
   <% }); %>
 </ul>

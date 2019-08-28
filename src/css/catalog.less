@@ -1,0 +1,43 @@
+.catalog {
+  flex: 1;
+  @corner: 4px;
+
+  [data-mode="book"] & {
+    display: none;
+  }
+
+  .view-controls {
+    text-align: right;
+    padding: 12px 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  input[type="radio"] {
+    .sr-only;
+
+    & + label {
+      display: block;
+      padding: 8px;
+      border: 1px solid teal;
+      background: white;
+      color: teal;
+    }
+
+    &:checked + label {
+      background: teal;
+      color: white;
+    }
+
+    &:first-child + label {
+      border-radius: @corner 0 0 @corner;
+    }
+  }
+
+  label:last-child {
+    border-radius: 0 @corner @corner 0;
+  }
+}
+
+@import "covers";
+@import "list";

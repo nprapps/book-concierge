@@ -1,13 +1,9 @@
-/*
- * Media queries
- */
-@mobile: ~"(max-width: 910px)";
-@mobile-above: ~"(min-width: 911px)";
-// @tablet: ~"(max-width: 768px)";
+// Media queries
+@mobile: ~"(max-width: 400px)";
+@mobile-above: ~"(min-width: 401px)";
+@tablet: ~"(max-width: 768px)";
 
-/*
- * Fonts
- */
+// Fonts
 @gotham: 'Gotham SSm', Helvetica, Arial, sans-serif;
 @knockout: 'Knockout 31 4r','Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 @sans: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
@@ -38,12 +34,20 @@
     -webkit-font-smoothing: antialiased;
 }
 
-/*
- * Colors
- */
+// colors
 @accent-dark: #4774CC;
 @accent-light: #bccae5;
 
 @rigorous: #d62021;
 @unbiased: #000005;
 @true: #237bbd;
+
+// a11y
+
+.sr-only {
+  clip: inset;
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  left: -1000px;
+}

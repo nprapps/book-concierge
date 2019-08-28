@@ -1,0 +1,21 @@
+.book-detail {
+  display: none;
+
+  [data-mode="book"] & {
+    display: block;
+  }
+
+  h2.title {
+
+    // programmatic focus only
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .cover {
+    float: right;
+    margin-left: 16px;
+    margin-bottom: 16px;
+  }
+}

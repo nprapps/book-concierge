@@ -1,0 +1,36 @@
+.filters {
+  flex: 0 0 200px;
+  padding: 4px;
+
+  fieldset {
+    border: none;
+    margin: 0;
+    padding: 12px 0;
+  }
+
+  input[type="checkbox"] {
+    .sr-only;
+
+    & + label {
+      display: block;
+      background: white;
+      color: #888;
+      padding: 4px;
+      .gotham();
+      position: relative;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    &:checked + label {
+      background: teal;
+      color: white;
+
+      &::after {
+        content: "×";
+        position: absolute;
+        right: 4px;
+      }
+    }
+  }
+}

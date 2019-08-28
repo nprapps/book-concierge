@@ -7,47 +7,28 @@
   <body data-mode="covers">
 
     <main class="concierge">
-      <form class="filters" autocomplete="off">
+      <%= t.include("_filters.html") %>
 
-        <fieldset class="years">
-          <% grunt.data.json.years.forEach(function(y) { %>
-          <input type="checkbox" id="year-<%= y.year %>" value="<%= y.year %>" <%= y.current ? "checked=checked" : "" %>>
-          <label for="year-<%= y.year %>"><%= y.year %></label>
-          <% }); %>
-        </fieldset>
+      <div class="catalog">
 
-        <%
-          // set up tagging
-          var tags = new Set();
-          shelf.forEach(function(item) {
-            item.tags.split(/\|\s/).forEach(t => tags.add(t.trim()));
-          });
-        %>
-
-        <fieldset class="tags">
-          <% Array.from(tags).sort().forEach(function(tag) { %>
-          <input type="checkbox" id="tag-<%= tag %>" value="<%= tag %>">
-          <label for="tag-<%= tag %>"><%= tag %></label>
-          <% }); %>
-        </fieldset>
-      </form>
-
-      <div class="books">
         <div class="view-controls">
           <input type="radio" id="view-covers" name="view-controls" value="covers" checked="checked">
           <label for="view-covers">Covers</label>
           <input type="radio" id="view-list" name="view-controls" value="list">
           <label for="view-list">List</label>
         </div>
-        <div class="book-shelf">
+
+        <div class="catalog-covers">
           <% for (var i = 0; i < 100; i++) { %>
           <div class="placeholder book-container"></div>
           <% } %>
         </div>
-        <div class="book-list"></div>
+        
+        <div class="catalog-list"></div>
+        
       </div>
 
-      <div class="book-panel"></div>
+      <div class="book-detail"></div>
     </main>
 
     <script src="app.js" async></script>

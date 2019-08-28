@@ -1,0 +1,59 @@
+.catalog-list {
+  display: none;
+
+  [data-mode="list"] & {
+    display: block;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+
+  li {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  a {
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 8px;
+    border: 1px solid #DDD;
+    border-radius: 4px;
+    // box-shadow: 0 8px 16px -8px fade(black, 20%);
+    color: inherit;
+    text-decoration: none;
+    font-size: 16px;
+
+    &:hover, &:focus {
+      background: #F8F8F8;
+    }
+  }
+
+  .cover {
+    flex: 0 0 50px;
+
+    img {
+      display: block;
+    }
+  }
+
+  .metadata {
+    flex: 1;
+    padding: 0 16px;
+  }
+
+  .title {
+    .gotham();
+    font-weight: bold;
+    font-size: 19px;
+  }
+
+  .author {
+    font-style: italic;
+  }
+}

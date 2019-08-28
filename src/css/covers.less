@@ -1,0 +1,95 @@
+
+.catalog-covers {
+  display: none;
+  columns: 4;
+  column-gap: 1px;
+  line-height: 1;
+
+  [data-mode="covers"] & {
+    display: block;
+  }
+
+  @media (min-width: 1200px) {
+    columns: 5;
+  }
+
+  @media @mobile {
+    columns: 2;
+  }
+
+  .book-container {
+    position: relative;
+    width: 100%;
+    display: inline-block;
+    cursor: pointer;
+    background: #EEE;
+
+    &:hover {
+      .hover-data {
+        opacity: 1;
+      }
+
+      .cover {
+        filter: blur(2px);
+      }
+    }
+
+    &.hidden {
+      display: none;
+    }
+
+    &.placeholder {
+      background: lightgray;
+
+      &::after {
+        content: "";
+        display: block;
+        padding-bottom: 140%;
+      }
+    }
+
+    .colorized(@c, @i) {
+      &:nth-child(6n + @{i}) { background: @c }
+    }
+
+    .colorized(blanchedalmond, 0);
+    .colorized(honeydew, 1);
+    .colorized(lavenderblush, 2);
+    .colorized(lemonchiffon, 3);
+    .colorized(darkseagreen, 4);
+    .colorized(thistle, 5)
+  }
+
+  .cover-container {
+    width: 100%;
+    padding-bottom: 120%;
+  }
+
+  .cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .hover-data {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: black;
+    background: fade(white, 80%);
+    padding: 12px;
+    border: 6px solid teal;
+    .gotham();
+    font-size: 14px;
+    transition: opacity .2s linear;
+  }
+}
