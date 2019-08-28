@@ -27,7 +27,7 @@ var facade = {
           book.year = year;
           book.tags = new Set(book.tags.split(/\|\s/g).map(t => t.trim()));
           var element = document.createElement("a");
-          element.href = `#!/${year}/book/${book.isbn}`;
+          element.href = `#year=${year}&book=${book.isbn}`;
           element.className = "book-container";
           element.innerHTML = coverTemplate({ book });
           book.element = element;

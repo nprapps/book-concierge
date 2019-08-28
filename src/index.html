@@ -4,7 +4,7 @@
     <%= t.include("partials/_head.html", grunt.data.json) %>
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
-  <body>
+  <body data-mode="covers">
 
     <main class="concierge">
       <form class="filters" autocomplete="off">
@@ -46,6 +46,8 @@
         </div>
         <div class="book-list"></div>
       </div>
+
+      <div class="book-panel"></div>
     </main>
 
     <script src="app.js" async></script>

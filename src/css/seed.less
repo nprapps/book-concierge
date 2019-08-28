@@ -55,6 +55,10 @@ main.concierge {
   flex: 1;
   @corner: 4px;
 
+  [data-mode="book"] & {
+    display: none;
+  }
+
   .view-controls {
     text-align: right;
     padding: 12px 0;
@@ -86,21 +90,25 @@ main.concierge {
   label:last-child {
     border-radius: 0 @corner @corner 0;
   }
+}
 
-  .book-list {
-    display: none;
-  }
+.book-list {
+  display: none;
 
-  &[data-mode="list"] {
-    .book-shelf { display: none; }
-    .book-list { display: block; }
+  [data-mode="list"] & {
+    display: block;
   }
 }
 
 .book-shelf {
+  display: none;
   columns: 4;
   column-gap: 1px;
   line-height: 1;
+
+  [data-mode="covers"] & {
+    display: block;
+  }
 
   @media (min-width: 1200px) {
     columns: 5;
@@ -184,5 +192,13 @@ main.concierge {
     .gotham();
     font-size: 14px;
     transition: opacity .2s linear;
+  }
+}
+
+.book-panel {
+  display: none;
+
+  [data-mode="book"] & {
+    display: block;
   }
 }

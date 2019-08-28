@@ -4,6 +4,7 @@ var dot = require("./lib/dot");
 
 var coverTemplate = dot.compile(require("./_cover.html"));
 var listTemplate = dot.compile(require("./_list.html"));
+var bookTemplate = dot.compile(require("./_book.html"));
 
 var hash = require("./hash");
 var bookService = require("./bookService");
@@ -12,24 +13,42 @@ var filterList = $.one("form.filters");
 var mainPanel = $.one(".books");
 var shelfContainer = $.one(".book-shelf");
 var listContainer = $.one(".book-list");
+var bookPanel = $.one(".book-panel")
 
 var lazyload = require("./lazyLoading");
 
-var renderBooks = async function() {
-  var mode = $.one(".view-controls input:checked").value;
-  mainPanel.setAttribute("data-mode", mode);
+var renderBook = async function(year, isbn) {
+  var book = await bookService.getDetail(year, isbn);
+  bookPanel.innerHTML = bookTemplate(book);
+  document.body.setAttribute("data-mode", "book");
+};
+
+var renderCatalog = async function() {
+  var view = $.one(".view-controls input:checked").value;
+  document.body.setAttribute("data-mode", view);
 
   var years = $(".filters .years input:checked").map(el => el.value * 1);
   var tags = $(".filters .tags input:checked").map(el => el.value);
+
+  hash.update({
+    view,
+    book: false,
+    year: false,
+    tags: tags.join(","),
+    years: years.join(",")
+  })
 
   var books = await bookService.getCatalog(years);
 
   // clear out placeholders
   $(".placeholder", shelfContainer).forEach(e => e.parentElement.removeChild(e));
+
+  // add new books (if any)
   books.forEach(function(b) {
     if (!b.element.parentElement) shelfContainer.appendChild(b.element);
   });
 
+  // check a given book against the filters
   var checkVisibility = function(b) {
     var visible = true;
     if (years.length && years.indexOf(b.year) == -1) visible = false;
@@ -40,7 +59,8 @@ var renderBooks = async function() {
     return visible;
   };
 
-  if (mode == "covers") {
+  // render lazily
+  if (view == "covers") {
     books.forEach(function(b) {
       b.element.classList.toggle("hidden", !checkVisibility(b));
     });
@@ -59,8 +79,39 @@ var params = hash.parse();
 if (params.years) {
   $(".filters .years input").forEach(input => input.checked = params.years.indexOf(input.value) > -1);
 }
-renderBooks();
-filterList.addEventListener("change", debounce(renderBooks));
+
+var debouncedRender = debounce(renderCatalog);
+filterList.addEventListener("change", debouncedRender);
 
 var viewToggle = $.one(".view-controls");
-viewToggle.addEventListener("change", renderBooks);
+viewToggle.addEventListener("change", debouncedRender);
+
+// handle changes from the hash router
+var reroute = function(params, previous) {
+  var { view, tags, years, book, year } = params;
+  if (book) {
+    // show the book dialog
+    renderBook(year, book);
+  } else {
+    // update form and render books
+    if (years) {
+      years = new Set(years.split(","));
+      $(".filters .years input").forEach(input => input.checked = years.has(input.value));
+    }
+
+    if (tags) {
+      tags = new Set(tags.split(","));
+      $(".filters .tags input").forEach(input => input.checked = tags.has(input.value));
+    }
+
+    if (view) {
+      $.one(`.view-controls input[value="${view}"]`).checked = true;
+    }
+
+    debouncedRender();
+    // restore scroll position if necessary
+  }
+};
+
+// trigger first render/update from the hash params
+hash.listen(reroute);
