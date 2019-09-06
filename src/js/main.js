@@ -75,8 +75,8 @@ var renderCatalog = async function() {
     var lastPositions = new Map();
     books.forEach(b => lastPositions.set(b, b.element.getBoundingClientRect()));
     // visible set:
-    // - was in the viewport
-    // - is the viewport
+    // - was in the viewport then
+    // - is the viewport now
     var visibleSet = new Set();
     [firstPositions, lastPositions].forEach(map => map.forEach(function(bounds, b) {
       if (bounds.top < window.innerHeight && bounds.bottom > 0) {
