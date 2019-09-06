@@ -63,8 +63,40 @@ var renderCatalog = async function() {
 
   // render lazily
   if (view == "covers") {
+    // get first
+    var firstPositions = new Map();
+    books.forEach(b => firstPositions.set(b, b.element.getBoundingClientRect()));
+    // mutate - change visibility
     books.forEach(function(b) {
+      b.element.classList.remove("shuffling");
       b.element.classList.toggle("hidden", !checkVisibility(b));
+    });
+    // get last
+    var lastPositions = new Map();
+    books.forEach(b => lastPositions.set(b, b.element.getBoundingClientRect()));
+    // visible set:
+    // - was in the viewport
+    // - is the viewport
+    var visibleSet = new Set();
+    [firstPositions, lastPositions].forEach(map => map.forEach(function(bounds, b) {
+      if (bounds.top < window.innerHeight && bounds.bottom > 0) {
+        visibleSet.add(b);
+      }
+    }));
+    // invert
+    visibleSet.forEach(function(book) {
+      var { element } = book;
+      var first = firstPositions.get(book);
+      var last = lastPositions.get(book);
+      if (first.top == last.top && first.left == last.left) return;
+      if (first.width == 0 && first.height == 0) return;
+      element.style.transform = `translateX(${first.left - last.left}px) translateY(${first.top - last.top}px)`;
+    });
+    // play
+    var reflow = coverContainer.offsetWidth;
+    visibleSet.forEach(function(b) {
+      b.element.classList.add("shuffling");
+      b.element.style.transform = ""
     });
   } else {
     // list view just renders in bulk

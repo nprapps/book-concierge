@@ -7,6 +7,12 @@
 
   [data-mode="covers"] & {
     display: block;
+    // display: flex;
+    flex-wrap: wrap;
+
+    .book-container {
+      flex: 0 0 10%;
+    }
   }
 
   @media (min-width: 1200px) {
@@ -17,12 +23,24 @@
     columns: 2;
   }
 
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
   .book-container {
     position: relative;
     width: 100%;
     display: inline-block;
     cursor: pointer;
     background: #EEE;
+    transform-origin: 0 0;
+    transform: translateX(0) translateY(0);
+    animation: fade-in .2s linear;
+    
+    &.shuffling {
+      transition: all .5s ease-in-out;
+    }
 
     &:hover {
       .hover-data {
