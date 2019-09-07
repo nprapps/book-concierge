@@ -42,11 +42,8 @@ var renderCovers = function(books, years, tags) {
     books.forEach(function(book) {
       book.coverElement.classList.toggle("hidden", !visibleSet.has(book));
     });
+    lazyload.reset();
   })
-
-  setTimeout(lazyload.reset, 100);
-  setTimeout(lazyload.reset, 500);
-  setTimeout(lazyload.reset, 1000);
 };
 
 var renderCatalog = async function(years, tags, view = "covers") {
