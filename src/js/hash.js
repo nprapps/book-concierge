@@ -19,7 +19,7 @@ var parse = function() {
   var hash = window.location.hash.replace(/^#/, "");
   var parts = hash.split("&").map(p => p.split("="));
   var params = {};
-  parts.filter(d => d[1]).forEach(([k, v]) => params[k] = decodeURIComponent(v).replace(/\+/g, " ") || true);
+  parts.filter(d => d[1]).forEach(([k, v]) => params[k] = decodeURIComponent(v.replace(/\+/g, " ")) || true);
   for (var k in definitions) {
     var def = definitions[k];
     if (def instanceof Array) {
@@ -41,7 +41,7 @@ var serialize = function(state) {
     if (v instanceof Array) {
       v = v.join("|");
     }
-    hash.push([k, encodeURIComponent(v.replace(/\s/g, "+"))].join("="));
+    hash.push([k, encodeURIComponent(v).replace(/\s|%20/g, "+")].join("="));
   }
   return hash.join("&");
 };
