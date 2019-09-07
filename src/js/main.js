@@ -36,8 +36,8 @@ var renderCatalog = async function() {
     view,
     book: false,
     year: false,
-    tags: tags.join(","),
-    years: years.join(",")
+    tags: tags.join("|"),
+    years: years.join("|")
   })
 
   var books = await bookService.getCatalog(years);
@@ -73,7 +73,6 @@ var renderCatalog = async function() {
       b.element.classList.toggle("hidden", !visibility);
       return visibility;
     });
-    console.log(remaining.length);
     // get last from the survivors
     var lastPositions = new Map();
     remaining.forEach(b => lastPositions.set(b, b.element.getBoundingClientRect()));
@@ -127,7 +126,7 @@ var viewToggle = $.one(".view-controls");
 viewToggle.addEventListener("change", debouncedRender);
 
 // handle changes from the hash router
-var reroute = function(params, previous) {
+var reroute = async function(params, previous) {
   var { view, tags, years, book, year } = params;
   if (book) {
     // show the book dialog
@@ -135,21 +134,24 @@ var reroute = function(params, previous) {
   } else {
     // update form and render books
     if (years) {
-      years = new Set(years.split(","));
+      years = new Set(years.split("|"));
       $(".filters .years input").forEach(input => input.checked = years.has(input.value));
     }
 
-    if (tags) {
-      tags = new Set(tags.split(","));
-      $(".filters .tags input").forEach(input => input.checked = tags.has(input.value));
-    }
+    tags = new Set(tags ? tags.split("|") : undefined);
+    $(".filters .tags input").forEach(input => input.checked = tags.has(input.value));
 
     if (view) {
       $.one(`.view-controls input[value="${view}"]`).checked = true;
     }
 
-    debouncedRender();
+    await debouncedRender();
+
     // restore scroll position if necessary?
+    if (previous && previous.book) {
+      var clicked = $.one(`[data-isbn="${previous.book}"]`);
+      if (clicked) clicked.focus();
+    }
   }
 };
 

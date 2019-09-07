@@ -4,7 +4,7 @@ var parse = function() {
   var hash = window.location.hash.replace(/^#/, "");
   var parts = hash.split("&").map(p => p.split("="));
   var params = {};
-  parts.filter(d => d[1]).forEach(([k, v]) => params[k] = decodeURIComponent(v) || true);
+  parts.filter(d => d[1]).forEach(([k, v]) => params[k] = decodeURIComponent(v).replace(/\+/g, " ") || true);
   return params;
 };
 
@@ -13,7 +13,7 @@ var serialize = function(state) {
   for (var k in state) {
     var v = state[k];
     if (!v || (v instanceof Array && !v.length)) continue;
-    hash.push([k, encodeURIComponent(v)].join("="));
+    hash.push([k, encodeURIComponent(v.replace(/\s/g, "+"))].join("="));
   }
   return hash.join("&");
 };
