@@ -26,7 +26,7 @@ var parse = function() {
       var [cast = String] = def;
       params[k] = params[k] ? params[k].split("|").map(cast) : [];
     } else {
-      var cast = def[k] || String;
+      var cast = def || String;
       params[k] = cast(params[k]);
     }
   }
