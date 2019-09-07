@@ -8,7 +8,7 @@
     padding: 12px 0;
   }
 
-  input[type="checkbox"] {
+  input[type="checkbox"], input[type="radio"] {
     .sr-only;
 
     & + label {
@@ -33,4 +33,6 @@
       }
     }
   }
+
+  input[type="radio"]:checked + label:after { content: ""; }
 }
