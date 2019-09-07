@@ -1,10 +1,35 @@
+var channel = require("./pubsub");
+
+var definitions = {};
 var previous = {};
+
+/*
+define() lets you set the shape of hash parameters:
+
+`key: []` will force the parameter to be returned as an array
+`key: Type` casts the key to a constructor of Type (i.e., Number, String)
+`key: [Type]` casts to an array of Type
+*/
+
+var define = function(defs) {
+  Object.assign(definitions, defs);
+};
 
 var parse = function() {
   var hash = window.location.hash.replace(/^#/, "");
   var parts = hash.split("&").map(p => p.split("="));
   var params = {};
   parts.filter(d => d[1]).forEach(([k, v]) => params[k] = decodeURIComponent(v).replace(/\+/g, " ") || true);
+  for (var k in definitions) {
+    var def = definitions[k];
+    if (def instanceof Array) {
+      var [cast = String] = def;
+      params[k] = params[k] ? params[k].split("|").map(cast) : [];
+    } else {
+      var cast = def[k] || String;
+      params[k] = cast(params[k]);
+    }
+  }
   return params;
 };
 
@@ -13,6 +38,9 @@ var serialize = function(state) {
   for (var k in state) {
     var v = state[k];
     if (!v || (v instanceof Array && !v.length)) continue;
+    if (v instanceof Array) {
+      v = v.join("|");
+    }
     hash.push([k, encodeURIComponent(v.replace(/\s/g, "+"))].join("="));
   }
   return hash.join("&");
@@ -25,15 +53,9 @@ var listen = function(callback) {
 
 var onChange = function(e) {
   var params = parse();
-  // quick diff to see if we should update listeners
-  if (e && JSON.stringify(params) == JSON.stringify(previous)) return;
-  subscribers.forEach(f => f(params, previous));
+  channel.send("hashchange", params, previous);
   previous = params;
-}
-
-window.addEventListener("hashchange", onChange);
-
-setTimeout(onChange);
+};
 
 var update = function(state) {
   var merged = Object.assign({}, previous, state);
@@ -51,4 +73,7 @@ var replace = function(state) {
   window.location.hash = serialize(state);
 };
 
-module.exports = { parse, serialize, listen, update, replace };
+window.addEventListener("hashchange", onChange);
+// setTimeout(onChange);
+
+module.exports = { parse, serialize, listen, update, replace, define, force: onChange };

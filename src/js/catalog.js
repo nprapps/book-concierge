@@ -4,10 +4,21 @@ var dot = require("./lib/dot");
 var hash = require("./hash");
 var lazyload = require("./lazyLoading");
 
+var bookTemplate = dot.compile(require("./_book.html"));
 var listTemplate = dot.compile(require("./_list.html"));
 
 var coverContainer = $.one(".catalog-covers");
 var listContainer = $.one(".catalog-list");
+var bookPanel = $.one(".book-detail");
+
+// single book rendering
+var renderBook = async function(year, isbn) {
+  var book = await bookService.getDetail(year, isbn);
+  bookPanel.innerHTML = bookTemplate(book);
+  document.body.setAttribute("data-mode", "book");
+  var h2 = $.one("h2", bookPanel);
+  h2.focus();
+};
 
 // check a given book against the filters
 var checkVisibility = function(b, years, tags) {
@@ -67,21 +78,7 @@ var renderCovers = function(books, years, tags) {
 };
 
 // this should probably be moved to module that owns its container
-var renderCatalog = async function() {
-  var view = $.one(".view-controls input:checked").value;
-  document.body.setAttribute("data-mode", view);
-
-  var years = $(".filters .years input:checked").map(el => el.value * 1);
-  var tags = $(".filters .tags input:checked").map(el => el.value);
-
-  hash.update({
-    view,
-    book: false,
-    year: false,
-    tags: tags.join("|"),
-    years: years.join("|")
-  })
-
+var renderCatalog = async function(years, tags, view = "covers") {
   var books = await bookService.getCatalog(years);
 
   // clear out placeholders
@@ -104,4 +101,4 @@ var renderCatalog = async function() {
 
 };
 
-module.exports = { renderCatalog };
+module.exports = { renderCatalog, renderBook };
