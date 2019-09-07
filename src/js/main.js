@@ -67,13 +67,15 @@ var renderCatalog = async function() {
     var firstPositions = new Map();
     books.forEach(b => firstPositions.set(b, b.element.getBoundingClientRect()));
     // mutate - change visibility
-    books.forEach(function(b) {
+    var remaining = books.filter(function(b) {
       b.element.classList.remove("shuffling");
-      b.element.classList.toggle("hidden", !checkVisibility(b));
+      var visibility = !checkVisibility(b);
+      b.element.classList.toggle("hidden", visibility);
+      return visibility;
     });
-    // get last
+    // get last from the survivors
     var lastPositions = new Map();
-    books.forEach(b => lastPositions.set(b, b.element.getBoundingClientRect()));
+    remaining.forEach(b => lastPositions.set(b, b.element.getBoundingClientRect()));
     // visible set:
     // - was in the viewport then
     // - is the viewport now
@@ -88,16 +90,18 @@ var renderCatalog = async function() {
       var { element } = book;
       var first = firstPositions.get(book);
       var last = lastPositions.get(book);
+      if (!last) return;
       if (first.top == last.top && first.left == last.left) return;
       if (first.width == 0 && first.height == 0) return;
       element.style.transform = `translateX(${first.left - last.left}px) translateY(${first.top - last.top}px)`;
     });
     // play
-    var reflow = coverContainer.offsetWidth;
-    visibleSet.forEach(function(b) {
+    requestAnimationFrame(() => visibleSet.forEach(function(b) {
       b.element.classList.add("shuffling");
       b.element.style.transform = ""
-    });
+    }));
+    // force distant covers to reload
+    setTimeout(lazyload.reset, 1000);
   } else {
     // list view just renders in bulk
     var filtered = books.filter(checkVisibility);
