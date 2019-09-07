@@ -3,19 +3,14 @@ var debounce = require("./lib/debounce");
 var dot = require("./lib/dot");
 
 var coverTemplate = dot.compile(require("./_cover.html"));
-var listTemplate = dot.compile(require("./_list.html"));
 var bookTemplate = dot.compile(require("./_book.html"));
 
 var hash = require("./hash");
 var bookService = require("./bookService");
 
 var filterList = $.one("form.filters");
-var mainPanel = $.one(".catalog");
-var coverContainer = $.one(".catalog-covers");
-var listContainer = $.one(".catalog-list");
-var bookPanel = $.one(".book-detail")
+var bookPanel = $.one(".book-detail");
 
-var lazyload = require("./lazyLoading");
 
 var renderBook = async function(year, isbn) {
   var book = await bookService.getDetail(year, isbn);
@@ -25,100 +20,13 @@ var renderBook = async function(year, isbn) {
   h2.focus();
 };
 
-var renderCatalog = async function() {
-  var view = $.one(".view-controls input:checked").value;
-  document.body.setAttribute("data-mode", view);
-
-  var years = $(".filters .years input:checked").map(el => el.value * 1);
-  var tags = $(".filters .tags input:checked").map(el => el.value);
-
-  hash.update({
-    view,
-    book: false,
-    year: false,
-    tags: tags.join("|"),
-    years: years.join("|")
-  })
-
-  var books = await bookService.getCatalog(years);
-
-  // clear out placeholders
-  $(".placeholder", coverContainer).forEach(e => e.parentElement.removeChild(e));
-
-  // add new books (if any)
-  books.forEach(function(b) {
-    if (!b.element.parentElement) coverContainer.appendChild(b.element);
-  });
-
-  // check a given book against the filters
-  var checkVisibility = function(b) {
-    var visible = true;
-    if (years.length && years.indexOf(b.year) == -1) visible = false;
-    if (tags.length) {
-      var matches = tags.some(t => b.tags.has(t));
-      if (!matches) visible = false;
-    }
-    return visible;
-  };
-
-  // render lazily
-  if (view == "covers") {
-    // get first
-    var firstPositions = new Map();
-    books.forEach(b => firstPositions.set(b, b.element.getBoundingClientRect()));
-    // mutate - change visibility
-    var remaining = books.filter(function(b) {
-      b.element.classList.remove("shuffling");
-      var visibility = checkVisibility(b);
-      b.element.classList.toggle("hidden", !visibility);
-      return visibility;
-    });
-    // get last from the survivors
-    var lastPositions = new Map();
-    remaining.forEach(b => lastPositions.set(b, b.element.getBoundingClientRect()));
-    // visible set:
-    // - was in the viewport then
-    // - is the viewport now
-    var visibleSet = new Set();
-    [firstPositions, lastPositions].forEach(map => map.forEach(function(bounds, b) {
-      if (bounds.top < window.innerHeight && bounds.bottom > 0) {
-        visibleSet.add(b);
-      }
-    }));
-    // invert
-    visibleSet.forEach(function(book) {
-      var { element } = book;
-      var first = firstPositions.get(book);
-      var last = lastPositions.get(book);
-      if (!last) return;
-      if (first.top == last.top && first.left == last.left) return;
-      if (first.width == 0 && first.height == 0) return;
-      var dx = first.left - last.left;
-      var dy = first.top - last.top;
-      element.style.transform = `translateX(${dx}px) translateY(${dy}px) translateZ(0)`;
-    });
-    // play
-    requestAnimationFrame(() => visibleSet.forEach(function(b) {
-      b.element.classList.add("shuffling");
-      b.element.style.transform = ""
-    }));
-    // force distant covers to reload
-    setTimeout(lazyload.reset, 1000);
-  } else {
-    // list view just renders in bulk
-    var filtered = books.filter(checkVisibility);
-    listContainer.innerHTML = listTemplate({ books: filtered });
-  }
-
-  lazyload.reset();
-};
-
 //update years if necessary
 var params = hash.parse();
 if (params.years) {
   $(".filters .years input").forEach(input => input.checked = params.years.indexOf(input.value) > -1);
 }
 
+var { renderCatalog } = require("./catalog");
 var debouncedRender = debounce(renderCatalog);
 filterList.addEventListener("change", debouncedRender);
 
