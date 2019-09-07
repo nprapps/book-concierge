@@ -55,8 +55,10 @@ var listen = function(callback) {
 var onChange = function(e) {
   var params = parse();
   channel.send("hashchange", params, previous);
-  previous = params;
 };
+
+// only update previous when the change event actual fires
+channel.on("hashchange", params => previous = params);
 
 var update = function(state) {
   var merged = Object.assign({}, previous, state);
@@ -70,7 +72,6 @@ var update = function(state) {
 };
 
 var replace = function(state) {
-  previous = state;
   window.location.hash = serialize(state);
 };
 

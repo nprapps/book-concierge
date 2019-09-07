@@ -17,7 +17,7 @@ var setFilters = function(state) {
   var { years, tags, view} = state;
 
   // update form
-  if (years && years.lenth) {
+  if (years && years.length) {
     years = new Set(years);
     $(".filters .years input").forEach(input => input.checked = years.has(input.value * 1));
   }
