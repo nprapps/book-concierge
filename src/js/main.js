@@ -69,10 +69,11 @@ var renderCatalog = async function() {
     // mutate - change visibility
     var remaining = books.filter(function(b) {
       b.element.classList.remove("shuffling");
-      var visibility = !checkVisibility(b);
-      b.element.classList.toggle("hidden", visibility);
+      var visibility = checkVisibility(b);
+      b.element.classList.toggle("hidden", !visibility);
       return visibility;
     });
+    console.log(remaining.length);
     // get last from the survivors
     var lastPositions = new Map();
     remaining.forEach(b => lastPositions.set(b, b.element.getBoundingClientRect()));
@@ -93,7 +94,9 @@ var renderCatalog = async function() {
       if (!last) return;
       if (first.top == last.top && first.left == last.left) return;
       if (first.width == 0 && first.height == 0) return;
-      element.style.transform = `translateX(${first.left - last.left}px) translateY(${first.top - last.top}px)`;
+      var dx = first.left - last.left;
+      var dy = first.top - last.top;
+      element.style.transform = `translateX(${dx}px) translateY(${dy}px) translateZ(0)`;
     });
     // play
     requestAnimationFrame(() => visibleSet.forEach(function(b) {

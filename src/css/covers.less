@@ -35,8 +35,9 @@
     cursor: pointer;
     background: #EEE;
     transform-origin: 0 0;
-    transform: translateX(0) translateY(0);
+    transform: translateX(0) translateY(0) translateZ(0);
     animation: fade-in .2s linear;
+    will-change: transform;
     
     &.shuffling {
       transition: all .5s ease-in-out;
