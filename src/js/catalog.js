@@ -37,7 +37,7 @@ var renderCovers = function(books, years, tags) {
   var visible = books.filter(b => checkVisibility(b, years, tags));
   var elements = books.map(b => b.coverElement);
 
-  flip(elements, function() {
+  return flip(elements, function() {
     var visibleSet = new Set(visible);
     books.forEach(function(book) {
       book.coverElement.classList.toggle("hidden", !visibleSet.has(book));
@@ -52,22 +52,23 @@ var renderCatalog = async function(years, tags, view = "covers") {
   // clear out placeholders
   $(".placeholder", coverContainer).forEach(e => e.parentElement.removeChild(e));
 
-  // add new books (if any)
-  books.filter(b => !b.coverElement).forEach(function(book) {
-    var element = document.createElement("a");
-    element.dataset.isbn = book.isbn;
-    element.href = `#year=${book.year}&book=${book.isbn}`;
-    element.className = "book-container";
-    element.innerHTML = coverTemplate({ book });
-    book.coverElement = element;
-    coverContainer.appendChild(book.coverElement);
-  });
-
   // render lazily
   if (view == "covers") {
-    renderCovers(books, years, tags);
+    // add new books (if any)
+    books.filter(b => !b.coverElement).forEach(function(book) {
+      var element = document.createElement("a");
+      element.dataset.isbn = book.isbn;
+      element.href = `#year=${book.year}&book=${book.isbn}`;
+      element.className = "book-container";
+      element.innerHTML = coverTemplate({ book });
+      book.coverElement = element;
+      coverContainer.appendChild(book.coverElement);
+    });
+    return renderCovers(books, years, tags);
   } else {
     // list view just renders in bulk
+    // we should probably change this at some point
+    // but it makes sorting way easier
     var filtered = books.filter(b => checkVisibility(b, years, tags));
     filtered.sort((a, b) => a.title < b.title ? -1 : 1);
     listContainer.innerHTML = listTemplate({ books: filtered });

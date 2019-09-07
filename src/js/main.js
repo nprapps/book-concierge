@@ -37,8 +37,11 @@ channel.on("hashchange", async function(params, previous) {
     var { years, tags, view } = params;
     await renderCatalog(years, tags, view);
     if (previous && previous.book) {
-      var clicked = $.one(`[data-isbn="${previous.book}"]`);
-      if (clicked) clicked.focus();
+      var clicked = $.one(`.catalog-${view} [data-isbn="${previous.book}"]`);
+      if (clicked) {
+        clicked.focus();
+        clicked.scrollIntoView({ block: "center", behavior: "smooth" });
+      }
     }
   }
 });
