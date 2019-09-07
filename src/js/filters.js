@@ -3,6 +3,7 @@ var $ = require("./lib/qsa");
 var channel = require("./pubsub");
 
 var filterList = $.one("form.filters");
+var viewToggle = $.one(".view-controls");
 
 var getFilters = function() {
   var years = $(".years input:checked", filterList).map(el => el.value * 1);
@@ -27,13 +28,16 @@ var setFilters = function(state) {
   if (view) {
     $.one(`.view-controls input[value="${view}"]`).checked = true;
   }
-  
+
   return state;
 }
 
-filterList.addEventListener("change", function() {
+var onChange = function() {
   var state = getFilters();
   channel.send("filterchange", state);
-});
+};
+
+filterList.addEventListener("change", onChange);
+viewToggle.addEventListener("change", onChange);
 
 module.exports = { getFilters, setFilters }
