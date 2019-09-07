@@ -1,6 +1,3 @@
-var dot = require("./lib/dot");
-var coverTemplate = dot.compile(require("./_cover.html"));
-
 var cache = {};
 var request = function(endpoint) {
   if (!cache[endpoint]) {
@@ -26,12 +23,6 @@ var facade = {
           book.shuffle = Math.random();
           book.year = year;
           book.tags = new Set(book.tags.split(/\|\s/g).map(t => t.trim()));
-          var element = document.createElement("a");
-          element.dataset.isbn = book.isbn;
-          element.href = `#year=${year}&book=${book.isbn}`;
-          element.className = "book-container";
-          element.innerHTML = coverTemplate({ book });
-          book.element = element;
         });
         //randomize elements
         index = index.sort((a, b) => a.shuffle - b.shuffle);

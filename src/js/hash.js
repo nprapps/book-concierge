@@ -22,12 +22,13 @@ var parse = function() {
   parts.filter(d => d[1]).forEach(([k, v]) => params[k] = decodeURIComponent(v.replace(/\+/g, " ")) || true);
   for (var k in definitions) {
     var def = definitions[k];
+    var value = params[k];
     if (def instanceof Array) {
       var [cast = String] = def;
-      params[k] = params[k] ? params[k].split("|").map(cast) : [];
-    } else {
+      params[k] = value ? value.split("|").map(cast) : [];
+    } else if (value) {
       var cast = def || String;
-      params[k] = cast(params[k]);
+      params[k] = cast(value);
     }
   }
   return params;
@@ -35,14 +36,14 @@ var parse = function() {
 
 var serialize = function(state) {
   var hash = [];
-  for (var k in state) {
+  Object.keys(state).sort().forEach(function(k) {
     var v = state[k];
-    if (!v || (v instanceof Array && !v.length)) continue;
+    if (!v || (v instanceof Array && !v.length)) return;
     if (v instanceof Array) {
       v = v.join("|");
     }
     hash.push([k, encodeURIComponent(v).replace(/\s|%20/g, "+")].join("="));
-  }
+  });
   return hash.join("&");
 };
 

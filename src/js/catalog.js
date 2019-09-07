@@ -6,6 +6,7 @@ var lazyload = require("./lazyLoading");
 
 var bookTemplate = dot.compile(require("./_book.html"));
 var listTemplate = dot.compile(require("./_list.html"));
+var coverTemplate = dot.compile(require("./_cover.html"));
 
 var coverContainer = $.one(".catalog-covers");
 var listContainer = $.one(".catalog-list");
@@ -34,17 +35,17 @@ var checkVisibility = function(b, years, tags) {
 var renderCovers = function(books, years, tags) {
   // get first
   var firstPositions = new Map();
-  books.forEach(b => firstPositions.set(b, b.element.getBoundingClientRect()));
+  books.forEach(b => firstPositions.set(b, b.coverElement.getBoundingClientRect()));
   // mutate - change visibility
   var remaining = books.filter(function(b) {
-    b.element.classList.remove("shuffling");
+    b.coverElement.classList.remove("shuffling");
     var visibility = checkVisibility(b, years, tags);
-    b.element.classList.toggle("hidden", !visibility);
+    b.coverElement.classList.toggle("hidden", !visibility);
     return visibility;
   });
   // get last from the survivors
   var lastPositions = new Map();
-  remaining.forEach(b => lastPositions.set(b, b.element.getBoundingClientRect()));
+  remaining.forEach(b => lastPositions.set(b, b.coverElement.getBoundingClientRect()));
   // visible set:
   // - was in the viewport then
   // - is the viewport now
@@ -56,7 +57,7 @@ var renderCovers = function(books, years, tags) {
   }));
   // invert
   visibleSet.forEach(function(book) {
-    var { element } = book;
+    var { coverElement } = book;
     var first = firstPositions.get(book);
     var last = lastPositions.get(book);
     if (!last) return;
@@ -64,12 +65,12 @@ var renderCovers = function(books, years, tags) {
     if (first.width == 0 && first.height == 0) return;
     var dx = first.left - last.left;
     var dy = first.top - last.top;
-    element.style.transform = `translateX(${dx}px) translateY(${dy}px) translateZ(0)`;
+    coverElement.style.transform = `translateX(${dx}px) translateY(${dy}px) translateZ(0)`;
   });
   // play
   requestAnimationFrame(() => visibleSet.forEach(function(b) {
-    b.element.classList.add("shuffling");
-    b.element.style.transform = ""
+    b.coverElement.classList.add("shuffling");
+    b.coverElement.style.transform = ""
     // force distant covers to reload
     setTimeout(lazyload.reset, 100);
     setTimeout(lazyload.reset, 500);
@@ -85,8 +86,14 @@ var renderCatalog = async function(years, tags, view = "covers") {
   $(".placeholder", coverContainer).forEach(e => e.parentElement.removeChild(e));
 
   // add new books (if any)
-  books.forEach(function(b) {
-    if (!b.element.parentElement) coverContainer.appendChild(b.element);
+  books.filter(b => !b.coverElement).forEach(function(book) {
+    var element = document.createElement("a");
+    element.dataset.isbn = book.isbn;
+    element.href = `#year=${book.year}&book=${book.isbn}`;
+    element.className = "book-container";
+    element.innerHTML = coverTemplate({ book });
+    book.coverElement = element;
+    coverContainer.appendChild(book.coverElement);
   });
 
   // render lazily

@@ -9,7 +9,8 @@ var onScroll = function() {
   var loading = [];
   lazyImages = lazyImages.filter(function(img) {
     var bounds = img.getBoundingClientRect();
-    if (bounds.bottom < 0 || bounds.top > window.innerHeight * 2) return true;
+    var buffer = window.innerHeight;
+    if (bounds.bottom < -buffer || bounds.top > buffer * 2) return true;
     // otherwise, lazy-load it
     // we do this in a separate step to prevent reflow/layout issues
     loading.push(img);

@@ -9,6 +9,8 @@ var { getFilters, setFilters } = require("./filters");
 
 var hash = require("./hash");
 hash.define({
+  year: Number,
+  book: String,
   years: [Number],
   tags: [String]
 });
@@ -23,11 +25,6 @@ mobile filters -> filters -> hash -> rendering
 The hash is always the source of truth.
 
 */
-
-// filters update the hash
-channel.on("filterchange", function(state) {
-  hash.replace(state);
-});
 
 // hashes update filters (usually redundant) and render the main panel
 channel.on("hashchange", async function(params, previous) {
@@ -49,7 +46,7 @@ channel.on("hashchange", async function(params, previous) {
 // on startup, check for a pre-existing hash
 var startup = hash.parse();
 // years is guaranteed to be an array because of the define() above
-if (startup.years.length) {
+if (startup.year || startup.years.length) {
   // if found, force a render from the hash, which will update filters accordingly
   hash.force();
 } else {
@@ -57,3 +54,8 @@ if (startup.years.length) {
   var filter = getFilters();
   hash.replace(filter);
 }
+
+// filters update the hash
+channel.on("filterchange", function(state) {
+  hash.replace(state);
+});
