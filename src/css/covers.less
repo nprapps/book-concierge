@@ -36,7 +36,11 @@
     background: #EEE;
     transform-origin: 0 0;
     transform: translateX(0) translateY(0) translateZ(0);
-    animation: fade-in .2s linear;
+    animation-name: fade-in;
+    animation-duration: .5s;
+    animation-timing-function: linear;
+    animation-delay: .4s;
+    animation-fill-mode: both;
     will-change: transform;
     
     &.shuffling {
