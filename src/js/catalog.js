@@ -1,6 +1,7 @@
 var $ = require("./lib/qsa");
 var bookService = require("./bookService");
 var dot = require("./lib/dot");
+var flip = require("./lib/flip");
 var hash = require("./hash");
 var lazyload = require("./lazyLoading");
 
@@ -33,52 +34,21 @@ var checkVisibility = function(b, years, tags) {
 };
 
 var renderCovers = function(books, years, tags) {
-  // get first
-  var firstPositions = new Map();
-  books.forEach(b => firstPositions.set(b, b.coverElement.getBoundingClientRect()));
-  // mutate - change visibility
-  var remaining = books.filter(function(b) {
-    b.coverElement.classList.remove("shuffling");
-    var visibility = checkVisibility(b, years, tags);
-    b.coverElement.classList.toggle("hidden", !visibility);
-    return visibility;
-  });
-  // get last from the survivors
-  var lastPositions = new Map();
-  remaining.forEach(b => lastPositions.set(b, b.coverElement.getBoundingClientRect()));
-  // visible set:
-  // - was in the viewport then
-  // - is the viewport now
-  var visibleSet = new Set();
-  [firstPositions, lastPositions].forEach(map => map.forEach(function(bounds, b) {
-    if (bounds.top < window.innerHeight && bounds.bottom > 0) {
-      visibleSet.add(b);
-    }
-  }));
-  // invert
-  visibleSet.forEach(function(book) {
-    var { coverElement } = book;
-    var first = firstPositions.get(book);
-    var last = lastPositions.get(book);
-    if (!last) return;
-    if (first.top == last.top && first.left == last.left) return;
-    if (first.width == 0 && first.height == 0) return;
-    var dx = first.left - last.left;
-    var dy = first.top - last.top;
-    coverElement.style.transform = `translateX(${dx}px) translateY(${dy}px) translateZ(0)`;
-  });
-  // play
-  requestAnimationFrame(() => visibleSet.forEach(function(b) {
-    b.coverElement.classList.add("shuffling");
-    b.coverElement.style.transform = ""
-    // force distant covers to reload
-    setTimeout(lazyload.reset, 100);
-    setTimeout(lazyload.reset, 500);
-    setTimeout(lazyload.reset, 1000);
-  }));
+  var visible = books.filter(b => checkVisibility(b, years, tags));
+  var elements = books.map(b => b.coverElement);
+
+  flip(elements, function() {
+    var visibleSet = new Set(visible);
+    books.forEach(function(book) {
+      book.coverElement.classList.toggle("hidden", !visibleSet.has(book));
+    });
+  })
+
+  setTimeout(lazyload.reset, 100);
+  setTimeout(lazyload.reset, 500);
+  setTimeout(lazyload.reset, 1000);
 };
 
-// this should probably be moved to module that owns its container
 var renderCatalog = async function(years, tags, view = "covers") {
   var books = await bookService.getCatalog(years);
 
@@ -102,6 +72,7 @@ var renderCatalog = async function(years, tags, view = "covers") {
   } else {
     // list view just renders in bulk
     var filtered = books.filter(b => checkVisibility(b, years, tags));
+    filtered.sort((a, b) => a.title < b.title ? -1 : 1);
     listContainer.innerHTML = listTemplate({ books: filtered });
     lazyload.reset();
   }

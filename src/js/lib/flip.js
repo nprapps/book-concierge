@@ -1,26 +1,42 @@
-var { transform, transformOrigin } = require("./prefixed");
+module.exports = function(elements, mutate) {
+  if (!(elements instanceof Array)) elements = [elements];
+  var first = new Map();
+  var last = new Map();
 
-module.exports = function(element, mutate) {
-  var first = element.getBoundingClientRect();
+  elements.forEach(el => first.set(el, el.getBoundingClientRect()));
   
   mutate();
 
-  var last = element.getBoundingClientRect();
+  elements.forEach(el => last.set(el, el.getBoundingClientRect()));
 
-  var diff = {
-    x: first.left - last.left,
-    y: first.top - last.top,
-    scaleX: first.width / last.width,
-    scaleY: first.height / last.height
-  };
+  var visibleSet = new Set();
+  [last, first].forEach(map => map.forEach(function(bounds, element) {
+    if (!bounds.width || !bounds.height) return visibleSet.delete(element);
+    if (bounds.top < window.innerHeight && bounds.bottom > 0) visibleSet.add(element);
+  }));
 
-  element.style[transformOrigin] = "0 0";
-  element.style[transform] = `translateX(${diff.x}px) translateY(${diff.y}px) scaleX(${diff.scaleX}) scaleY(${diff.scaleY})`;
-  var reflow = element.offsetWidth;
-  element.style.transition = "all .5s ease-in-out";
-  element.style[transform] = "";
-  setTimeout(function() {
-    element.style.transition = "";
-    element.style[transformOrigin] = "";
-  }, 500);
+  visibleSet.forEach(function(element) {
+    var f = first.get(element);
+    var l = last.get(element);
+    var diff = {
+      x: f.left - l.left,
+      y: f.top - l.top,
+      scaleX: f.width / l.width,
+      scaleY: f.height / l.height
+    };
+
+    element.style.transition = "none";
+    element.style.transformOrigin = "0 0";
+    element.style.transform = `translateX(${diff.x}px) translateY(${diff.y}px) translateZ(0) scaleX(${diff.scaleX}) scaleY(${diff.scaleY})`;
+  });
+
+  // we shouldn't need to force reflow, but it seems to help
+  var reflow = document.body.offsetWidth;
+  requestAnimationFrame(function() {
+    visibleSet.forEach(function(element) {
+      element.style.transition = "transform .2s ease-in-out";
+      element.style.transform = "";
+      element.style.transformOrigin = "";
+    });
+  });
 };
