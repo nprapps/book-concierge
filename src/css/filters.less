@@ -2,6 +2,10 @@
   flex: 0 0 200px;
   padding: 4px;
 
+  @media @mobile {
+    display: none;
+  }
+
   fieldset {
     border: none;
     margin: 0;
@@ -20,6 +24,12 @@
       position: relative;
       cursor: pointer;
       text-transform: uppercase;
+    }
+
+    &:hover + label,
+    &:focus + label {
+      outline: 3px solid #333;
+      z-index: 999;
     }
 
     &:checked + label {

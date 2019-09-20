@@ -1,0 +1,24 @@
+<form class="fab-form">
+
+  <button class="fab-button">
+    Clear
+  </button>
+
+  <div class="fab-button">
+    <label for="fab-tags">Tags</label>
+    <select class="tags" id="fab-tags" multiple>
+      <%
+        // initialize tags
+        var tags = new Set();
+        shelf.forEach(function(item) {
+          item.tags.split(/\|\s/).forEach(t => tags.add(t.trim()));
+        });
+        tags.forEach(function(tag) { %>
+      <option value="<%= tag %>"><%= tag.toUpperCase() %></option>
+        <%
+        })
+      %>
+    </select>
+  </div>
+
+</form>

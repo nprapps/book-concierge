@@ -41,3 +41,19 @@ filterList.addEventListener("change", onChange);
 viewToggle.addEventListener("change", onChange);
 
 module.exports = { getFilters, setFilters }
+
+
+
+$.one(".fab-form .tags").addEventListener("change", function() {
+  var select = event.target;
+  var options = select.selectedOptions;
+  var values = new Set();
+  for (var i = 0; i < options.length; i++) {
+    values.add(options[i].value);
+  }
+  $(".filters .tags input").forEach(function(input) {
+    input.checked = values.has(input.value);
+  });
+  var change = new Event("change");
+  filterList.dispatchEvent(change);
+});
