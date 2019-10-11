@@ -12,6 +12,7 @@ var coverTemplate = dot.compile(require("./_cover.html"));
 var coverContainer = $.one(".catalog-covers");
 var listContainer = $.one(".catalog-list");
 var bookPanel = $.one(".book-detail");
+var bookCounter = $.one(".book-count");
 
 // single book rendering
 var renderBook = async function(year, isbn) {
@@ -35,6 +36,8 @@ var checkVisibility = function(b, years, tags) {
 
 var renderCovers = function(books, years, tags) {
   var visible = books.filter(b => checkVisibility(b, years, tags));
+
+  bookCounter.innerHTML = visible.length;
   var elements = books.map(b => b.coverElement);
 
   return flip(elements, function() {
@@ -56,9 +59,8 @@ var renderCatalog = async function(years, tags, view = "covers") {
   if (view == "covers") {
     // add new books (if any)
     books.filter(b => !b.coverElement).forEach(function(book) {
-      var element = document.createElement("a");
+      var element = document.createElement("li");
       element.dataset.isbn = book.isbn;
-      element.href = `#year=${book.year}&book=${book.isbn}`;
       element.className = "book-container";
       element.innerHTML = coverTemplate({ book });
       book.coverElement = element;
@@ -71,6 +73,7 @@ var renderCatalog = async function(years, tags, view = "covers") {
     // but it makes sorting way easier
     var filtered = books.filter(b => checkVisibility(b, years, tags));
     filtered.sort((a, b) => a.title < b.title ? -1 : 1);
+    bookCounter.innerHTML = filtered.length;
     listContainer.innerHTML = listTemplate({ books: filtered });
     lazyload.reset();
   }

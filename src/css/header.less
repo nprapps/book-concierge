@@ -1,0 +1,38 @@
+header.hero {
+  background: @accent;
+  padding: 60px 40px;
+  color: white;
+
+  .books-home {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    .gotham();
+    display: inline-block;
+
+    &:focus {
+      outline: 1px dashed white;
+    }
+
+    img {
+      display: inline;
+      height: 24px;
+      vertical-align: middle;
+    }
+  }
+
+  h1, h2 {
+    color: white;
+    .gotham();
+    margin: 0;
+  }
+
+  h1 {
+    font-weight: bold;
+    font-size: 48px;
+  }
+
+  h2 {
+    font-size: 36px;
+  }
+}

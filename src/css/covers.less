@@ -4,6 +4,8 @@
   columns: 4;
   column-gap: 1px;
   line-height: 1;
+  margin: 0;
+  padding: 0;
 
   [data-mode="covers"] & {
     display: block;
@@ -42,6 +44,12 @@
     animation-delay: .4s;
     animation-fill-mode: both;
     will-change: transform;
+
+    .cover-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
     
     &.shuffling {
       transition: all .5s ease-in-out;

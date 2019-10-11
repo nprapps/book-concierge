@@ -6,24 +6,60 @@
   </head>
   <body data-mode="covers">
 
+    <header class="hero">
+      <a href="https://npr.org/books" class="books-home">
+        <img src="./assets/logo-outline.svg" alt="NPR">
+        books
+      </a>
+      <h1>NPR's Book Concierge</h1>
+      <h2>Our Guide to Great Reads</h2>
+      <p class="bylines">
+        Bylines go here
+      </p>
+      <p class="pubdate">
+        Published on Nov. 15, 2019
+      </p>
+    </header>
+
     <main class="concierge">
       <%= t.include("_filters.html") %>
       <%= t.include("_fab.html") %>
 
       <section class="catalog" aria-label="Catalog">
 
-        <div class="view-controls">
-          <input type="radio" id="view-covers" name="view-controls" value="covers" checked="checked">
-          <label for="view-covers">Covers</label>
-          <input type="radio" id="view-list" name="view-controls" value="list">
-          <label for="view-list">List</label>
+        <div class="section-header">
+          <h3>Selected books (<span class="book-count"></span>)</h3>
+
+          <div class="view-controls">
+            <input type="radio" id="view-covers" name="view-controls" value="covers" checked="checked">
+            <label for="view-covers">
+              <svg viewBox="0 0 30 10" preserveAspectRatio="none" width="30" height="18">
+                <rect width="9" height="6" />
+                <rect width="9" height="3" y="7" />
+                <rect x="11" width="9" height="1" />
+                <rect x="11" width="9" height="8" y="2" />
+                <rect x="22" width="9" height="8" />
+                <rect x="22" width="9" height="1" y="9" />
+              </svg>
+              Covers
+            </label>
+            <input type="radio" id="view-list" name="view-controls" value="list">
+            <label for="view-list">
+              <svg viewBox="0 0 1 30" preserveAspectRatio="none" width="30" height="18">
+                <rect width="100%" height="9" />
+                <rect y="11" width="100%" height="9" />
+                <rect y="22" width="100%" height="9" />
+              </svg>
+              List
+            </label>
+          </div>
         </div>
 
-        <div class="catalog-covers">
+        <ul class="catalog-covers">
           <% for (var i = 0; i < 100; i++) { %>
           <div class="placeholder book-container"></div>
           <% } %>
-        </div>
+        </ul>
         
         <div class="catalog-list"></div>
         
@@ -31,6 +67,12 @@
 
       <div class="book-detail"></div>
     </main>
+
+    <footer>
+      <a href="https://npr.org">
+        <img src="./assets/logo_lines.png" alt="NPR" class="logo">
+      </a>
+    </footer>
 
     <script src="app.js" async></script>
     <%= t.include("partials/_analytics.html") %>

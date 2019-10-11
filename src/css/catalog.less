@@ -1,9 +1,16 @@
 .catalog {
   flex: 1;
   @corner: 4px;
+  padding-left: 24px;
 
   [data-mode="book"] & {
     display: none;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .view-controls {
@@ -11,6 +18,10 @@
     padding: 12px 0;
     display: flex;
     justify-content: flex-end;
+
+    svg {
+      vertical-align: middle;
+    }
   }
 
   input[type="radio"] {
@@ -19,14 +30,22 @@
     & + label {
       display: block;
       padding: 8px;
-      border: 1px solid teal;
+      border: 1px solid @accent;
       background: white;
-      color: teal;
+      color: @accent;
+
+      rect {
+        fill: @accent;
+      }
     }
 
     &:checked + label {
-      background: teal;
+      background: @accent;
       color: white;
+
+      rect {
+        fill: white;
+      }
     }
 
     &:first-child + label {

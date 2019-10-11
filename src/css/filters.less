@@ -1,5 +1,5 @@
 .filters {
-  flex: 0 0 200px;
+  flex: 0 0 220px;
   padding: 4px;
 
   @media @mobile {
@@ -9,7 +9,7 @@
   fieldset {
     border: none;
     margin: 0;
-    padding: 12px 0;
+    padding: 0 0 12px 0;
   }
 
   input[type="checkbox"], input[type="radio"] {
@@ -17,29 +17,34 @@
 
     & + label {
       display: block;
-      background: white;
       color: #888;
       padding: 4px;
+      padding-right: 16px;
+      margin-bottom: 4px;
       .gotham();
       position: relative;
       cursor: pointer;
       text-transform: uppercase;
+      border: 1px solid #888;
     }
 
     &:hover + label,
     &:focus + label {
-      outline: 3px solid #333;
+      outline: 1px solid #333;
       z-index: 999;
     }
 
     &:checked + label {
-      background: teal;
+      background: @accent;
       color: white;
 
       &::after {
         content: "×";
+        font-size: 150%;
         position: absolute;
         right: 4px;
+        top: 0;
+        line-height: 1;
       }
     }
   }

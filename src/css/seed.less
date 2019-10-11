@@ -1,56 +1,29 @@
 @import "base";
 
+body {
+  background: #F8F8F8;
+}
+
 main.concierge {
   display: flex;
   margin: auto;
   max-width: 1000px;
+  .gotham();
+  padding: 60px 16px;
 }
 
+h3 {
+  display: block;
+  margin: 0;
+  font-weight: normal;
+  font-size: 22px;
+}
+
+@accent: teal;
+
+@import "header";
 @import "filters";
 @import "catalog";
 @import "book";
-
-.fab-form {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  z-index: 999;
-  display: none;
-
-  @media @mobile {
-    display: block;
-  }
-
-  .fab-button {
-    width: 80px;
-    height: 80px;
-    background: teal;
-    position: relative;
-    border-radius: 100%;
-    // overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    font-size: 18px;
-    border: none;
-    opacity: .7;
-    transition: opacity .4s linear;
-
-    &:hover,
-    &:focus {
-      opacity: 1;
-    }
-
-    select {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-    }
-  }
-}
+@import "fab";
+@import "footer";

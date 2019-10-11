@@ -3,25 +3,29 @@
   var nativeLazy = "loading" in Image.prototype;
   var aspect = book.dimensions.height ? `padding-bottom: ${book.dimensions.height / book.dimensions.width * 100}%`: "";
 %>
-<div class="cover-container" style="<%= aspect %>">
-  <img 
-    <%= nativeLazy ? "src" : "data-src" %>="./assets/covers/<%= book.isbn %>.jpg"
-    class="cover"
-    alt="<%= book.title %>"
-    decoding="async"
-    loading="lazy"
-    width="<%= book.dimensions.width %>"
-    height="<%= book.dimensions.height %>"
-    intrinsicsize="<%= book.dimensions.width %>x<%= book.dimensions.height %>"
-  >
+<a
+  href="#year=<%= book.year %>&book=<%= book.isbn %>"
+  class="cover-link">
+  <div class="cover-container" style="<%= aspect %>">
+    <img 
+      <%= nativeLazy ? "src" : "data-src" %>="./assets/covers/<%= book.isbn %>.jpg"
+      class="cover"
+      alt="<%= book.title %>"
+      decoding="async"
+      loading="lazy"
+      width="<%= book.dimensions.width %>"
+      height="<%= book.dimensions.height %>"
+      intrinsicsize="<%= book.dimensions.width %>x<%= book.dimensions.height %>"
+    >
   </div>
-<div class="hover-data">
-  <div class="cover-text">
-    <b><%= book.title %></b>
-    <br>by <%= book.author %>
-  </div>
+  <div class="hover-data">
+    <div class="cover-text">
+      <b><%= book.title %></b>
+      <br>by <%= book.author %>
+    </div>
 
-  <div class="read-more">
-    Read more &raquo;
+    <div class="read-more">
+      Read more &raquo;
+    </div>
   </div>
-</div>
+</a>
