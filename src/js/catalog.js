@@ -28,7 +28,7 @@ var checkVisibility = function(b, years, tags) {
   var visible = true;
   if (years.length && years.indexOf(b.year) == -1) visible = false;
   if (tags.length) {
-    var matches = tags.some(t => b.tags.has(t));
+    var matches = tags.every(t => b.tags.has(t));
     if (!matches) visible = false;
   }
   return visible;
