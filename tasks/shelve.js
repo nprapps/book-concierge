@@ -10,18 +10,24 @@ var shelve = async function(grunt) {
 
   for (var row of grunt.data.json.years) {
     var { year, sheet } = row;
+    console.log("Shelving " + year);
     var collection = grunt.data.json[sheet];
     var index = [];
     var lookup = {};
+    var links = grunt.data.json.links.filter(l => l.year == year);
     for (var book of collection) {
+      // normalize and trim
       book.year = year;
       book.tags = normalizeTags(book.tags);
       book.text = grunt.template.renderMarkdown(book.text);
-      "title author reviewer".split(" ").forEach(p => book[p] = book[p].trim());
-      shelf.push(book);
+      "title author reviewer text".split(" ").forEach(p => book[p] = book[p].trim());
       var isbn = String(book.isbn).trim();
       if (isbn.length == 9) isbn = "0" + isbn;
       book.isbn = isbn;
+
+      // join against links, reviewers
+      book.links = links.filter(l => l.id == book.id);
+
       var indexEntry = {
         title: book.title,
         author: book.author,
@@ -36,6 +42,7 @@ var shelve = async function(grunt) {
           height: size.height
         };
       } catch (_) { }
+      shelf.push(book);
       index.push(indexEntry);
       lookup[book.isbn] = book;
     };
