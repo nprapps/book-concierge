@@ -16,7 +16,7 @@ var checksum = function(filename, callback) {
 module.exports = function(grunt) {
 
   var header = function(title) {
-    console.log(`\n\n======== ${title} ========\n\n`);
+    console.log(`\n======== ${title} ========\n`);
   }
 
   var tags = async function() {
@@ -31,6 +31,7 @@ module.exports = function(grunt) {
       }
     }
     var rareTags = Object.keys(counts).filter(t => counts[t].length < 20);
+    if (!rareTags.length) return true;
     for (var t of rareTags) {
       console.log(`Tag "${t}" has very few books (used: ${counts[t].join(", ")})`);
     }
@@ -39,47 +40,60 @@ module.exports = function(grunt) {
   var badCovers = async function() {
     // Check for book images that read as "NO IMAGE AVAILABLE"
     var coverFiles = await asyncFS.readdir("src/assets/covers");
+    var passed = true;
     for (var f of coverFiles) {
       var file = `src/assets/covers/${f}`
       var stat = await asyncFS.stat(file);
       if (stat.size < 5000) {
         var digest = await checksum(file);
-        grunt.log.error(`Cover ${f} is probably broken (MD5: ${digest})`);
+        passed = false;
+        console.log(`Cover ${f} is probably broken (MD5: ${digest})`);
       }
     }
+    return passed;
   };
 
   var missingCovers = async function() {
     // Check which books are missing a cover image
+    var passed = true;
     for (var book of grunt.data.shelf) {
       var { isbn, title, year } = book;
       var coverPath = `src/assets/covers/${isbn}.jpg`;
       try {
         await asyncFS.stat(coverPath);
       } catch (err) {
+        passed = false;
         console.error(`"${title}" (${year}) is missing its cover file.`);
       }
     }
+    return passed;
   };
 
   var reviewers = async function() {
     // Are all reviewers used somewhere?
+    var passed = true;
     Object.keys(grunt.data.json.reviewers).forEach(function(reviewer) {
       var matched = grunt.data.shelf.some(book => book.reviewer == reviewer);
-      if (!matched) grunt.log.error(`Reviewer ${reviewer} has no reviewed books.`);
+      if (!matched) {
+        console.log(`Reviewer ${reviewer} has no reviewed books.`);
+        passed = false;
+      }
     });
+    return passed;
   };
 
   var reviewed = async function() {
     // Do all books have a valid reviewer?
     var noReviewer = grunt.data.shelf.filter(b => !(b.reviewer in grunt.data.json.reviewers));
-    noReviewer.forEach(b => grunt.log.error(`Book "${b.title}" (${b.year}) doesn't have a valid reviewer (${b.reviewer}).`));
+    noReviewer.forEach(b => console.log(`Book "${b.title}" (${b.year}) doesn't have a valid reviewer (${b.reviewer}).`));
+    return !noReviewer.length;
   };
 
   var links = async function() {
-    grunt.data.json.links.forEach(function(link) {
+    return grunt.data.json.links.every(function(link) {
       var linked = grunt.data.shelf.some(b => b.id == link.id && b.year == link.year);
-      if (!linked) grunt.log.error(`Unreferenced link: ${link.source} on ${link.book} (${link.year}).`);
+      if (!linked) console.log(`Unreferenced link: ${link.source} on ${link.book} (${link.year}).`);
+      return linked;
     });
   };
 
@@ -88,9 +102,10 @@ module.exports = function(grunt) {
     var validation = { tags, badCovers, missingCovers, reviewers, reviewed, links };
 
     for (var k in validation) {
-      if (tasks && tasks.indexOf(k) > -1) {
+      if (!tasks || tasks.indexOf(k) > -1) {
         header(k);
-        await validation[k]();
+        var pass = await validation[k]();
+        if (pass) console.log(`Tests passed for ${k}`);
       }
     }
 
