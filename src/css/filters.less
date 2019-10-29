@@ -8,8 +8,10 @@
 
   fieldset {
     border: none;
-    margin: 0;
-    padding: 0 0 12px 0;
+    margin: 0 0 12px 0;
+    padding: 0;
+    background: linear-gradient(to bottom, @accent, spin(@accent, 20%));
+    background: linear-gradient(to bottom, var(--accent), var(--accent-spin));
   }
 
   input[type="checkbox"], input[type="radio"] {
@@ -17,27 +19,29 @@
 
     & + label {
       display: block;
-      color: #888;
+      background: transparent;
+      color: white;
       padding: 4px;
       padding-right: 16px;
-      margin-bottom: 4px;
       .gotham();
       position: relative;
       cursor: pointer;
       text-transform: uppercase;
-      border: 1px solid #888;
+      border: 1px solid white;
+      border-width-top: 4px;
+      border-width-bottom: 4px;
     }
 
     &:hover + label,
     &:focus + label {
-      outline: 1px solid #333;
+      outline: 4px solid var(--accent);
       z-index: 999;
     }
 
     &:checked + label {
-      background: @accent;
-      background: var(--accent);
-      color: white;
+      background: white;
+      // background: var(--accent);
+      color: #333;
 
       &::after {
         content: "×";
