@@ -30,7 +30,7 @@ module.exports = function(grunt) {
         counts[t].push(book.year);
       }
     }
-    var rareTags = Object.keys(counts).filter(t => counts[t].length < 30);
+    var rareTags = Object.keys(counts).filter(t => counts[t].length < 20);
     for (var t of rareTags) {
       console.log(`Tag "${t}" has very few books (used: ${counts[t].join(", ")})`);
     }
@@ -101,7 +101,7 @@ module.exports = function(grunt) {
     grunt.task.requires("shelve");
 
     var done = this.async();
-    validate(grunt.option("validate")).then(done);
+    validate(grunt.option("check")).then(done);
 
   });
 
