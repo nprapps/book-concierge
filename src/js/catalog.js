@@ -40,13 +40,12 @@ var renderCovers = function(books, year, tags) {
   bookCounter.innerHTML = visible.length;
   var elements = books.map(b => b.coverElement);
 
-  return flip(elements, function() {
+  flip(elements, function() {
     var visibleSet = new Set(visible);
     books.forEach(function(book) {
       book.coverElement.classList.toggle("hidden", !visibleSet.has(book));
     });
-    lazyload.reset();
-  })
+  });
 };
 
 var renderCatalog = async function(year, tags, view = "covers") {
