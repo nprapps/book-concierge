@@ -32,10 +32,11 @@ channel.on("hashchange", async function(params, previous) {
     document.body.setAttribute("data-mode", "book");
     return renderBook(params.year, params.book);
   } else {
-    document.body.setAttribute("data-mode", params.view || "covers")
+    document.body.setAttribute("data-mode", params.view || "covers");
+    document.body.setAttribute("data-year", params.year || "2019");
     setFilters(params);
-    var { years, tags, view } = params;
-    await renderCatalog(years, tags, view);
+    var { year, tags, view } = params;
+    await renderCatalog(year, tags, view);
     if (previous && previous.book) {
       var clicked = $.one(`.catalog-${view} [data-isbn="${previous.book}"]`);
       if (clicked) {

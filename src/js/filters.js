@@ -7,19 +7,19 @@ var viewToggle = $.one(".view-controls");
 
 var getFilters = function() {
   var years = $(".years input:checked", filterList).map(el => el.value * 1);
+  var year = years.pop();
   var tags = $(".tags input:checked", filterList).map(el => el.value);
   var view = $.one(".view-controls input:checked").value;
 
-  return { years, tags, view };
+  return { year, tags, view };
 };
 
 var setFilters = function(state) {
-  var { years, tags, view} = state;
+  var { year, tags, view} = state;
 
   // update form
-  if (years && years.length) {
-    years = new Set(years);
-    $(".filters .years input").forEach(input => input.checked = years.has(input.value * 1));
+  if (year) {
+    $(".filters .years input").forEach(input => input.checked = input.value * 1 == year);
   }
 
   tags = new Set(tags);

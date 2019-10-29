@@ -24,9 +24,9 @@ var renderBook = async function(year, isbn) {
 };
 
 // check a given book against the filters
-var checkVisibility = function(b, years, tags) {
+var checkVisibility = function(b, year, tags) {
   var visible = true;
-  if (years.length && years.indexOf(b.year) == -1) visible = false;
+  if (b.year != year) visible = false;
   if (tags.length) {
     var matches = tags.every(t => b.tags.has(t));
     if (!matches) visible = false;
@@ -34,8 +34,8 @@ var checkVisibility = function(b, years, tags) {
   return visible;
 };
 
-var renderCovers = function(books, years, tags) {
-  var visible = books.filter(b => checkVisibility(b, years, tags));
+var renderCovers = function(books, year, tags) {
+  var visible = books.filter(b => checkVisibility(b, year, tags));
 
   bookCounter.innerHTML = visible.length;
   var elements = books.map(b => b.coverElement);
@@ -49,8 +49,8 @@ var renderCovers = function(books, years, tags) {
   })
 };
 
-var renderCatalog = async function(years, tags, view = "covers") {
-  var books = await bookService.getCatalog(years);
+var renderCatalog = async function(year, tags, view = "covers") {
+  var books = await bookService.getCatalog([ year ]);
 
   // clear out placeholders
   $(".placeholder", coverContainer).forEach(e => e.parentElement.removeChild(e));
@@ -66,7 +66,7 @@ var renderCatalog = async function(years, tags, view = "covers") {
       book.coverElement = element;
       coverContainer.appendChild(book.coverElement);
     });
-    return renderCovers(books, years, tags);
+    return renderCovers(books, year, tags);
   } else {
     // list view just renders in bulk
     // we should probably change this at some point

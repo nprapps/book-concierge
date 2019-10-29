@@ -33,14 +33,18 @@
       border: 1px solid @accent;
       background: white;
       color: @accent;
+      border-color: var(--accent);
+      color: var(--accent);
 
       rect {
         fill: @accent;
+        fill: var(--accent);
       }
     }
 
     &:checked + label {
       background: @accent;
+      background: var(--accent);
       color: white;
 
       rect {
