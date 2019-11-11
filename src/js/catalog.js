@@ -18,7 +18,7 @@ var bookCounter = $.one(".book-count");
 var renderBook = async function(params, previous) {
   var book = await bookService.getDetail(params.year, params.book);
   var back = hash.serialize(previous.year ? previous : { year: params.year });
-  bookPanel.innerHTML = bookTemplate({ book, back });
+  bookPanel.innerHTML = bookTemplate({ book, back, hash });
   document.body.setAttribute("data-mode", "book");
   var h2 = $.one("h2", bookPanel);
   h2.focus();
@@ -71,7 +71,7 @@ var renderCatalog = async function(year, tags, view = "covers") {
     // list view just renders in bulk
     // we should probably change this at some point
     // but it makes sorting way easier
-    var filtered = books.filter(b => checkVisibility(b, years, tags));
+    var filtered = books.filter(b => checkVisibility(b, year, tags));
     filtered.sort((a, b) => a.title < b.title ? -1 : 1);
     bookCounter.innerHTML = filtered.length;
     listContainer.innerHTML = listTemplate({ books: filtered });

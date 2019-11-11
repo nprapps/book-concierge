@@ -1,11 +1,13 @@
 .book-detail {
   display: none;
+  padding: 20px;
 
   [data-mode="book"] & {
     display: block;
   }
 
   h2.title {
+    margin: 0;
 
     // programmatic focus only
     &:focus {
@@ -13,9 +15,56 @@
     }
   }
 
+  .author {
+    font-size: 16px;
+  }
+
   .cover {
     float: right;
     margin-left: 16px;
     margin-bottom: 16px;
+    max-width: 240px;
+  }
+
+  .tags {
+    margin: 16px 0;
+    padding: 0;
+    list-style-type: none;
+
+    li {
+      display: inline-block;
+      margin: 2px;
+
+      a {
+        display: inline-block;
+        background: var(--accent);
+        border-radius: 3px;
+        color: white;
+        padding: 2px 4px;
+        text-transform: uppercase;
+        text-decoration: none;
+
+        &:hover, &:focus {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  .get-this-book {
+    a {
+      padding: 4px;
+      border: 1px solid var(--accent);
+      text-decoration: none;
+      color: black;
+      border-radius: 2px;
+      margin-right: 8px;
+      box-shadow: 0 4px 8px fade(black, 10%);
+
+      &:hover, &:focus {
+        background: var(--accent);
+        color: white;
+      }
+    }
   }
 }

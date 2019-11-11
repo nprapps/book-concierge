@@ -6,6 +6,12 @@ var request = function(endpoint) {
   return cache[endpoint];
 };
 
+var processBook = function(book, year) {
+  book.shuffle = Math.random();
+  book.year = year;
+  book.tags = new Set(book.tags.split(/\s*\|\s*/g).map(t => t.trim()));
+}
+
 var indices = {};
 var details = {};
 var catalog = [];
@@ -19,11 +25,7 @@ var facade = {
 
       indices[year] = pending.then(function(index) {
         // process the data
-        index.forEach(function(book) {
-          book.shuffle = Math.random();
-          book.year = year;
-          book.tags = new Set(book.tags.split(/\s*\|\s*/g).map(t => t.trim()));
-        });
+        index.forEach(book => processBook(book, year));
         //randomize elements
         index = index.sort((a, b) => a.shuffle - b.shuffle);
         catalog = catalog.concat(index);
@@ -40,7 +42,16 @@ var facade = {
   },
 
   getDetail: async function(year, isbn) {
-    var lookup = await request(`${year}-detail.json`);
+    var lookup = details[year];
+    // if we came straight from a book, prep the index
+    request(`./${year}.json`);
+    if (!lookup) {
+      lookup = await request(`${year}-detail.json`);
+      for (var k in lookup) {
+        processBook(lookup[k], year);
+      }
+      details[year] = lookup;
+    }
     return lookup[isbn];
   }
 };

@@ -1,10 +1,33 @@
-<% console.log(data); %><a href="#<%= data.back %>" class="back">&laquo; back to list</a>
+<a href="#<%= data.back %>" class="back">&laquo; back to list</a>
 <img src="./assets/covers/<%= data.book.isbn %>.jpg" class="cover" alt="">
 <h2 class="title" tabindex="-1"><%= data.book.title %></h2>
 <h3 class="author"><%= data.book.author %></h3>
+<ul class="tags">
+  <% data.book.tags.forEach(function(t) { %>
+  <li> <a href="#<%= data.hash.serialize({ year: data.book.year, tags: t }) %>"><%= t %></a>
+  <% }); %>
+</ul>
 <div class="text">
   <%= data.book.text %>
   <div class="reviewer">
     &mdash; <%= data.book.reviewer %>
   </div>
+</div>
+<ul class="links">
+  <% data.book.links.forEach(function(link) { %>
+  <li> <a href="<%= link.url %>"><%= link.text %></a>
+  <% }); %>
+</ul>
+<div class="get-this-book">
+  <a href="http://www.worldcat.org/isbn/<%= data.book.isbn %>">Find at your library</a>
+  <a href="http://www.amazon.com/dp/<%= data.book.isbn %>?tag=npr-5-20">Amazon</a>
+  <% if (data.book.itunes) { %>
+  <a href="https://itunes.apple.com/us/book/id<%= data.book.itunes %>?at=11l79Y">iTunes</a>
+  <% } %>
+  <% if (data.book.isbn13) { %>
+  <a href="http://www.indiebound.org/book/<%= data.book.isbn13 %>?aff=NPR">Independent Booksellers</a>
+  <% } %>
+  <% if (data.book.goodreads) { %>
+  <a href="https://www.goodreads.com/book/show/<%= book.goodreads %>">Goodreads</a>
+  <% } %>
 </div>
