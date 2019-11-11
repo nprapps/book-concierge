@@ -14,7 +14,7 @@
 .setup-year(@year, @accent, @header) {
   body[data-year="@{year}"] {
     --accent: @accent;
-    --accent-spin: spin(@accent, 20%);
+    --accent-spin: darken(spin(@accent, 40%), 10%);
     --header: @header;
   };
 }
