@@ -35,7 +35,6 @@ var shelve = async function(grunt) {
         var remainder = (odds + evens) % 10;
         var check = remainder ? 10 - remainder : 0;
         book.isbn13 = isbn13 + check;
-        console.log(book.isbn, book.isbn13);
       }
 
       // join against links, reviewers
