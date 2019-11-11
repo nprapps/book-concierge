@@ -42,7 +42,10 @@ viewToggle.addEventListener("change", onChange);
 
 module.exports = { getFilters, setFilters }
 
-
+$.one(".clear-filters").addEventListener("click", function() {
+  $(".filters .tags input").forEach(input => input.checked = false);
+  onChange();
+});
 
 $.one(".fab-form .tags").addEventListener("change", function() {
   var select = event.target;

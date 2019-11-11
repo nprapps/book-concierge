@@ -28,8 +28,10 @@ The hash is always the source of truth.
 
 // hashes update filters (usually redundant) and render the main panel
 channel.on("hashchange", async function(params, previous) {
-  document.body.setAttribute("data-mode", params.view || "covers");
-  document.body.setAttribute("data-year", params.year || "2019");
+  var bodyData = document.body.dataset;
+  bodyData.mode = params.view || "covers";
+  bodyData.year = params.year || "2019";
+  bodyData.tags = params.tags ? params.tags.length : 0;
   if (params.book) {
     document.body.setAttribute("data-mode", "book");
     return renderBook(params, previous);

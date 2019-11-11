@@ -35,10 +35,16 @@ var checkVisibility = function(b, year, tags) {
   return visible;
 };
 
+// update book counts
+var updateCounts = function(count) {
+  bookCounter.innerHTML = count;
+  document.body.setAttribute("data-count", count);
+}
+
 var renderCovers = function(books, year, tags) {
   var visible = books.filter(b => checkVisibility(b, year, tags));
+  updateCounts(visible.length);
 
-  bookCounter.innerHTML = visible.length;
   var elements = books.map(b => b.coverElement);
 
   flip(elements, function() {
@@ -73,7 +79,7 @@ var renderCatalog = async function(year, tags, view = "covers") {
     // but it makes sorting way easier
     var filtered = books.filter(b => checkVisibility(b, year, tags));
     filtered.sort((a, b) => a.title < b.title ? -1 : 1);
-    bookCounter.innerHTML = filtered.length;
+    updateCounts(filtered.length);
     listContainer.innerHTML = listTemplate({ books: filtered });
     lazyload.reset();
   }

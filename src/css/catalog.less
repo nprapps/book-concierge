@@ -7,6 +7,19 @@
     display: none;
   }
 
+  .clear-filters {
+    display: inline;
+    border: 1px solid var(--accent);
+    text-transform: uppercase;
+    background: transparent;
+    padding: 4px;
+    cursor: pointer;
+
+    [data-tags="0"] & {
+      display: none;
+    }
+  }
+
   .section-header {
     display: flex;
     justify-content: space-between;
