@@ -9,7 +9,7 @@ var onScroll = function() {
   var lazyImages = $("[data-src]").filter(function(img) {
     var bounds = img.getBoundingClientRect();
     var buffer = window.innerHeight;
-    if (bounds.height == 0 || bounds.bottom < -buffer || bounds.top > buffer * 2) return true;
+    if (bounds.bottom < -buffer || bounds.top > buffer * 2) return true;
     // otherwise, lazy-load it
     // we do this in a separate step to prevent reflow/layout issues
     loading.push(img);
