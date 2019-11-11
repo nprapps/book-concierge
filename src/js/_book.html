@@ -1,9 +1,10 @@
-<img src="./assets/covers/<%= data.isbn%>.jpg" class="cover" alt="">
-<h2 class="title" tabindex="-1"><%= data.title %></h2>
-<h3 class="author"><%= data.author %></h3>
+<% console.log(data); %><a href="#<%= data.back %>" class="back">&laquo; back to list</a>
+<img src="./assets/covers/<%= data.book.isbn %>.jpg" class="cover" alt="">
+<h2 class="title" tabindex="-1"><%= data.book.title %></h2>
+<h3 class="author"><%= data.book.author %></h3>
 <div class="text">
-  <%= data.text %>
+  <%= data.book.text %>
   <div class="reviewer">
-    &mdash; <%= data.reviewer %>
+    &mdash; <%= data.book.reviewer %>
   </div>
 </div>

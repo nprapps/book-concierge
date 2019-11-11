@@ -15,9 +15,10 @@ var bookPanel = $.one(".book-detail");
 var bookCounter = $.one(".book-count");
 
 // single book rendering
-var renderBook = async function(year, isbn) {
-  var book = await bookService.getDetail(year, isbn);
-  bookPanel.innerHTML = bookTemplate(book);
+var renderBook = async function(params, previous) {
+  var book = await bookService.getDetail(params.year, params.book);
+  var back = hash.serialize(previous.year ? previous : { year: params.year });
+  bookPanel.innerHTML = bookTemplate({ book, back });
   document.body.setAttribute("data-mode", "book");
   var h2 = $.one("h2", bookPanel);
   h2.focus();
