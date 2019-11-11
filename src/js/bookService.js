@@ -20,10 +20,12 @@ var facade = {
   getYear: function(year) {
     if (!indices[year]) {
       var pending = request(`./${year}.json`);
+      document.body.classList.add("loading");
       // preload the detail for this year
       request(`./${year}-detail.json`);
 
       indices[year] = pending.then(function(index) {
+        document.body.classList.remove("loading");
         // process the data
         index.forEach(book => processBook(book, year));
         //randomize elements

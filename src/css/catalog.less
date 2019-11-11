@@ -7,6 +7,13 @@
     display: none;
   }
 
+  [data-count="0"] &:after {
+    content: "No results found";
+    text-align: center;
+    padding: 40px;
+    display: block;
+  }
+
   .clear-filters {
     display: inline;
     border: 1px solid var(--accent);
