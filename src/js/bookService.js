@@ -22,7 +22,7 @@ var facade = {
         index.forEach(function(book) {
           book.shuffle = Math.random();
           book.year = year;
-          book.tags = new Set(book.tags.split(/\s?\|\s?/g).map(t => t.trim()));
+          book.tags = new Set(book.tags.split(/\s*\|\s*/g).map(t => t.trim()));
         });
         //randomize elements
         index = index.sort((a, b) => a.shuffle - b.shuffle);
