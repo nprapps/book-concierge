@@ -32,7 +32,6 @@ var cast = function(str) {
   if (str.match(/^-?(0?\.|[1-9])[\d\.]*$/) || str == "0") {
     var n = Number(str);
     if (isNaN(n)) return str;
-    if (n > Number.MAX_SAFE_INTEGER) return str;
     return n;
   }
   if (str.toLowerCase() == "true" || str.toLowerCase() == "false") {
@@ -72,7 +71,7 @@ module.exports = function(grunt) {
           majorDimension: "ROWS"
         });
         var { values } = response.data;
-        var header = values.shift().filter(t => t[0] != "_");
+        var header = values.shift();
         var isKeyed = header.indexOf("key") > -1;
         var isValued = header.indexOf("value") > -1;
         var out = isKeyed ? {} : [];
@@ -82,7 +81,6 @@ module.exports = function(grunt) {
           var obj = {};
           row.forEach(function(value, i) {
             var key = header[i];
-            if (!key) return;
             obj[key] = cast(value);
           });
           if (isKeyed) {

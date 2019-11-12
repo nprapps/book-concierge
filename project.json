@@ -20,7 +20,12 @@
   "url": "https://apps.npr.org/book-concierge",
   "image": "assets/logo.png",
   "sheets": ["1su06H8CvfSHtRkoMw4TDSJI51ND8mSqoxJgC_2g3pXw"],
-  "docs": [],
+  "docs": {},
+  "analytics": {
+    "topicIDs": [],
+    "primaryTopic": "",
+    "secondaryTopics": []
+  },
   "embedded": false,
   "production": false
 }

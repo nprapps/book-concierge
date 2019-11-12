@@ -17,7 +17,7 @@ With those installed, you can then set the project up using your terminal:
 #. Pull the code - ``git clone git@github.com:nprapps/book-concierge``
 #. Enter the project folder - ``cd book-concierge``
 #. Install dependencies from NPM - ``npm install``
-#. Pull data and covers: ``grunt sheets content covers``
+#. Pull data and covers: ``grunt sheets sync``
 #. Start the server - ``grunt``
 
 Running tasks
