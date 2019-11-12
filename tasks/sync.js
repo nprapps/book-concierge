@@ -64,12 +64,10 @@ module.exports = function(grunt) {
           callback(null, list)
         }
       });
-    }
+    };
 
     async.waterfall([
-      function(next) {
-        getRemote(next);
-      },
+      getRemote,
       function(remote, next) {
         // compare files
         var up = [];
