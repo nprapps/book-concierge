@@ -32,10 +32,20 @@ Common tasks that you may want to run include:
 * ``google-auth`` - authenticates your account against Google for private files
 * ``static`` - rebuilds files but doesn't start the dev server
 * ``cron`` - runs builds and deploys on a timer (see ``tasks/cron.js`` for details)
+* ``shelve`` - puts books into a common data structure, and builds out .json files in /build for AJAX
 * ``publish`` - uploads files to the staging S3 bucket
 
   * ``publish:live`` uploads to production
   * ``publish:simulated`` does a dry run of uploaded files and their compressed sizes
+
+* ``validate`` - runs various integrity tests on the data. You can specify specific tests with the ``--check`` argument:
+
+  * ``tags`` - counts tags that have relatively few matches (i.e., are probably typos)
+  * ``badCovers`` - finds cover images that are probably "NO IMAGE AVAILABLE"
+  * ``missingCovers`` - identifies books that have no cover image at all
+  * ``reviewers`` - checks that all reviewers have a book on the shelf somewhere
+  * ``reviewed`` - checks that all books have a matching reviewer
+  * ``links`` - identifies orphan links (no book on the shelf matches its metadata)
 
 Troubleshooting
 ---------------
