@@ -106,9 +106,10 @@ var scrape = async function(books, sources) {
   });
 
   var idCSV = await csvStringify(ids, { header: true });
-  await fs.writeFile("data/scrapedIDs.generated.csv", idCSV);
+  await fs.writeFile("data/ids.generated.csv", idCSV);
 
   // output links and excerpts from seamus
+  
 };
 
 module.exports = function(grunt) {
