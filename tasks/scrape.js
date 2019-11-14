@@ -71,11 +71,36 @@ var itunes = async function(books) {
 };
 
 // different kind of scraper--finds links and excerpts
-var seamus = async function(books, csv) {
-
+var seamus = async function(books) {
+  var endpoint = "http://www.npr.org/";
+  var source = "NPR.org";
+  var output = [];
+  for (var book of books) {
+    var { title, seamus, id, year } = book;
+    if (!seamus) continue;
+    var url = endpoint + seamus;
+    var response = await axios.get(url);
+    var $ = cheerio.load(response.data);
+    var links = $(".storylist article.item .title a");
+    links.each(function() {
+      var link = this;
+      var href = link.attribs.href;
+      var text = $(link).text();
+      if (text.match(/concierge/i) || href.match(/apps\.npr\.org/i)) return;
+      output.push({
+        year,
+        id,
+        book: title,
+        source,
+        text,
+        url: href
+      });
+    });
+  }
+  return output;
 };
 
-var scrape = async function(books, sources) {
+var scrape = async function(books, year, sources) {
   // load a CSV containing the existing scraped data
   // call each scraper, passing in the set of books
   // call the Seamus scraper to get its particular metadata
@@ -106,10 +131,13 @@ var scrape = async function(books, sources) {
   });
 
   var idCSV = await csvStringify(ids, { header: true });
-  await fs.writeFile("data/ids.generated.csv", idCSV);
+  await fs.writeFile(`data/ids-${year}.generated.csv`, idCSV);
 
   // output links and excerpts from seamus
-  
+  if (results.seamus) {
+    var linksCSV = await csvStringify(results.seamus, { header: true });
+    await fs.writeFile(`data/links-${year}.generated.csv`, linksCSV);
+  }
 };
 
 module.exports = function(grunt) {
@@ -131,7 +159,7 @@ module.exports = function(grunt) {
 
     var books = grunt.data.shelf.filter(b => b.year == year);
 
-    scrape(books.slice(0, 10), sources).then(done);
+    scrape(books, year, sources).then(done);
 
   })
 }
