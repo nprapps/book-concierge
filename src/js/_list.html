@@ -1,7 +1,7 @@
 <ul>
   <% data.books.forEach(function(book) { %>
   <li data-isbn="<%= book.isbn %>">
-    <a href="#year=<%= book.year %>&book=<%= book.isbn %>">
+    <a href="#year=<%= book.year %>&book=<%= book.id %>">
       <div class="cover">
         <img
           alt=""

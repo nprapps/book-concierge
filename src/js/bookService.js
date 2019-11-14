@@ -43,7 +43,7 @@ var facade = {
     return catalog;
   },
 
-  getDetail: async function(year, isbn) {
+  getDetail: async function(year, id) {
     var lookup = details[year];
     // if we came straight from a book, prep the index
     request(`./${year}.json`);
@@ -54,7 +54,7 @@ var facade = {
       }
       details[year] = lookup;
     }
-    return lookup[isbn];
+    return lookup[id];
   }
 };
 

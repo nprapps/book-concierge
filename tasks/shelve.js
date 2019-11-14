@@ -48,7 +48,8 @@ var shelve = async function(grunt) {
         author: book.author,
         dimensions: {},
         isbn: book.isbn,
-        tags: book.tags
+        tags: book.tags,
+        id: book.id
       };
       try {
         var size = await imageSize(`src/assets/covers/${book.isbn}.jpg`);
@@ -59,7 +60,7 @@ var shelve = async function(grunt) {
       } catch (_) { }
       shelf.push(book);
       index.push(indexEntry);
-      lookup[book.isbn] = book;
+      lookup[book.id] = book;
     };
     grunt.file.write(`build/${year}.json`, JSON.stringify(index, null, 2));
     grunt.file.write(`build/${year}-detail.json`, JSON.stringify(lookup, null, 2));
