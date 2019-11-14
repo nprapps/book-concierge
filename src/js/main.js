@@ -32,11 +32,11 @@ channel.on("hashchange", async function(params, previous) {
   bodyData.mode = params.view || "covers";
   bodyData.year = params.year || "2019";
   bodyData.tags = params.tags ? params.tags.length : 0;
+  setFilters(params);
   if (params.book) {
     document.body.setAttribute("data-mode", "book");
     return renderBook(params, previous);
   } else {
-    setFilters(params);
     var { year, tags, view } = params;
     view = view || "covers";
     await renderCatalog(year, tags, view);

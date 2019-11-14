@@ -24,8 +24,7 @@ module.exports = function(grunt) {
     // count tag usage and note items with only a few items
     var counts = {};
     for (var book of grunt.data.shelf) {
-      var tags = book.tags.split(/\s*\|\s*/).map(t => t.trim());
-      for (var t of tags) {
+      for (var t of book.tags) {
         if (!counts[t]) counts[t] = [];
         counts[t].push(book.year);
       }

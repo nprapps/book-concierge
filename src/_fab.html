@@ -11,7 +11,7 @@
         // initialize tags
         var tags = new Set();
         shelf.forEach(function(item) {
-          item.tags.split(/\|\s/).forEach(t => tags.add(t.trim()));
+          item.tags.forEach(t => tags.add(t));
         });
         tags.forEach(function(tag) { %>
       <option value="<%= tag %>"><%= tag.toUpperCase() %></option>

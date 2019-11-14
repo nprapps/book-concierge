@@ -2,7 +2,11 @@ var { promisify } = require("util");
 var imageSize = promisify(require("image-size"));
 
 var normalizeTags = function(tags) {
-  return tags.toLowerCase().replace(/['’]/g, "’");
+  return tags
+    .toLowerCase()
+    .replace(/['’]/g, "’")
+    .split(/\s*\|\s*/)
+    .map(t => t.trim());
 };
 
 var shelve = async function(grunt) {

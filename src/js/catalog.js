@@ -42,6 +42,7 @@ var updateCounts = function(count) {
 }
 
 var renderCovers = function(books, year, tags) {
+  $(".book-container").forEach(el => el.classList.add("hidden"));
   var visible = books.filter(b => checkVisibility(b, year, tags));
   updateCounts(visible.length);
 
@@ -56,7 +57,7 @@ var renderCovers = function(books, year, tags) {
 };
 
 var renderCatalog = async function(year, tags, view = "covers") {
-  var books = await bookService.getCatalog([ year ]);
+  var books = await bookService.getYear(year);
 
   // clear out placeholders
   $(".placeholder", coverContainer).forEach(e => e.parentElement.removeChild(e));
@@ -64,7 +65,7 @@ var renderCatalog = async function(year, tags, view = "covers") {
   // render lazily
   if (view == "covers") {
     // add new books (if any)
-    books.filter(b => !b.coverElement).forEach(function(book) {
+    books.filter(b => !b.coverElement).sort((a, b) => a.shuffle - b.shuffle).forEach(function(book) {
       var element = document.createElement("li");
       element.dataset.isbn = book.isbn;
       element.className = "book-container";

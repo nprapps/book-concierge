@@ -10,7 +10,7 @@
     // initialize tags
     var tags = new Set();
     shelf.forEach(function(item) {
-      item.tags.split(/\s*\|\s*/).forEach(t => tags.add(t.trim()));
+      item.tags.forEach(t => tags.add(t));
     });
   %>
   <fieldset class="tags" aria-label="Select tags">
