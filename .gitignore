@@ -5,4 +5,5 @@ auth.json
 .DS_Store
 npm-debug.log
 data/*.json
+data/*.csv
 src/assets/covers

@@ -8,8 +8,11 @@ var normalizeTags = function(tags) {
 var shelve = async function(grunt) {
   var shelf = [];
 
+  var oneYear = grunt.option("year");
+
   for (var row of grunt.data.json.years) {
     var { year, sheet } = row;
+    if (oneYear && year != oneYear) continue;
     console.log("Shelving " + year);
     var collection = grunt.data.json[sheet];
     var index = [];
