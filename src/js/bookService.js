@@ -8,6 +8,10 @@ var request = function(endpoint) {
           throw `HTTP ${response.status}`;
         }
         return response.json()
+      })
+      .catch(function() {
+        delete cache[endpoint];
+        thow `Failed fetch for ${endpoint}`;
       });
   }
   return cache[endpoint];
