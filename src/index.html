@@ -11,14 +11,15 @@
         <img src="./assets/logo-outline.svg" alt="NPR">
         books
       </a>
-      <h1>NPR's Book Concierge</h1>
-      <h2>Our Guide to Great Reads</h2>
+      <h1><%= json.copy.title %></h1>
+      <h2><%= json.copy.subtitle %></h2>
       <p class="bylines">
-        Bylines go here
+        <%= json.copy.bylines %>
       </p>
       <p class="pubdate">
-        Published on Nov. 15, 2019
+        Published on <%= json.copy.updated %>
       </p>
+
     </header>
 
     <main class="concierge">

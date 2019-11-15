@@ -1,6 +1,6 @@
 .filters {
   flex: 0 0 220px;
-  padding: 4px;
+  padding: 0 0 4px;
 
   @media @mobile {
     display: none;
@@ -43,13 +43,14 @@
       // background: var(--accent);
       // color: #333;
 
-      &::after {
-        content: "×";
-        font-size: 150%;
-        position: absolute;
-        right: 4px;
-        top: 0;
-        line-height: 1;
+      &::before {
+        content: "⯈";
+        // font-size: 150%;
+        // position: absolute;
+        // right: 4px;
+        // top: 0;
+        // line-height: 1;
+        margin-right: 4px;
       }
     }
   }

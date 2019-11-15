@@ -11,7 +11,7 @@ var off = function(e, f) {
 };
 
 var send = function(e, ...args) {
-  console.log(e, ...args);
+  // console.log(e, ...args);
   if (!events[e]) return;
   events[e].forEach(f => f(...args));
 };
