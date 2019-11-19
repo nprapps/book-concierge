@@ -29,10 +29,15 @@ var goodreads = async function(books) {
     for (var k in params) {
       url.searchParams.set(k, params[k]);
     }
-    var response = await axios.get(url.toString());
-    var $ = cheerio.load(response.data);
-    var id = $("best_book id").text();
-    output[book.id] = id;
+    console.log(`Searching for "${book.title}" (${book.isbn}) on Goodreads...`);
+    try {
+      var response = await axios.get(url.toString());
+      var $ = cheerio.load(response.data);
+      var id = $("best_book id").text();
+      output[book.id] = id;
+    } catch (err) {
+      console.log(`Unable to find ${book.title}.`, err.message);
+    }
   }
   return output;
 };
@@ -52,7 +57,13 @@ var itunes = async function(books) {
     for (var k in params) {
       url.searchParams.set(k, params[k]);
     }
-    var response = await axios.get(url.toString());
+    console.log(`Searching for "${params.term}" on iTunes...`);
+    try {
+      var response = await axios.get(url.toString());
+    } catch (err) {
+      console.log(`Request to API failed: `, err.message);
+      continue;
+    }
     var idMatcher = /id(\d+)/;
     if (!response.data.resultCount) {
       console.log(`No iTunes results found for "${params.term}"`);
@@ -77,25 +88,30 @@ var seamus = async function(books) {
   var output = [];
   for (var book of books) {
     var { title, seamus, id, year } = book;
+    console.log(`Requesting "${title}" (${seamus}) from Seamus...`);
     if (!seamus) continue;
     var url = endpoint + seamus;
-    var response = await axios.get(url);
-    var $ = cheerio.load(response.data);
-    var links = $(".storylist article.item .title a");
-    links.each(function() {
-      var link = this;
-      var href = link.attribs.href;
-      var text = $(link).text();
-      if (text.match(/concierge/i) || href.match(/apps\.npr\.org/i)) return;
-      output.push({
-        year,
-        id,
-        book: title,
-        source,
-        text,
-        url: href
+    try {
+      var response = await axios.get(url);
+      var $ = cheerio.load(response.data);
+      var links = $(".storylist article.item .title a");
+      links.each(function() {
+        var link = this;
+        var href = link.attribs.href;
+        var text = $(link).text();
+        if (text.match(/concierge/i) || href.match(/apps\.npr\.org/i)) return;
+        output.push({
+          year,
+          id,
+          book: title,
+          source,
+          text,
+          url: href
+        });
       });
-    });
+    } catch (err) {
+      console.log(`Request for ${seamus} failed.`)
+    }
   }
   return output;
 };

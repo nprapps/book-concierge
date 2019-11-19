@@ -43,10 +43,10 @@ module.exports = function(grunt) {
     for (var f of coverFiles) {
       var file = `src/assets/covers/${f}`
       var stat = await asyncFS.stat(file);
-      if (stat.size < 5000) {
-        var digest = await checksum(file);
+      if (stat.size < 4000) {
+        // var digest = await checksum(file);
         passed = false;
-        console.log(`Cover ${f} is probably broken (MD5: ${digest})`);
+        console.log(`Cover ${f} is probably broken`);
       }
     }
     return passed;
