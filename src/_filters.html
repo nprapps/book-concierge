@@ -14,7 +14,7 @@
     // initialize tags
     var tags = new Set();
     shelf.forEach(function(item) {
-      item.tags.forEach(t => tags.add(t));
+      item.tags.filter(t => t.trim()).forEach(t => tags.add(t));
     });
   %>
   <fieldset class="tags" aria-label="Select tags">
