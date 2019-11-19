@@ -1,8 +1,10 @@
+@gap: 4px;
+
 
 .catalog-covers {
   display: none;
   columns: 4;
-  column-gap: 1px;
+  column-gap: @gap;
   line-height: 1;
   margin: 0;
   padding: 0;
@@ -48,6 +50,7 @@
     animation-delay: .4s;
     animation-fill-mode: both;
     will-change: transform;
+    margin-bottom: @gap;
 
     .cover-link {
       display: block;
@@ -123,7 +126,8 @@
     color: black;
     background: fade(white, 80%);
     padding: 12px;
-    border: 6px solid teal;
+    border: 6px solid @accent;
+    border: 6px solid var(--accent);
     .gotham();
     font-size: 14px;
     transition: opacity .2s linear;
