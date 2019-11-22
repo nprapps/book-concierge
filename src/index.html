@@ -90,6 +90,11 @@
       </a>
     </footer>
 
+    <script>
+window.conciergeData = {
+  reviewers: <%= JSON.stringify(json.reviewers) %>
+};
+    </script>
     <script src="app.js" async></script>
     <%= t.include("partials/_analytics.html") %>
   </body>

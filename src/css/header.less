@@ -74,17 +74,19 @@ header.hero {
         cursor: pointer;
         text-transform: uppercase;
         color: #CCC;
+        border-bottom: 4px solid transparent;
       }
 
       &:hover + label,
       &:focus + label {
-        border-bottom: 4px solid white;
+        border-color: currentColor;
         z-index: 999;
       }
 
       &:checked + label {
         font-weight: bold;
         color: white;
+        border-color: white;
       }
     }
   }

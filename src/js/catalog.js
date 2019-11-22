@@ -18,7 +18,8 @@ var bookCounter = $.one(".book-count");
 var renderBook = async function(params, previous) {
   var book = await bookService.getDetail(params.year, params.book);
   var back = hash.serialize(previous.year ? previous : { year: params.year });
-  bookPanel.innerHTML = bookTemplate({ book, back, hash });
+  var reviewer = window.conciergeData.reviewers[book.reviewer] || {};
+  bookPanel.innerHTML = bookTemplate({ book, back, hash, reviewer });
   document.body.setAttribute("data-mode", "book");
   var h2 = $.one("h2", bookPanel);
   h2.focus();
