@@ -2,11 +2,12 @@ var $ = require("./lib/qsa");
 
 var channel = require("./pubsub");
 
+var yearFilters = $.one("fieldset.years");
 var filterList = $.one("form.filters");
 var viewToggle = $.one(".view-controls");
 
 var getFilters = function() {
-  var years = $(".years input:checked", filterList).map(el => el.value * 1);
+  var years = $(".years input:checked").map(el => el.value * 1);
   var year = years.pop();
   var tags = $(".tags input:checked", filterList).map(el => el.value);
   var view = $.one(".view-controls input:checked").value;
@@ -37,6 +38,7 @@ var onChange = function() {
   channel.send("filterchange", state);
 };
 
+yearFilters.addEventListener("change", onChange);
 filterList.addEventListener("change", onChange);
 viewToggle.addEventListener("change", onChange);
 

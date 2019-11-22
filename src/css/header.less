@@ -42,4 +42,34 @@ header.hero {
   h2 {
     font-size: 36px;
   }
+
+  // years in the header
+  fieldset {
+    border: none;
+    padding: 0;
+    input[type="checkbox"], input[type="radio"] {
+      .sr-only;
+
+      & + label {
+        color: white;
+        margin-right: 16px;
+        .gotham();
+        position: relative;
+        cursor: pointer;
+        text-transform: uppercase;
+        color: #CCC;
+      }
+
+      &:hover + label,
+      &:focus + label {
+        border-bottom: 4px solid white;
+        z-index: 999;
+      }
+
+      &:checked + label {
+        font-weight: bold;
+        color: white;
+      }
+    }
+  }
 }
