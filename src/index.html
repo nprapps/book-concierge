@@ -19,7 +19,11 @@
       <p class="pubdate">
         Published on <%= json.copy.updated %>
       </p>
-      
+
+      <p class="about-link">
+        <a href="about.html">About</a>
+      </p>
+
       <!-- <h3>Filters</h3> -->
       <fieldset class="years" aria-label="Select a year">
         <% grunt.data.json.years.forEach(function(y) { %>
@@ -37,7 +41,7 @@
       <section class="catalog" aria-label="Catalog">
 
         <div class="section-header">
-          <h3>
+          <h3 aria-live="polite">
             Selected books (<span class="book-count"></span>)
             <button class="clear-filters">Clear filters</button>
           </h3>

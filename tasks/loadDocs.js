@@ -22,10 +22,10 @@ module.exports = function(grunt) {
     var docs = google.docs({ auth, version: "v1" }).documents;
 
     var formatters = {
+      // underline: text => `_${text}_`,
       link: (text, style) => `[${text}](${style.link.url})`,
       bold: text => `**${text}**`,
-      italic: text => `*${text}*`,
-      underline: text => `_${text}_`
+      italic: text => `*${text}*`
     };
 
     /*

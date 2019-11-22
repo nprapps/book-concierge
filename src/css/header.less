@@ -1,6 +1,6 @@
 header.hero {
-  background: @accent;
-  background: var(--header);
+  background: #333;
+  background: var(--header, #333);
   background-image: url(./assets/books-header.png);
   transition: background .3s linear;
   padding: 60px 40px;
@@ -41,6 +41,22 @@ header.hero {
 
   h2 {
     font-size: 36px;
+  }
+
+  .about-link a {
+    color: black;
+    display: inline-block;
+    padding: 4px 12px;
+    background: white;
+    text-decoration: none;
+    float: right;
+    text-transform: uppercase;
+    opacity: .8;
+
+    &:focus, &:hover {
+      color: black;
+      opacity: 1;
+    }
   }
 
   // years in the header

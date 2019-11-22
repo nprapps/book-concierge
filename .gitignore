@@ -6,4 +6,5 @@ auth.json
 npm-debug.log
 data/*.json
 data/*.csv
+data/*.txt
 src/assets/covers

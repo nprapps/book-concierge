@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <%= t.include("partials/_head.html", grunt.data.json) %>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body data-mode="covers">
+
+    <header class="hero">
+      <a href="https://npr.org/books" class="books-home">
+        <img src="./assets/logo-outline.svg" alt="NPR">
+        books
+      </a>
+      <h1><%= json.copy.title %></h1>
+      <h2><%= json.copy.subtitle %></h2>
+
+    </header>
+
+    <main class="about">
+      <%= t.renderMarkdown(archieml.about.content) %>
+    </main>
+
+    <footer>
+      <a href="https://npr.org">
+        <img src="./assets/logo_lines.png" alt="NPR" class="logo">
+      </a>
+    </footer>
+
+    <script src="app.js" async></script>
+    <%= t.include("partials/_analytics.html") %>
+  </body>
+</html>
