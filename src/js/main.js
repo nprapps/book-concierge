@@ -41,7 +41,7 @@ channel.on("hashchange", async function(params, previous) {
     view = view || "covers";
     await renderCatalog(year, tags, view);
     if (previous && previous.book) {
-      var clicked = $.one(`.catalog-${view} [data-isbn="${previous.book}"] a`);
+      var clicked = $.one(`.catalog-${view} [data-id="${previous.book}"] a`);
       if (clicked) {
         // give it a frame to do layout
         requestAnimationFrame(() => {

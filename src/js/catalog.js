@@ -68,7 +68,7 @@ var renderCatalog = async function(year, tags, view = "covers") {
     // add new books (if any)
     books.filter(b => !b.coverElement).sort((a, b) => a.shuffle - b.shuffle).forEach(function(book) {
       var element = document.createElement("li");
-      element.dataset.isbn = book.isbn;
+      element.dataset.id = book.id;
       element.className = "book-container";
       element.innerHTML = coverTemplate({ book });
       book.coverElement = element;
