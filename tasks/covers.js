@@ -45,7 +45,7 @@ module.exports = function(grunt) {
             return;
           }
           var src = tag[0].attribs["data-original"] || tag[0].attribs.src;
-          src = src.replace(/-s\d+.*\.jpg/, ".jpg");
+          src = src.replace(/-s\d+.*\.jpg/, "-s400-c70.jpg");
           var image = await fetch(src);
           contents = await image.buffer();
         }
