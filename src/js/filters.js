@@ -54,11 +54,13 @@ yearFilters.addEventListener("change", function(e) {
   track("year-selected", target.value);
   onChange();
 });
+
 filterList.addEventListener("change", function(e) {
   var target = e.target;
   track("tag-selected", target.value);
   onChange();
 });
+
 viewToggle.addEventListener("change", function(e) {
   var target = e.target;
   track("view-mode", target.value);

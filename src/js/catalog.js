@@ -4,6 +4,7 @@ var dot = require("./lib/dot");
 var flip = require("./lib/flip");
 var hash = require("./hash");
 var lazyload = require("./lazyLoading");
+var track = require("./lib/tracking");
 
 var bookTemplate = dot.compile(require("./_book.html"));
 var listTemplate = dot.compile(require("./_list.html"));
@@ -17,6 +18,7 @@ var bookCounter = $.one(".book-count");
 // single book rendering
 var renderBook = async function(params, previous) {
   var book = await bookService.getDetail(params.year, params.book);
+  track("book-selected", `${book.title} by ${book.author}`);
   var back = hash.serialize(previous.year ? previous : { year: params.year });
   var reviewer = window.conciergeData.reviewers[book.reviewer] || {};
   bookPanel.innerHTML = bookTemplate({ book, back, hash, reviewer });
