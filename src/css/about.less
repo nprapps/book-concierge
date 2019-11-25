@@ -1,5 +1,36 @@
 main.about {
-  padding: 16px;
-  max-width: 600px;
+  padding: 33px 20px;
+  max-width: 650px;
   margin: auto;
+
+  h2 {
+    .gotham();
+    color: #454545;
+    line-height: 1.5;
+    margin: 0 0 .5em 0;
+  }
+
+  p + h2 { margin-top: 1.5em; }
+
+  p, li {
+    color: #333;
+    font: 17px/1.7 @serif;
+    margin: 0 0 1em 0;
+  }
+
+  .credits {
+    border-top: 1px solid #999;
+    padding-top: 3em;
+    margin-top: 3em;
+
+    ul {
+      margin: 1.5em 0;
+      padding: 0;
+      list-style-type: none;
+
+      li { margin: 0; }
+
+      li + li { margin-top: .3em; }
+    }
+  }
 }
