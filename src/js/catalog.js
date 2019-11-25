@@ -28,9 +28,8 @@ var renderBook = async function(params, previous) {
 };
 
 // check a given book against the filters
-var checkVisibility = function(b, year, tags) {
+var checkVisibility = function(b, tags) {
   var visible = true;
-  if (b.year != year) visible = false;
   if (tags.length) {
     var matches = tags.every(t => b.tags.has(t));
     if (!matches) visible = false;
@@ -42,13 +41,27 @@ var checkVisibility = function(b, year, tags) {
 var updateCounts = function(count) {
   bookCounter.innerHTML = count;
   document.body.setAttribute("data-count", count);
-}
+};
+
+var createCover = function(book) {
+  var element = document.createElement("li");
+  element.dataset.id = book.id;
+  element.dataset.year = book.year;
+  element.className = "book-container";
+  element.innerHTML = coverTemplate({ book });
+  book.coverElement = element;
+};
 
 var renderCovers = function(books, year, tags) {
-  // hide other years
-  $(`.book-container`).filter(el => el.dataset.year != year).forEach(el => el.classList.add("hidden"));
+  // clear out placeholders
+  $(".placeholder", coverContainer).forEach(e => e.parentElement.removeChild(e));
 
-  var visible = books.filter(b => checkVisibility(b, year, tags));
+  // ensure all books are in the DOM
+  books.forEach(function(b) {
+    if (!b.coverElement) createCover(b);
+    if (!b.coverElement.parentElement) coverContainer.appendChild(b.coverElement);
+  });
+  var visible = books.filter(b => checkVisibility(b, tags));
 
   updateCounts(visible.length);
 
@@ -62,36 +75,15 @@ var renderCovers = function(books, year, tags) {
   });
 };
 
-var renderCatalog = async function(year, tags, view = "covers") {
-  var books = await bookService.getYear(year);
-
-  // clear out placeholders
-  $(".placeholder", coverContainer).forEach(e => e.parentElement.removeChild(e));
-
-  // render lazily
-  if (view == "covers") {
-    // add new books (if any)
-    books.filter(b => !b.coverElement).sort((a, b) => a.shuffle - b.shuffle).forEach(function(book) {
-      var element = document.createElement("li");
-      element.dataset.id = book.id;
-      element.dataset.year = book.year;
-      element.className = "book-container";
-      element.innerHTML = coverTemplate({ book });
-      book.coverElement = element;
-      coverContainer.appendChild(book.coverElement);
-    });
-    return renderCovers(books, year, tags);
-  } else {
-    // list view just renders in bulk
-    // we should probably change this at some point
-    // but it makes sorting way easier
-    var filtered = books.filter(b => checkVisibility(b, year, tags));
-    filtered.sort((a, b) => a.sortingTitle < b.sortingTitle ? -1 : 1);
-    updateCounts(filtered.length);
-    listContainer.innerHTML = listTemplate({ books: filtered });
-    lazyload.reset();
-  }
-
+var renderList = function(books, year, tags) {
+  // list view just renders in bulk
+  // we should probably change this at some point
+  // but it makes sorting way easier
+  var filtered = books.filter(b => checkVisibility(b, tags));
+  filtered.sort((a, b) => a.sortingTitle < b.sortingTitle ? -1 : 1);
+  updateCounts(filtered.length);
+  listContainer.innerHTML = listTemplate({ books: filtered });
+  lazyload.reset();
 };
 
-module.exports = { renderCatalog, renderBook };
+module.exports = { renderBook, renderList, renderCovers };

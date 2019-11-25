@@ -4,7 +4,7 @@ var track = require("./lib/tracking");
 var channel = require("./pubsub");
 
 var yearFilters = $.one("fieldset.years");
-var filterList = $.one("form.filters");
+var tagFilters = $.one("fieldset.tags");
 var viewToggle = $.one(".view-controls");
 var fabSelect = $.one(".fab-form .tags");
 var fabCount = $.one(".fab-count");
@@ -13,7 +13,7 @@ var fabClear = $.one(".fab-button.clear");
 var getFilters = function() {
   var years = $(".years input:checked").map(el => el.value * 1);
   var year = years.pop();
-  var tags = $(".tags input:checked", filterList).map(el => el.value);
+  var tags = $(".tags input:checked", tagFilters).map(el => el.value);
   var view = $.one(".view-controls input:checked").value;
 
   return { year, tags, view };
@@ -44,6 +44,17 @@ var clearFilters = function() {
   onChange();
 };
 
+var enableFilters = function(enable) {
+  [yearFilters, tagFilters].forEach(function(fieldset) {
+    var inputs = $("input", fieldset);
+    if (enable) {
+      inputs.forEach(i => i.disabled = false);
+    } else {
+      inputs.filter(i => !i.checked).forEach(i => i.disabled = true);
+    }
+  });
+}
+
 var onChange = function(e) {
   var state = getFilters();
   channel.send("filterchange", state);
@@ -55,7 +66,7 @@ yearFilters.addEventListener("change", function(e) {
   onChange();
 });
 
-filterList.addEventListener("change", function(e) {
+tagFilters.addEventListener("change", function(e) {
   var target = e.target;
   track("tag-selected", target.value);
   onChange();
@@ -66,8 +77,6 @@ viewToggle.addEventListener("change", function(e) {
   track("view-mode", target.value);
   onChange();
 });
-
-module.exports = { getFilters, setFilters }
 
 $.one(".clear-filters").addEventListener("click", clearFilters);
 fabClear.addEventListener("click", clearFilters);
@@ -83,5 +92,7 @@ fabSelect.addEventListener("change", function() {
     input.checked = values.has(input.value);
   });
   var change = new Event("change");
-  filterList.dispatchEvent(change);
+  tagFilters.dispatchEvent(change);
 });
+
+module.exports = { getFilters, setFilters, enableFilters };

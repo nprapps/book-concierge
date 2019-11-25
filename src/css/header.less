@@ -63,6 +63,11 @@ header.hero {
   fieldset {
     border: none;
     padding: 0;
+
+    .loading & {
+      pointer-events: none;
+    }
+
     input[type="checkbox"], input[type="radio"] {
       .sr-only;
 
