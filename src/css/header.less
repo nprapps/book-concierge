@@ -3,11 +3,11 @@ header.hero {
   background: var(--header, #333);
   background-image: url(./assets/books-header.png);
   transition: background .3s linear;
-  padding: 60px 40px;
+  padding: 25px 15px 0 15px;
   color: white;
 
-  @media @mobile {
-    padding: 60px 12px;
+  @media @mobile-above {
+    padding: 60px 40px 0 40px;
   }
 
   .books-home {
@@ -16,6 +16,7 @@ header.hero {
     font-size: 16px;
     .gotham();
     display: inline-block;
+    margin-bottom: 1em;
 
     &:focus {
       outline: 1px dashed white;
@@ -36,11 +37,22 @@ header.hero {
 
   h1 {
     font-weight: bold;
-    font-size: 48px;
+    font-size: 28px;
+    line-height: 1.0;
+    margin-bottom: .5em;
+
+    @media @mobile-above {
+      font-size: 48px;
+    }
   }
 
-  h2 {
-    font-size: 36px;
+  h2 { font-size: 36px; }
+
+  p {
+    margin: 0 0 2em 0;
+  }
+
+  .about-link {
   }
 
   .about-link a {
@@ -49,7 +61,7 @@ header.hero {
     padding: 4px 12px;
     background: white;
     text-decoration: none;
-    float: right;
+    // float: right;
     text-transform: uppercase;
     opacity: .8;
 
@@ -62,7 +74,7 @@ header.hero {
   // years in the header
   fieldset {
     border: none;
-    padding: 0;
+    padding: 22px 0 6px 0;
 
     .loading & {
       pointer-events: none;
@@ -72,26 +84,29 @@ header.hero {
       .sr-only;
 
       & + label {
-        color: white;
-        margin-right: 16px;
         .gotham();
         position: relative;
         cursor: pointer;
         text-transform: uppercase;
-        color: #CCC;
-        border-bottom: 4px solid transparent;
+        color: #fff;
+        padding: 8px;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+
+        @media @mobile-above {
+          padding: 10px 15px;
+        }
       }
 
       &:hover + label,
       &:focus + label {
-        border-color: currentColor;
         z-index: 999;
       }
 
       &:checked + label {
+        background-color: #F8F8F8;
         font-weight: bold;
-        color: white;
-        border-color: white;
+        color: var(--accent);
       }
     }
   }
