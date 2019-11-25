@@ -3,7 +3,7 @@
 <h2 class="title" tabindex="-1"><%= data.book.title %></h2>
 <h3 class="author"><%= data.book.author %></h3>
 <ul class="tags">
-  <% data.book.tags.forEach(function(t) { %>
+  <% data.book.tags.sort().forEach(function(t) { %>
   <li> <a href="#<%= data.hash.serialize({ year: data.book.year, tags: t }) %>"><%= t %></a>
   <% }); %>
 </ul>

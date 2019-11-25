@@ -86,7 +86,7 @@ var renderCatalog = async function(year, tags, view = "covers") {
     // we should probably change this at some point
     // but it makes sorting way easier
     var filtered = books.filter(b => checkVisibility(b, year, tags));
-    filtered.sort((a, b) => a.title < b.title ? -1 : 1);
+    filtered.sort((a, b) => a.sortingTitle < b.sortingTitle ? -1 : 1);
     updateCounts(filtered.length);
     listContainer.innerHTML = listTemplate({ books: filtered });
     lazyload.reset();

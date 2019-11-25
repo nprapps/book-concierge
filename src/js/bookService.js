@@ -30,6 +30,7 @@ var facade = {
       book.year = year;
       if (book.tags instanceof Array) book.tags = new Set(book.tags);
       if (!book.shuffle) book.shuffle = Math.random();
+      book.sortingTitle = book.title.replace(/^the\s+/i, "");
     });
     return index;
   },
