@@ -3,6 +3,10 @@
   @corner: 4px;
   padding-left: 24px;
 
+  @media @mobile {
+    padding-left: 0;
+  }
+
   [data-mode="book"] & {
     display: none;
   }
@@ -32,6 +36,19 @@
     justify-content: space-between;
     align-items: flex-start;
     padding-bottom: 12px;
+
+    h3 {
+      font-size: 18px;
+    }
+
+    .view-controls {
+      flex-order: 2;
+    }
+
+    @media @mobile {
+      display: block;
+      text-align: right;
+    }
   }
 
   .view-controls {

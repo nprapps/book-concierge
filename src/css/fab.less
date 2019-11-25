@@ -1,7 +1,7 @@
 .fab-form {
   position: fixed;
   bottom: 10px;
-  right: 10px;
+  right: 0;
   z-index: 999;
   display: none;
 
@@ -10,21 +10,24 @@
   }
 
   .fab-button {
-    width: 80px;
-    height: 80px;
-    background: teal;
+    background: @accent;
+    background: var(--accent);
     position: relative;
-    border-radius: 100%;
+    border-radius: 20px 0 0 20px;
+    border: 1px solid white;
+    border-right: none;
+    padding: 10px 20px;
     // overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
     text-transform: uppercase;
+    margin-left: auto;
     margin-bottom: 20px;
     font-size: 18px;
-    border: none;
-    opacity: .7;
+    box-shadow: 0 4px 8px fade(black, 50%);
+    opacity: 1;
     transition: opacity .4s linear;
 
     &:hover,
@@ -41,4 +44,15 @@
       opacity: 0;
     }
   }
+
+  .clear {
+    background: black;
+
+    [data-tags="0"] & {
+      display: none;
+
+    }
+  }
+
+  
 }

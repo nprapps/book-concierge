@@ -5,6 +5,9 @@ var channel = require("./pubsub");
 var yearFilters = $.one("fieldset.years");
 var filterList = $.one("form.filters");
 var viewToggle = $.one(".view-controls");
+var fabSelect = $.one(".fab-form .tags");
+var fabCount = $.one(".fab-count");
+var fabClear = $.one(".fab-button.clear");
 
 var getFilters = function() {
   var years = $(".years input:checked").map(el => el.value * 1);
@@ -22,9 +25,11 @@ var setFilters = function(state) {
   if (year) {
     $(".filters .years input").forEach(input => input.checked = input.value * 1 == year);
   }
+  fabCount.innerHTML = tags.length;
 
   tags = new Set(tags);
   $(".filters .tags input").forEach(input => input.checked = tags.has(input.value));
+  $("option", fabSelect).forEach(option => option.selected = tags.has(option.value));
   
   if (view) {
     $.one(`.view-controls input[value="${view}"]`).checked = true;
@@ -49,7 +54,7 @@ $.one(".clear-filters").addEventListener("click", function() {
   onChange();
 });
 
-$.one(".fab-form .tags").addEventListener("change", function() {
+fabSelect.addEventListener("change", function() {
   var select = event.target;
   var options = select.selectedOptions;
   var values = new Set();
@@ -61,4 +66,9 @@ $.one(".fab-form .tags").addEventListener("change", function() {
   });
   var change = new Event("change");
   filterList.dispatchEvent(change);
+});
+
+fabClear.addEventListener("click", function() {
+  setFilters({ tags: [] });
+  onChange();
 });

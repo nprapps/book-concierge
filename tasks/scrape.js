@@ -17,6 +17,8 @@ var fs = require("fs").promises;
 var util = require("util");
 var csvStringify = util.promisify(csv.stringify);
 
+var wait = delay => new Promise(ok => setTimeout(ok, delay));
+
 var goodreads = async function(books) {
   var output = {};
   var endpoint = "https://www.goodreads.com/search/index.xml";
@@ -77,6 +79,7 @@ var itunes = async function(books) {
       continue;
     }
     output[book.id] = matched[1];
+    await wait(1000);
   }
   return output;
 };
