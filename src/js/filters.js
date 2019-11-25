@@ -1,4 +1,5 @@
 var $ = require("./lib/qsa");
+var track = require("./lib/tracking");
 
 var channel = require("./pubsub");
 
@@ -43,14 +44,26 @@ var clearFilters = function() {
   onChange();
 };
 
-var onChange = function() {
+var onChange = function(e) {
   var state = getFilters();
   channel.send("filterchange", state);
 };
 
-yearFilters.addEventListener("change", onChange);
-filterList.addEventListener("change", onChange);
-viewToggle.addEventListener("change", onChange);
+yearFilters.addEventListener("change", function(e) {
+  var target = e.target;
+  track("year-selected", target.value);
+  onChange();
+});
+filterList.addEventListener("change", function(e) {
+  var target = e.target;
+  track("tag-selected", target.value);
+  onChange();
+});
+viewToggle.addEventListener("change", function(e) {
+  var target = e.target;
+  track("view-mode", target.value);
+  onChange();
+});
 
 module.exports = { getFilters, setFilters }
 
