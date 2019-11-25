@@ -36,7 +36,12 @@ var setFilters = function(state) {
   }
 
   return state;
-}
+};
+
+var clearFilters = function() {
+  setFilters({ tags: [] });
+  onChange();
+};
 
 var onChange = function() {
   var state = getFilters();
@@ -49,10 +54,8 @@ viewToggle.addEventListener("change", onChange);
 
 module.exports = { getFilters, setFilters }
 
-$.one(".clear-filters").addEventListener("click", function() {
-  $(".filters .tags input").forEach(input => input.checked = false);
-  onChange();
-});
+$.one(".clear-filters").addEventListener("click", clearFilters);
+fabClear.addEventListener("click", clearFilters);
 
 fabSelect.addEventListener("change", function() {
   var select = event.target;
@@ -66,9 +69,4 @@ fabSelect.addEventListener("change", function() {
   });
   var change = new Event("change");
   filterList.dispatchEvent(change);
-});
-
-fabClear.addEventListener("click", function() {
-  setFilters({ tags: [] });
-  onChange();
 });
