@@ -53,8 +53,6 @@ img:not([alt]) {
 /* NPR standard partials */
 
 footer {
-  background: black;
-  color: white;
   padding: 40px 20px;
   position: relative;
   z-index: 999;
@@ -69,13 +67,15 @@ footer {
   .constrained {
     max-width: 700px;
     margin: auto;
+    display: flex;
+    align-items: center;
   }
 
   .npr {
-    margin-top: 44px;
+    // margin-top: 44px;
+    padding-left: 20px;
 
     a, a:visited {
-      color: white;
       text-decoration: none;
 
       &:hover, &:focus {
