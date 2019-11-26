@@ -34,7 +34,32 @@ module.exports = function(grunt) {
     for (var t of rareTags) {
       console.log(`Tag "${t}" has very few books (used: ${counts[t].join(", ")})`);
     }
-  }
+  };
+
+  var integrity = async function() {
+    var yearIDs = {};
+    var passed = true;
+    for (var book of grunt.data.shelf) {
+      if (!book.id) {
+        passed = false;
+        console.log(`"${book.title}" (${book.year}) lacks an ID`);
+        continue;
+      }
+      if (!yearIDs[book.year]) yearIDs[book.year] = new Set();
+      if (yearIDs[book.year].has(book.id)) {
+        passed = false;
+        console.log(`Book #${book.id} in ${book.year} ("${book.title}") has a duplicate ID`);
+      }
+      yearIDs[book.year].add(book.id);
+      "title text reviewer tags isbn".split(" ").forEach(function(p) {
+        if (!book[p]) {
+          passed = false;
+          console.log(`Book #${book.id} (${book.year}) is missing property "${p}"`);
+        }
+      })
+    }
+    return passed;
+  };
 
   var badCovers = async function() {
     // Check for book images that read as "NO IMAGE AVAILABLE"
@@ -98,7 +123,7 @@ module.exports = function(grunt) {
 
   var validate = async function(tasks = null) {
 
-    var validation = { tags, badCovers, missingCovers, reviewers, reviewed, links };
+    var validation = { integrity, tags, badCovers, missingCovers, reviewers, reviewed, links };
 
     for (var k in validation) {
       if (!tasks || tasks.indexOf(k) > -1) {
