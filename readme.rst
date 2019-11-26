@@ -40,6 +40,7 @@ Common tasks that you may want to run include:
 
 * ``validate`` - runs various integrity tests on the data. You can specify specific tests with the ``--check`` argument:
 
+  * ``integrity`` - checks internal data on the book (IDs and other required fields)
   * ``tags`` - counts tags that have relatively few matches (i.e., are probably typos)
   * ``badCovers`` - finds cover images that are probably "NO IMAGE AVAILABLE"
   * ``missingCovers`` - identifies books that have no cover image at all
@@ -47,9 +48,22 @@ Common tasks that you may want to run include:
   * ``reviewed`` - checks that all books have a matching reviewer
   * ``links`` - identifies orphan links (no book on the shelf matches its metadata)
 
+Analytics
+---------
+
+The concierge tracks the following events:
+
+* ``book-selected`` - user clicked through to book details
+* ``view-mode`` - should be "cover" or "list"
+* ``year-selected``
+* ``tag-selected``
+* ``clear-filters``
+* ``fab-select`` - logs the number of selected tags in the mobile filter
+* ``clicked-link`` - tracks links with a ``[data-track]`` attribute
+
 Troubleshooting
 ---------------
 
-**Fatal error: Port 35729 is already in use by another process.**
+**Fatal error: Port 35739 is already in use by another process.**
 
 The live reload port is shared between this and other applications. If you're running another interactive-template project or Dailygraphics Next, they may collide. If that's the case, use ``--reload-port=XXXXX`` to set a different port for the live reload server. You can also specify a port for the webserver with ``--port=XXXX``, although the app will automatically find the first available port after 8000 for you.
