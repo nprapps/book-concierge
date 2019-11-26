@@ -11,7 +11,7 @@ var request = function(endpoint) {
       })
       .catch(function() {
         delete cache[endpoint];
-        thow `Failed fetch for ${endpoint}`;
+        throw `Failed fetch for ${endpoint}`;
       });
   }
   return cache[endpoint];

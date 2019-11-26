@@ -1,6 +1,7 @@
 var $ = require("./lib/qsa");
 var debounce = require("./lib/debounce");
 var dot = require("./lib/dot");
+var track = require("./lib/tracking");
 
 var channel = require("./pubsub");
 
@@ -91,4 +92,11 @@ if (startup.year || startup.years.length) {
 // filters update the hash
 channel.on("filterchange", function(state) {
   hash.replace(state);
+});
+
+document.body.addEventListener("click", function(e) {
+  var target = e.target;
+  if (target.dataset.track) {
+    track("clicked-link", target.dataset.track, target.href);
+  }
 });

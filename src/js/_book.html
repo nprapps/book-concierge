@@ -25,15 +25,15 @@
   <% }); %>
 </ul>
 <div class="get-this-book">
-  <a href="http://www.worldcat.org/isbn/<%= data.book.isbn %>">Find at your library</a>
-  <a href="http://www.amazon.com/dp/<%= data.book.isbn %>?tag=npr-5-20">Amazon</a>
+  <a target="_blank" data-track="library" href="http://www.worldcat.org/isbn/<%= data.book.isbn %>">Find at your library</a>
+  <a target="_blank" data-track="amazon" href="http://www.amazon.com/dp/<%= data.book.isbn %>?tag=npr-5-20">Amazon</a>
   <% if (data.book.itunes) { %>
-  <a href="https://itunes.apple.com/us/book/id<%= data.book.itunes %>?at=11l79Y">iTunes</a>
+  <a target="_blank" data-track="itunes" href="https://itunes.apple.com/us/book/id<%= data.book.itunes %>?at=11l79Y">iTunes</a>
   <% } %>
   <% if (data.book.isbn13) { %>
-  <a href="http://www.indiebound.org/book/<%= data.book.isbn13 %>?aff=NPR">Independent Booksellers</a>
+  <a target="_blank" data-track="indiebound" href="http://www.indiebound.org/book/<%= data.book.isbn13 %>?aff=NPR">Independent Booksellers</a>
   <% } %>
   <% if (data.book.goodreads) { %>
-  <a href="https://www.goodreads.com/book/show/<%= data.book.goodreads %>">Goodreads</a>
+  <a target="_blank" data-track="goodreads" href="https://www.goodreads.com/book/show/<%= data.book.goodreads %>">Goodreads</a>
   <% } %>
 </div>

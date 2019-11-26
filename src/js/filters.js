@@ -40,6 +40,7 @@ var setFilters = function(state) {
 };
 
 var clearFilters = function() {
+  track("clear-filters");
   setFilters({ tags: [] });
   onChange();
 };
@@ -88,6 +89,7 @@ fabSelect.addEventListener("change", function() {
   for (var i = 0; i < options.length; i++) {
     values.add(options[i].value);
   }
+  track("fab-select", options.length);
   $(".filters .tags input").forEach(function(input) {
     input.checked = values.has(input.value);
   });
