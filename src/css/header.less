@@ -5,6 +5,7 @@ header.hero {
   transition: background .3s linear;
   padding: 25px 15px 0 15px;
   color: white;
+  position: relative;
 
   @media @mobile-above {
     padding: 60px 40px 0 40px;
@@ -39,7 +40,7 @@ header.hero {
     font-weight: bold;
     font-size: 28px;
     line-height: 1.0;
-    margin-bottom: .5em;
+    margin-bottom: .3em;
 
     @media @mobile-above {
       font-size: 48px;
@@ -49,32 +50,63 @@ header.hero {
   h2 { font-size: 36px; }
 
   p {
-    margin: 0 0 2em 0;
-  }
+    .gotham();
+    font-size: 13px;
+    margin: 0 0 1.5em 0;
 
-  .about-link {
-  }
+    &.about-link {
+      margin: 0;
+      position: absolute;
 
-  .about-link a {
-    color: black;
-    display: inline-block;
-    padding: 4px 12px;
-    background: white;
-    text-decoration: none;
-    // float: right;
-    text-transform: uppercase;
-    opacity: .8;
+      @media @tablet {
+        position: absolute;
+        right: 40px;
+        top: 63px;
+      }
 
-    &:focus, &:hover {
-      color: black;
-      opacity: 1;
+      @media @mobile {
+        right: 20px;
+        top: 25px;
+      }
+
+      @media @tablet-above {
+        position: absolute;
+        right: 40px;
+        bottom: 10px;
+      }
+    }
+
+    &.back-link {
+      margin: 0;
+      padding-bottom: 22px;
+    }
+
+    &.about-link a,
+    &.back-link a {
+      background: fade(white, 25%);
+      color: white;
+      display: inline-block;
+      font-size: 12px;
+      padding: 4px 12px;
+      text-decoration: none;
+      text-transform: uppercase;
+      border-radius: 4px;
+
+      &:focus, &:hover {
+        background: fade(white, 40%);
+      }
     }
   }
 
   // years in the header
   fieldset {
     border: none;
-    padding: 22px 0 6px 0;
+    padding: 0 0 6px 0;
+    clear: both;
+
+    @media @tablet-above {
+      padding-top: 22px;
+    }
 
     .loading & {
       pointer-events: none;
@@ -89,11 +121,23 @@ header.hero {
         cursor: pointer;
         text-transform: uppercase;
         color: #fff;
-        padding: 8px;
+        padding: 8px 0;
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
+        text-align: center;
 
-        @media @mobile-above {
+        @media @tablet {
+          font-size: 13px;
+          display: inline-block;
+          margin-bottom: -8px;
+          width: floor((100% / 7) - 1);
+        }
+
+        @media @mobile {
+          font-size: 12px;
+        }
+
+        @media @tablet-above {
           padding: 10px 15px;
         }
       }
@@ -106,7 +150,7 @@ header.hero {
       &:checked + label {
         background-color: #F8F8F8;
         font-weight: bold;
-        color: var(--accent);
+        color: var(--header);
       }
     }
   }

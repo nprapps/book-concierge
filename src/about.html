@@ -4,7 +4,7 @@
     <%= t.include("partials/_head.html", grunt.data.json) %>
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
-  <body data-mode="covers">
+  <body>
 
     <header class="hero">
       <a href="https://npr.org/books" class="books-home">
@@ -12,10 +12,9 @@
         books
       </a>
       <h1><%= json.copy.title %></h1>
-      <h2><%= json.copy.subtitle %></h2>
 
-      <p class="about-link">
-        <a href="index.html">Back to books</a>
+      <p class="back-link">
+        <a href="index.html">&lsaquo; Back to books</a>
       </p>
 
     </header>
