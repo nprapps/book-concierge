@@ -63,7 +63,7 @@ channel.on("hashchange", async function(params, previous) {
     }
 
     if (previous && previous.book) {
-      var clicked = $.one(`.catalog-${view} [data-id="${previous.book}"] a`);
+      var clicked = $.one(`[data-id="${previous.book}"] a`);
       if (clicked) {
         // give it a frame to do layout
         requestAnimationFrame(() => {
