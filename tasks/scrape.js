@@ -48,6 +48,7 @@ var itunes = async function(books) {
   var output = {};
   var endpoint = "https://itunes.apple.com/search";
   for (var book of books) {
+    await wait(5000);
     var url = new URL(endpoint);
     var params = {
       term: book.title.split(":")[0],
@@ -79,7 +80,6 @@ var itunes = async function(books) {
       continue;
     }
     output[book.id] = matched[1];
-    await wait(1000);
   }
   return output;
 };
