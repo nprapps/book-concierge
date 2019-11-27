@@ -51,8 +51,12 @@ header.hero {
 
   p {
     .gotham();
-    font-size: 13px;
+    font-size: 12px;
     margin: 0 0 1.5em 0;
+
+    @media @mobile-above {
+      font-size: 13px;
+    }
 
     &.about-link {
       margin: 0;

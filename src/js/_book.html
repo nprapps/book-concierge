@@ -1,5 +1,11 @@
-<a href="#<%= data.back %>" class="back">&laquo; back to list</a>
+<ul class="book-nav">
+  <li class="list"><a href="#<%= data.back %>">back to list</a></li>
+  <li class="previous"><a href="#<%= data.back %>">&lsaquo; previous book</a></li>
+  <li class="next"><a href="#<%= data.back %>">next book &rsaquo;</a></li>
+</ul>
+
 <img src="./assets/covers/<%= data.book.isbn %>.jpg" class="cover" alt="">
+
 <h2 class="title" tabindex="-1"><%= data.book.title %></h2>
 <h3 class="author"><%= data.book.author %></h3>
 <ul class="tags">
@@ -24,16 +30,16 @@
   <li> <a href="<%= link.url %>"><%= link.text %></a>
   <% }); %>
 </ul>
-<div class="get-this-book">
-  <a target="_blank" data-track="library" href="http://www.worldcat.org/isbn/<%= data.book.isbn %>">Find at your library</a>
-  <a target="_blank" data-track="amazon" href="http://www.amazon.com/dp/<%= data.book.isbn %>?tag=npr-5-20">Amazon</a>
+<ul class="get-this-book">
+  <li><a target="_blank" data-track="library" href="http://www.worldcat.org/isbn/<%= data.book.isbn %>">Find at your library</a><li>
+  <li><a target="_blank" data-track="amazon" href="http://www.amazon.com/dp/<%= data.book.isbn %>?tag=npr-5-20">Amazon</a></li>
   <% if (data.book.itunes) { %>
-  <a target="_blank" data-track="itunes" href="https://itunes.apple.com/us/book/id<%= data.book.itunes %>?at=11l79Y">iTunes</a>
+  <li><a target="_blank" data-track="itunes" href="https://itunes.apple.com/us/book/id<%= data.book.itunes %>?at=11l79Y">iTunes</a></li>
   <% } %>
   <% if (data.book.isbn13) { %>
-  <a target="_blank" data-track="indiebound" href="http://www.indiebound.org/book/<%= data.book.isbn13 %>?aff=NPR">Independent Booksellers</a>
+  <li><a target="_blank" data-track="indiebound" href="http://www.indiebound.org/book/<%= data.book.isbn13 %>?aff=NPR">Independent Booksellers</a></li>
   <% } %>
   <% if (data.book.goodreads) { %>
-  <a target="_blank" data-track="goodreads" href="https://www.goodreads.com/book/show/<%= data.book.goodreads %>">Goodreads</a>
+  <li><a target="_blank" data-track="goodreads" href="https://www.goodreads.com/book/show/<%= data.book.goodreads %>">Goodreads</a></li>
   <% } %>
 </div>

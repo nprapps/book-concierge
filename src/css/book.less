@@ -1,13 +1,19 @@
 .book-detail {
   display: none;
-  padding: 20px;
+  padding: 0;
+  max-width: 800px;
+
+  @media @mobile-above {
+    padding: 0 40px 20px 40px;
+  }
 
   [data-mode="book"] & {
     display: block;
   }
 
   h2.title {
-    margin: 0;
+    line-height: 1.3;
+    margin: 0 0 6px 0;
 
     // programmatic focus only
     &:focus {
@@ -15,60 +21,132 @@
     }
   }
 
+  p {
+    line-height: 1.5;
+    margin: 0 0 1em 0;
+  }
+
   .author {
-    font-size: 16px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.3;
+
+    @media @mobile-above {
+      font-size: 16px;
+    }
+  }
+
+  .text {
+    font-size: 14px;
+
+    @media @mobile-above {
+      font-size: 16px;
+    }
+  }
+
+  .reviewer {
+    color: #666;
+
+    a { font-weight: bold; }
   }
 
   .cover {
-    float: right;
-    margin-left: 16px;
-    margin-bottom: 16px;
-    max-width: 240px;
+    @media @tablet {
+      margin-left: 11px;
+      width: 33%;
+      max-width: 100px;
+      float: right;
+    }
+    @media @tablet-above {
+      float: right;
+      margin-left: 16px;
+      margin-bottom: 16px;
+      max-width: 240px;
+    }
+  }
+
+  .links {
+    margin: 33px 0 0 1.1em;
+    padding: 0;
+  }
+
+  .book-nav {
+    list-style-type: none;
+    margin: 0 0 33px 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+
+    li { margin: 0; }
+
+    a {
+      .buttonBase();
+      border-color: var(--header);
+      color: var(--header);
+
+      &:hover, &:focus {
+        background: var(--header);
+        color: white;
+        opacity: 0.6;
+      }
+    }
+
+    .list { flex-grow: 2; }
+    .next { margin-left: 11px; }
   }
 
   .tags {
-    margin: 16px 0;
-    padding: 0;
+    .gotham();
     list-style-type: none;
+    margin: 20px 0 15px 0;
+    padding: 0;
 
     li {
       display: inline-block;
-      margin: 2px;
+      margin: 0 3px 3px 0;
 
       a {
-        display: inline-block;
-        background: var(--accent);
-        border-radius: 3px;
+        .buttonBase();
+        background: var(--accent-spin);
         color: white;
-        padding: 2px 4px;
-        text-transform: uppercase;
-        text-decoration: none;
 
         &:hover, &:focus {
-          text-decoration: underline;
+          opacity: 0.7;
         }
       }
     }
   }
 
   .get-this-book {
+    list-style-type: none;
+    margin: 33px 0 0 0;
+    padding: 0;
+
+    li {
+      display: inline-block;
+      margin: 0 3px 3px 0;
+    }
+
     a {
-      padding: 4px;
-      border: 1px solid var(--accent);
-      text-decoration: none;
-      color: black;
-      border-radius: 2px;
-      margin-right: 8px;
-      box-shadow: 0 4px 8px fade(black, 10%);
+      .buttonBase();
+      border-color: var(--accent-spin);
+      color: var(--accent-spin);
 
       &:hover, &:focus {
-        background: var(--accent);
+        background: var(--accent-spin);
         color: white;
+        opacity: 0.7;
       }
     }
   }
 
-  .reviewer {
-    
+  @media @tablet-above {
+    h2.title,
+    .author,
+    .tags,
+    .text,
+    .links {
+      margin-right: 260px;
+    }
   }
 }
