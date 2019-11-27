@@ -2,8 +2,8 @@
   var poorMD = text => text.replace(/\*([^*]+)\*/g, "<i>$1</i>");
 %><ul class="book-nav">
   <li class="list"><a href="#<%= data.back %>">back to list</a></li>
-  <li class="previous"><a href="#<%= data.back %>">&lsaquo; previous book</a></li>
-  <li class="next"><a href="#<%= data.back %>">next book &rsaquo;</a></li>
+  <li class="previous"><a href="#<%= data.previous %>">&lsaquo; previous book</a></li>
+  <li class="next"><a href="#<%= data.next %>">next book &rsaquo;</a></li>
 </ul>
 
 <img src="./assets/covers/<%= data.book.isbn %>.jpg" class="cover" alt="">
@@ -12,7 +12,7 @@
 <h3 class="author"><%= data.book.author %></h3>
 <ul class="tags">
   <% data.book.tags.sort().forEach(function(t) { %>
-  <li> <a href="#<%= data.hash.serialize({ year: data.book.year, tags: t }) %>"><%= t %></a>
+  <li> <a href="#<%= data.hash.serialize({ year: data.book.year, tags: t, reset: true }) %>"><%= t %></a>
   <% }); %>
 </ul>
 <div class="text">

@@ -17,7 +17,7 @@ hash.define({
 });
 
 var bookService = require("./bookService");
-var { renderBook, renderList, renderCovers, createCover } = require("./catalog");
+var { renderBook, renderList, renderCovers, createCover, filterBooks } = require("./catalog");
 
 /*
 
@@ -28,19 +28,52 @@ The hash is always the source of truth.
 
 */
 
+var tagMemory = [];
+var viewMemory = "covers";
+
 // hashes update filters (usually redundant) and render the main panel
 channel.on("hashchange", async function(params, previous) {
   var bodyData = document.body.dataset;
   bodyData.mode = params.view || "covers";
   bodyData.year = params.year || "2019";
   bodyData.tags = params.tags ? params.tags.length : 0;
-  setFilters(params);
+
+  if (params.tags.length || params.year != previous.year) {
+    setFilters(params);
+    tagMemory = params.tags;
+  }
+
+  if (params.view) {
+    viewMemory = params.view;
+  }
 
   // single book rendering
   if (params.book) {
+
     document.body.setAttribute("data-mode", "book");
-    return renderBook(params, previous);
+    // get book data
+    var [ book, books ] = await Promise.all([
+      bookService.getDetail(params.year, params.book),
+      bookService.getYear(params.year)
+    ]);
+    // find the location of this book in the current filter view
+    var shelf = filterBooks(books, tagMemory);
+    var shelved = shelf.filter(b => b.id == book.id).pop();
+    var index = shelf.indexOf(shelved);
+    // generate next and previous links
+    var previous = shelf[index > 0 ? index - 1 : shelf.length - 1];
+    var next = shelf[(index + 1) % shelf.length];
+    previous = hash.serialize({ year: params.year, book: previous.id });
+    next = hash.serialize({ year: params.year, book: next.id });
+    // generate a back link from the year
+    var back = hash.serialize({ year: params.year, view: viewMemory });
+    // look up the reviewer from the table
+    var reviewer = window.conciergeData.reviewers[book.reviewer] || {};
+    track("book-selected", `${book.title} by ${book.author}`);
+    return renderBook({ book, next, previous, back, hash, reviewer });
+
   } else {
+
     // filtered view rendering
     document.body.classList.add("loading");
     // disable filtering during load to prevent spamming
@@ -62,7 +95,7 @@ channel.on("hashchange", async function(params, previous) {
       await renderCovers(books, year, tags);
     }
 
-    if (previous && previous.book) {
+    if (!params.reset && previous && previous.book) {
       var clicked = $.one(`[data-id="${previous.book}"] a`);
       if (clicked) {
         // give it a frame to do layout

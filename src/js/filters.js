@@ -24,7 +24,7 @@ var setFilters = function(state) {
 
   // update form
   if (year) {
-    $(".filters .years input").forEach(input => input.checked = input.value * 1 == year);
+    $("input", yearFilters).forEach(input => input.checked = input.value * 1 == year);
   }
   fabCount.innerHTML = tags.length;
 

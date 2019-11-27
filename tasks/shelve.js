@@ -6,7 +6,8 @@ var normalizeTags = function(tags) {
     .toLowerCase()
     .replace(/['’]/g, "’")
     .split(/\s*\|\s*/)
-    .map(t => t.trim());
+    .map(t => t.trim())
+    .filter(s => s);
 };
 
 var shelve = async function(grunt) {
