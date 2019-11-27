@@ -1,3 +1,5 @@
+// A module for routing events through the app
+
 var events = {};
 
 var on = function(e, f) {

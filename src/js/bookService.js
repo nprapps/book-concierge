@@ -1,3 +1,4 @@
+// this is an in-memory cache for fetches
 var cache = {};
 var request = function(endpoint) {
   if (!cache[endpoint]) {
@@ -7,7 +8,7 @@ var request = function(endpoint) {
           delete cache[endpoint];
           throw `HTTP ${response.status}`;
         }
-        return response.json()
+        return response.json();
       })
       .catch(function() {
         delete cache[endpoint];

@@ -1,10 +1,6 @@
 var $ = require("./lib/qsa");
-var bookService = require("./bookService");
 var dot = require("./lib/dot");
 var flip = require("./lib/flip");
-var hash = require("./hash");
-var lazyload = require("./lazyLoading");
-var track = require("./lib/tracking");
 
 var bookTemplate = dot.compile(require("./_book.html"));
 var listTemplate = dot.compile(require("./_list.html"));
@@ -24,17 +20,16 @@ var renderBook = async function(data) {
 };
 
 // check a given book against the filters
-var checkVisibility = function(b, tags) {
-  var visible = true;
-  if (tags && tags.length) {
-    var matches = tags.every(t => b.tags.has(t));
-    if (!matches) visible = false;
-  }
-  return visible;
-};
-
 var filterBooks = function(books, tags) {
-  return books.filter(b => checkVisibility(b, tags));
+  var checkVisibility = function(b) {
+    if (tags && tags.length) {
+      var matches = tags.every(t => b.tags.has(t));
+      if (!matches) return false;
+    }
+    return true;
+  };
+
+  return books.filter(checkVisibility);
 };
 
 // update book counts
@@ -54,14 +49,17 @@ var createCover = function(book) {
 
 var renderCovers = function(books, year, tags) {
   // clear out placeholders
-  $(".placeholder", coverContainer).forEach(e => e.parentElement.removeChild(e));
+  $(".placeholder", coverContainer).forEach(e =>
+    e.parentElement.removeChild(e)
+  );
 
   // ensure all books are in the DOM
   books.forEach(function(b) {
     if (!b.coverElement) createCover(b);
-    if (!b.coverElement.parentElement) coverContainer.appendChild(b.coverElement);
+    if (!b.coverElement.parentElement)
+      coverContainer.appendChild(b.coverElement);
   });
-  var visible = books.filter(b => checkVisibility(b, tags));
+  var visible = filterBooks(books, tags);
 
   updateCounts(visible.length);
 
@@ -79,11 +77,10 @@ var renderList = function(books, year, tags) {
   // list view just renders in bulk
   // we should probably change this at some point
   // but it makes sorting way easier
-  var filtered = books.filter(b => checkVisibility(b, tags));
-  filtered.sort((a, b) => a.sortingTitle < b.sortingTitle ? -1 : 1);
+  var filtered = filterBooks(books, tags);
+  filtered.sort((a, b) => (a.sortingTitle < b.sortingTitle ? -1 : 1));
   updateCounts(filtered.length);
   listContainer.innerHTML = listTemplate({ books: filtered });
-  lazyload.reset();
 };
 
 module.exports = { renderBook, renderList, renderCovers, filterBooks };

@@ -29,6 +29,8 @@ if (nativeLazy) {
   onScroll = noop;
   reset = noop;
 } else {
+  // this is a huge hack
+  // but column layout in Firefox is wonky for triggering scroll
   setInterval(onScroll, 500);
   window.addEventListener("scroll", debounce(onScroll, 300));
 }

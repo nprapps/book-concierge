@@ -20,18 +20,24 @@ var getFilters = function() {
 };
 
 var setFilters = function(state) {
-  var { year, tags, view} = state;
+  var { year, tags, view } = state;
 
   // update form
   if (year) {
-    $("input", yearFilters).forEach(input => input.checked = input.value * 1 == year);
+    $("input", yearFilters).forEach(
+      input => (input.checked = input.value * 1 == year)
+    );
   }
   if (tags) {
     fabCount.innerHTML = tags.length;
 
     tags = new Set(tags);
-    $(".filters .tags input").forEach(input => input.checked = tags.has(input.value));
-    $("option", fabSelect).forEach(option => option.selected = tags.has(option.value));  
+    $(".filters .tags input").forEach(
+      input => (input.checked = tags.has(input.value))
+    );
+    $("option", fabSelect).forEach(
+      option => (option.selected = tags.has(option.value))
+    );
   }
 
   if (view) {
@@ -51,12 +57,12 @@ var enableFilters = function(enable) {
   [yearFilters, tagFilters].forEach(function(fieldset) {
     var inputs = $("input", fieldset);
     if (enable) {
-      inputs.forEach(i => i.disabled = false);
+      inputs.forEach(i => (i.disabled = false));
     } else {
-      inputs.filter(i => !i.checked).forEach(i => i.disabled = true);
+      inputs.filter(i => !i.checked).forEach(i => (i.disabled = true));
     }
   });
-}
+};
 
 var onChange = function(e) {
   var state = getFilters();
