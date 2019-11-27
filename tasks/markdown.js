@@ -26,6 +26,10 @@ module.exports = function(grunt) {
     var files = grunt.file.expand("src/**/*.md", "!src/js/**/*.md");
     grunt.data.markdown = {};
     var render = grunt.template.renderMarkdown = function(input) {
+      input = typo.widont(typo.smartypants(input))
+        .replace(/&#8211;/g, "&mdash;")
+        .replace(/([’']) ([”"])/g, "$1&nbsp;$2");
+        
       var parsed = reader.parse(input);
 
       var walker = parsed.walker();
@@ -45,9 +49,7 @@ module.exports = function(grunt) {
       }
 
       var rendered = writer.render(parsed);
-      return typo.smartypants(typo.widont(rendered))
-        .replace(/&#8211;/g, "&mdash;")
-        .replace(/([’']) ([”"])/g, "$1&nbsp;$2");
+      return rendered;
     };
 
     files.forEach(function(filename) {

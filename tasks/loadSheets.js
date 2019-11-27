@@ -81,6 +81,7 @@ module.exports = function(grunt) {
           var obj = {};
           row.forEach(function(value, i) {
             var key = header[i];
+            if (key[0] == "_" || !key) return;
             obj[key] = cast(value);
           });
           if (isKeyed) {
