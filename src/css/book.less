@@ -81,13 +81,13 @@
 
     a {
       .buttonBase();
-      border-color: var(--header);
+      border-color: var(--accent);
       color: var(--header);
 
       &:hover, &:focus {
-        background: var(--header);
+        background: var(--accent);
         color: white;
-        opacity: 0.6;
+        opacity: 0.8;
       }
     }
 
@@ -107,11 +107,11 @@
 
       a {
         .buttonBase();
-        background: var(--accent-spin);
+        background: var(--accent);
         color: white;
 
         &:hover, &:focus {
-          opacity: 0.7;
+          opacity: 0.8;
         }
       }
     }
@@ -129,14 +129,22 @@
 
     a {
       .buttonBase();
-      border-color: var(--accent-spin);
-      color: var(--accent-spin);
+      border-color: var(--accent);
+      color: var(--accent);
 
       &:hover, &:focus {
-        background: var(--accent-spin);
+        background: var(--accent);
         color: white;
-        opacity: 0.7;
+        opacity: 0.8;
       }
+    }
+
+    svg {
+      height: 1em;
+      width: auto;
+      display: inline-block;
+      align-items: baseline;
+      margin-bottom: -1px;
     }
   }
 

@@ -91,14 +91,10 @@ header.hero {
 
     &.about-link a,
     &.back-link a {
+      .buttonBase();
       background: fade(white, 25%);
+      border: none;
       color: white;
-      display: inline-block;
-      font-size: 13px;
-      padding: 4px 12px;
-      text-decoration: none;
-      text-transform: capitalize;
-      border-radius: 4px;
 
       &:focus, &:hover {
         background: fade(white, 40%);
