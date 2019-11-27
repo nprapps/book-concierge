@@ -26,7 +26,7 @@ var renderBook = async function(data) {
 // check a given book against the filters
 var checkVisibility = function(b, tags) {
   var visible = true;
-  if (tags.length) {
+  if (tags && tags.length) {
     var matches = tags.every(t => b.tags.has(t));
     if (!matches) visible = false;
   }

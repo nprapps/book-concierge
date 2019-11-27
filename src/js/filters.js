@@ -26,12 +26,14 @@ var setFilters = function(state) {
   if (year) {
     $("input", yearFilters).forEach(input => input.checked = input.value * 1 == year);
   }
-  fabCount.innerHTML = tags.length;
+  if (tags) {
+    fabCount.innerHTML = tags.length;
 
-  tags = new Set(tags);
-  $(".filters .tags input").forEach(input => input.checked = tags.has(input.value));
-  $("option", fabSelect).forEach(option => option.selected = tags.has(option.value));
-  
+    tags = new Set(tags);
+    $(".filters .tags input").forEach(input => input.checked = tags.has(input.value));
+    $("option", fabSelect).forEach(option => option.selected = tags.has(option.value));  
+  }
+
   if (view) {
     $.one(`.view-controls input[value="${view}"]`).checked = true;
   }

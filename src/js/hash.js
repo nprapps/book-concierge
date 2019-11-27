@@ -23,6 +23,7 @@ var parse = function() {
   for (var k in definitions) {
     var def = definitions[k];
     var value = params[k];
+    if (!value) continue;
     if (def instanceof Array) {
       var [cast = String] = def;
       params[k] = value ? value.split("|").map(cast) : [];

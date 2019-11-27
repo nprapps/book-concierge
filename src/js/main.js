@@ -31,30 +31,37 @@ The hash is always the source of truth.
 var tagMemory = [];
 var viewMemory = "covers";
 
+var defaults = {
+  view: "covers",
+  year: 2019
+};
+
 // hashes update filters (usually redundant) and render the main panel
 channel.on("hashchange", async function(params, previous) {
   var bodyData = document.body.dataset;
-  bodyData.mode = params.view || "covers";
-  bodyData.year = params.year || "2019";
-  bodyData.tags = params.tags ? params.tags.length : 0;
+  var existing = getFilters();
+  var merged = Object.assign({}, defaults, existing, params);
+  bodyData.mode = merged.view;
+  bodyData.year = merged.year;
+  bodyData.tags = (merged.tags || []).length;
 
-  if (params.tags.length || params.year != previous.year) {
-    setFilters(params);
-    tagMemory = params.tags;
+  setFilters(merged);
+  if (merged.tags) {
+    tagMemory = merged.tags;
   }
 
-  if (params.view) {
-    viewMemory = params.view;
+  if (merged.view) {
+    viewMemory = merged.view;
   }
 
   // single book rendering
-  if (params.book) {
+  if (merged.book) {
 
     document.body.setAttribute("data-mode", "book");
     // get book data
     var [ book, books ] = await Promise.all([
-      bookService.getDetail(params.year, params.book),
-      bookService.getYear(params.year)
+      bookService.getDetail(merged.year, merged.book),
+      bookService.getYear(merged.year)
     ]);
     // find the location of this book in the current filter view
     var shelf = filterBooks(books, tagMemory);
@@ -63,10 +70,10 @@ channel.on("hashchange", async function(params, previous) {
     // generate next and previous links
     var previous = shelf[index > 0 ? index - 1 : shelf.length - 1];
     var next = shelf[(index + 1) % shelf.length];
-    previous = hash.serialize({ year: params.year, book: previous.id });
-    next = hash.serialize({ year: params.year, book: next.id });
+    previous = hash.serialize({ year: merged.year, book: previous.id });
+    next = hash.serialize({ year: merged.year, book: next.id });
     // generate a back link from the year
-    var back = hash.serialize({ year: params.year, view: viewMemory });
+    var back = hash.serialize({ year: merged.year, view: viewMemory, tags: tagMemory });
     // look up the reviewer from the table
     var reviewer = window.conciergeData.reviewers[book.reviewer] || {};
     track("book-selected", `${book.title} by ${book.author}`);
@@ -79,10 +86,10 @@ channel.on("hashchange", async function(params, previous) {
     // disable filtering during load to prevent spamming
     enableFilters(false);
 
-    var { year, tags, view } = params;
+    var { year, tags, view } = merged;
 
     // did the year change? If so, remove those books
-    if (params.year != previous.year) {
+    if (merged.year != previous.year) {
       $(".book-container").forEach(el => el.parentElement.removeChild(el));
     }
 
@@ -95,7 +102,7 @@ channel.on("hashchange", async function(params, previous) {
       await renderCovers(books, year, tags);
     }
 
-    if (!params.reset && previous && previous.book) {
+    if (!merged.reset && previous && previous.book) {
       var clicked = $.one(`[data-id="${previous.book}"] a`);
       if (clicked) {
         // give it a frame to do layout
