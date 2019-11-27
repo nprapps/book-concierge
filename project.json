@@ -6,7 +6,7 @@
     },
     "live": {
       "bucket": "apps.npr.org",
-      "path": "book-concierge"
+      "path": "best-books"
     }
   },
   "styles": {
