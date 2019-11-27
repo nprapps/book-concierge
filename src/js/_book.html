@@ -1,4 +1,6 @@
-<ul class="book-nav">
+<%
+  var poorMD = text => text.replace(/\*([^*]+)\*/g, "<i>$1</i>");
+%><ul class="book-nav">
   <li class="list"><a href="#<%= data.back %>">back to list</a></li>
   <li class="previous"><a href="#<%= data.back %>">&lsaquo; previous book</a></li>
   <li class="next"><a href="#<%= data.back %>">next book &rsaquo;</a></li>
@@ -22,7 +24,7 @@
     <% } else { %>
     <%= data.book.reviewer %>,
     <% } %>
-    <%= data.reviewer.title || "NPR Staff" %>
+    <%= poorMD(data.reviewer.title || "NPR Staff") %>
   </div>
 </div>
 <ul class="links">
