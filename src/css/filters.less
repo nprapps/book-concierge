@@ -18,15 +18,16 @@
     .sr-only;
 
     & + label {
+      .gotham();
+      font-size: 13px;
       display: block;
       background: transparent;
       color: white;
-      padding: 4px;
-      padding-right: 16px;
+      padding: 6px 10px;
       .gotham();
       position: relative;
       cursor: pointer;
-      text-transform: uppercase;
+      text-transform: capitalize;
       border: 1px solid white;
       border-width-top: 4px;
       border-width-bottom: 4px;
@@ -44,13 +45,15 @@
       // color: #333;
 
       &::before {
-        content: "⯈";
-        // font-size: 150%;
-        // position: absolute;
-        // right: 4px;
-        // top: 0;
-        // line-height: 1;
-        margin-right: 4px;
+        content: "";
+        margin-left: 4px;
+        float: right;
+        background: url('./assets/icons/minus-circle.svg') no-repeat;
+        background-size: contain;
+        width: 1rem;
+        height: 1rem;
+        display: inline-block;
+        opacity: 0.7;
       }
     }
   }
