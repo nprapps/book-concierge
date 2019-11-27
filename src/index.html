@@ -1,7 +1,13 @@
 <!doctype html>
 <html lang="en-US">
   <head>
-    <%= t.include("partials/_head.html", grunt.data.json) %>
+    <%
+      var project = Object.assign({}, grunt.data.json.project, {
+        title: json.copy.socialTitle,
+        description: json.copy.socialDescription
+      });
+    %>
+    <%= t.include("partials/_head.html", { project }) %>
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body data-mode="covers">
