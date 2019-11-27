@@ -24,9 +24,9 @@
     "about": "1oum9jMONZLRj0tVrS57kpZXp5LyPFswWEgnE5CnsoUo"
   },
   "analytics": {
-    "topicIDs": [],
-    "primaryTopic": "",
-    "secondaryTopics": []
+    "topicIDs": [1032,1008],
+    "primaryTopic": "Books",
+    "secondaryTopics": ["Books", "Arts \u0026amp; Life"]
   },
   "embedded": false,
   "production": false
