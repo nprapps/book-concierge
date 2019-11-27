@@ -1,14 +1,14 @@
 header.hero {
-  background: #333;
-  background: var(--header, #333);
-  background-image: url(./assets/books-header.png);
+  background: #4a4a4a;
+  // background: var(--header, #333);
+  // background-image: url(./assets/books-header.png);
   transition: background .3s linear;
   padding: 25px 15px 0 15px;
   color: white;
   position: relative;
 
   @media @mobile-above {
-    padding: 60px 40px 0 40px;
+    padding: 40px 40px 0 40px;
   }
 
   .books-home {
@@ -58,6 +58,10 @@ header.hero {
       font-size: 13px;
     }
 
+    &.bylines {
+      color: #bbb;
+    }
+
     &.about-link {
       margin: 0;
       position: absolute;
@@ -90,10 +94,10 @@ header.hero {
       background: fade(white, 25%);
       color: white;
       display: inline-block;
-      font-size: 12px;
+      font-size: 13px;
       padding: 4px 12px;
       text-decoration: none;
-      text-transform: uppercase;
+      text-transform: capitalize;
       border-radius: 4px;
 
       &:focus, &:hover {
@@ -154,7 +158,8 @@ header.hero {
       &:checked + label {
         background-color: #F8F8F8;
         font-weight: bold;
-        color: var(--header);
+        color: var(--accent);
+        border-top: 2px solid var(--accent);
       }
     }
   }
