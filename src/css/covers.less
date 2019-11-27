@@ -1,10 +1,9 @@
-@gap: 4px;
-
+@bookGridGap: 11px;
 
 .catalog-covers {
   display: none;
-  columns: 4;
-  column-gap: @gap;
+  columns: 3;
+  column-gap: @bookGridGap;
   line-height: 1;
   margin: 0;
   padding: 0;
@@ -20,15 +19,15 @@
   }
 
   @media (min-width: 1200px) {
-    columns: 5;
+    columns: 4;
   }
 
   @media (min-width: 1600px) {
-    columns: 7;
+    columns: 6;
   }
 
   @media @mobile {
-    columns: 3;
+    columns: 2;
   }
 
   @keyframes fade-in {
@@ -50,7 +49,7 @@
     animation-delay: .4s;
     animation-fill-mode: both;
     will-change: transform;
-    margin-bottom: @gap;
+    margin-bottom: @bookGridGap;
 
     .cover-link {
       display: block;
@@ -69,7 +68,7 @@
       }
 
       .cover {
-        filter: blur(2px);
+        // filter: blur(2px);
       }
     }
 
@@ -114,6 +113,7 @@
   }
 
   .hover-data {
+    .gotham();
     position: absolute;
     top: 0;
     left: 0;
@@ -123,13 +123,17 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    color: black;
-    background: fade(white, 80%);
-    padding: 12px;
-    border: 6px solid @accent;
-    border: 6px solid var(--accent);
-    .gotham();
+    color: @accent-dark;
+    background: fade(white, 90%);
+    padding: 11px;
+    border: 5px solid @accent;
+    border: 5px solid var(--accent);
     font-size: 14px;
+    line-height: 1.4;
     transition: opacity .2s linear;
+
+    @media @tablet-above {
+      font-size: 16px;
+    }
   }
 }
