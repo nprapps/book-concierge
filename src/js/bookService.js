@@ -29,7 +29,7 @@ var facade = {
     index.forEach(function(book) {
       book.year = year;
       if (book.tags instanceof Array) book.tags = new Set(book.tags);
-      if (!book.shuffle) book.shuffle = btoa([book.title, book.author].join("").replace(/[^a-z]/g, ""));
+      if (!book.shuffle) book.shuffle = Math.random();
       book.sortingTitle = book.title.replace(/^the\s+/i, "");
     });
     return index;
