@@ -5,7 +5,7 @@
   </button>
 
   <div class="fab-button tags">
-    <label for="fab-tags">Tags (<span class="fab-count">0</span>)</label>
+    <label for="fab-tags">Filters (<span class="fab-count">0</span>)</label>
     <select class="tags" id="fab-tags" multiple>
       <%
         // initialize tags
@@ -13,8 +13,9 @@
         shelf.forEach(function(item) {
           item.tags.forEach(t => tags.add(t));
         });
+        var capitalize = t => t.replace(/(^|\s)(\w)/g, l => l.toUpperCase());
         Array.from(tags).sort().forEach(function(tag) { %>
-      <option value="<%= tag %>"><%= tag.toUpperCase() %></option>
+      <option value="<%= tag %>"><%= capitalize(tag) %></option>
         <%
         })
       %>
