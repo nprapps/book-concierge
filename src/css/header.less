@@ -3,7 +3,6 @@ header.hero {
   // background: #19262f;
   background: var(--header, #333);
   // background: linear-gradient(0deg, var(--accent-spin) 0%, var(--accent) 100%);
-
   // background-image: url(./assets/books-header.png);
   transition: background .3s linear;
   padding: 25px 15px 0 15px;
@@ -149,7 +148,7 @@ header.hero {
       &:hover + label,
       &:focus + label {
         z-index: 999;
-        background-color: #888;
+        background: fade(#fff, 20%);
       }
 
       &:focus + label {
