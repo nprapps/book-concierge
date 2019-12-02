@@ -110,7 +110,7 @@ channel.on("hashchange", async function(params, previous) {
       await renderCovers(books, year, tags);
     }
 
-    if (!merged.reset && previous && previous.book) {
+    if (!merged.reset && previous.book && previous.year == merged.year) {
       var clicked = $.one(`[data-id="${previous.book}"] a`);
       if (clicked) {
         // give it a frame to do layout
