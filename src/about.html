@@ -27,11 +27,7 @@
       </div>
     </main>
 
-    <footer>
-      <a href="https://npr.org">
-        <img src="./assets/logo_lines.png" alt="NPR" class="logo">
-      </a>
-    </footer>
+    <%= t.include("partials/_footer.html", { content: t.include("_footer.html") }) %>
 
     <%= t.include("partials/_analytics.html") %>
   </body>
