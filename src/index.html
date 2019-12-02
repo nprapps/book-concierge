@@ -67,9 +67,14 @@
             </label>
           </div>
 
-          <h3 aria-live="polite">
-            Selected books (<span class="book-count"></span>)
-            <button class="clear-filters">Clear filters</button>
+          <h3>
+            <span aria-live="polite">Selected books (<span class="book-count"></span>)</span>
+            <button class="clear-filters">
+              Clear filters
+              <span aria-hidden="true">
+                <%= t.include("./assets/icons/times-circle.svg") %>
+              </span>
+            </button>
           </h3>
         </div>
 
