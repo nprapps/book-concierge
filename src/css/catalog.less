@@ -20,8 +20,8 @@
 
   .clear-filters {
     .buttonBase();
-    border-color: var(--header);
-    color: var(--header);
+    border-color: var(--accent);
+    color: var(--accent);
     background: transparent;
     cursor: pointer;
     margin-left: 6px;
@@ -31,26 +31,22 @@
       display: none;
     }
 
-    & svg {
-      content: "";
-      margin-left: 4px;
-      float: right;
-      background: url('./assets/icons/times-circle.svg') no-repeat;
-      background-size: contain;
-      width: .9rem;
-      height: .9rem;
-      display: inline-block;
-      opacity: 0.7;
-    }
-
     &:hover, &:focus {
-      color: white;
       background: var(--accent);
-      opacity: 0.6;
+      color: white;
+      opacity: 0.8;
     }
 
     [data-tags="0"] & {
       display: none;
+    }
+
+    svg {
+      height: 1em;
+      width: auto;
+      display: inline-block;
+      margin-left: 6px;
+      float: right;
     }
   }
 
@@ -59,28 +55,45 @@
     justify-content: space-between;
     align-items: flex-start;
     padding-bottom: 12px;
+    flex-wrap: wrap;
+
+    @media @mobile-above {
+      flex-wrap: nowrap;
+    }
 
     h3 {
-      font-size: 18px;
+      font-size: 14px;
+      line-height: 1.2;
+
+      @media @mobile {
+        margin-bottom: 10px;
+      }
+
+      @media @mobile-above {
+        font-size: 14px;
+      }
     }
 
-    .view-controls {
-      order: 2;
-    }
-
-    @media @mobile {
-      display: block;
-      text-align: right;
-    }
+    .view-controls { order: 2; }
   }
 
   .view-controls {
-    text-align: right;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    font-size: 12px;
+    text-align: center;
+    width: 100%;
+
+    @media @mobile-above {
+      width: auto;
+      text-align: left;
+      min-width: 150px;
+    }
 
     svg {
       vertical-align: middle;
+      height: 1em;
+      width: auto;
     }
   }
 
@@ -96,6 +109,10 @@
       border-color: var(--accent);
       color: var(--accent);
       cursor: pointer;
+
+      @media @mobile {
+        width: 50%;
+      }
 
       rect {
         fill: @accent;
