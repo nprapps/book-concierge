@@ -9,7 +9,7 @@ header.hero {
   color: white;
   position: relative;
 
-  @media @mobile-above {
+  @media @tablet-above {
     padding: 40px 40px 0 40px;
   }
 
@@ -68,11 +68,6 @@ header.hero {
       position: absolute;
 
       @media @tablet {
-        right: 40px;
-        top: 63px;
-      }
-
-      @media @mobile {
         right: 20px;
         top: 25px;
       }
@@ -107,6 +102,11 @@ header.hero {
     padding: 0 0 6px 0;
     clear: both;
 
+    @media @mobile {
+      margin-left: -7px;
+      margin-right: -7px;
+    }
+
     @media @tablet-above {
       padding-top: 22px;
     }
@@ -128,16 +128,16 @@ header.hero {
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
         text-align: center;
+        font-size: 12px;
 
         @media @tablet {
-          font-size: 13px;
           display: inline-block;
           margin-bottom: -8px;
           width: floor((100% / 7) - 1);
         }
 
-        @media @mobile {
-          font-size: 12px;
+        @media @mobile-above {
+          font-size: 14px;
         }
 
         @media @tablet-above {
