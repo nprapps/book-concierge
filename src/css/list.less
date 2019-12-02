@@ -22,7 +22,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 8px 8px;
-    border: 1px solid #DDD;
+    // border: 1px solid #DDD;
     border-radius: 4px;
     // box-shadow: 0 8px 16px -8px fade(black, 20%);
     color: inherit;
@@ -36,6 +36,7 @@
 
   .cover {
     flex: 0 0 50px;
+    display: none;
 
     img {
       display: block;
@@ -49,11 +50,11 @@
 
   .title {
     .gotham();
-    font-weight: bold;
-    font-size: 19px;
+    font-size: 18px;
+    color: var(--accent);
   }
 
   .author {
-    font-style: italic;
+    // font-style: italic;
   }
 }

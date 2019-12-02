@@ -1,6 +1,6 @@
 <ul>
   <% data.books.forEach(function(book) { %>
-  <li data-isbn="<%= book.isbn %>">
+  <li data-id="<%= book.id %>">
     <a href="#year=<%= book.year %>&book=<%= book.id %>">
       <div class="cover">
         <img
@@ -10,7 +10,7 @@
       </div>
       <div class="metadata">
         <div class="title"><%= book.title %></div>
-        <div class="author"><%= book.author %></div>
+        <div class="author">by <%= book.author %></div>
       </div>
     </a>
   <% }); %>

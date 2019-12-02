@@ -63,7 +63,6 @@ channel.on("hashchange", async function(params, pastParams = {}) {
 
   // single book rendering
   if (merged.book) {
-    document.body.setAttribute("data-mode", "book");
     // get book data
     var [book, books] = await Promise.all([
       bookService.getDetail(merged.year, merged.book),
@@ -87,7 +86,8 @@ channel.on("hashchange", async function(params, pastParams = {}) {
     // look up the reviewer from the table
     var reviewer = window.conciergeData.reviewers[book.reviewer] || {};
     track("book-selected", `${book.title} by ${book.author}`);
-    return renderBook({ book, next, previous, back, hash, reviewer });
+    renderBook({ book, next, previous, back, hash, reviewer });
+    document.body.setAttribute("data-mode", "book");
   } else {
     // filtered view rendering
     document.body.classList.add("loading");
