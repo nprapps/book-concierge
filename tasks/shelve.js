@@ -1,5 +1,6 @@
 var { promisify } = require("util");
 var imageSize = promisify(require("image-size"));
+var { typogrify } = require("typogr");
 
 var normalizeTags = function(tags) {
   return tags
@@ -47,6 +48,9 @@ var shelve = async function(grunt) {
 
       // join against links, reviewers
       book.links = links.filter(l => l.id == book.id);
+
+      // add smart quotes to the link text
+      book.links.forEach(l => l.text = typogrify(l.text));
 
       var indexEntry = {
         title: book.title,
