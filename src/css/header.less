@@ -1,6 +1,9 @@
 header.hero {
-  background: #4a4a4a;
-  // background: var(--header, #333);
+  // background: #4a4a4a;
+  // background: #19262f;
+  background: var(--header, #333);
+  // background: linear-gradient(0deg, var(--accent-spin) 0%, var(--accent) 100%);
+
   // background-image: url(./assets/books-header.png);
   transition: background .3s linear;
   padding: 25px 15px 0 15px;
@@ -59,7 +62,6 @@ header.hero {
     }
 
     &.bylines {
-      color: #bbb;
     }
 
     &.about-link {
@@ -67,7 +69,6 @@ header.hero {
       position: absolute;
 
       @media @tablet {
-        position: absolute;
         right: 40px;
         top: 63px;
       }
@@ -78,7 +79,6 @@ header.hero {
       }
 
       @media @tablet-above {
-        position: absolute;
         right: 40px;
         bottom: 10px;
       }
