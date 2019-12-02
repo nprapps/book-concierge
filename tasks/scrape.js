@@ -35,7 +35,7 @@ var goodreads = async function(books) {
     try {
       var response = await axios.get(url.toString());
       var $ = cheerio.load(response.data);
-      var id = $("best_book id").text();
+      var id = $("best_book id").eq(0).text();
       output[book.id] = id;
     } catch (err) {
       console.log(`Unable to find ${book.title}.`, err.message);
