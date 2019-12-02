@@ -128,7 +128,7 @@ channel.on("hashchange", async function(params, pastParams = {}) {
 // on startup, check for a pre-existing hash
 var startup = hash.parse();
 // years is guaranteed to be an array because of the define() above
-if (startup.year) {
+if (startup.year || startup.tags) {
   // if found, force a render from the hash, which will update filters accordingly
   hash.force();
 } else {
