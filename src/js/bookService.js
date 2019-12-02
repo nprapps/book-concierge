@@ -21,7 +21,7 @@ var request = function(endpoint) {
 var details = {};
 
 var facade = {
-  getYear: async function(year) {
+  getYear: async function(year, sorting) {
     var pending = request(`./${year}.json`);
     // preload the detail for this year
     request(`./${year}-detail.json`);
@@ -33,7 +33,17 @@ var facade = {
       if (!book.shuffle) book.shuffle = Math.random();
       book.sortingTitle = book.title.replace(/^the\s+/i, "");
     });
-    return index;
+    var copy = index.slice();
+    if (sorting == "list") {
+      copy.sort((a, b) => {
+        if (a.sortingTitle < b.sortingTitle) return -1;
+        if (b.sortingTitle < a.sortingTitle) return 1;
+        return 0;
+      });
+    } else {
+      copy.sort((a, b) => a.shuffle - b.shuffle);
+    }
+    return copy;
   },
 
   getCatalog: async function(hint) {

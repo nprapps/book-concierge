@@ -66,7 +66,7 @@ channel.on("hashchange", async function(params, pastParams = {}) {
     // get book data
     var [book, books] = await Promise.all([
       bookService.getDetail(merged.year, merged.book),
-      bookService.getYear(merged.year)
+      bookService.getYear(merged.year, viewMemory)
     ]);
     // find the location of this book in the current filter view
     var shelf = filterBooks(books, tagMemory);
@@ -101,12 +101,11 @@ channel.on("hashchange", async function(params, pastParams = {}) {
       $(".book-container").forEach(el => el.parentElement.removeChild(el));
     }
 
-    var books = await bookService.getYear(year);
+    var books = await bookService.getYear(year, view);
 
     if (view == "list") {
       await renderList(books, year, tags);
     } else {
-      books.sort((a, b) => (a.shuffle < b.shuffle ? 1 : -1));
       await renderCovers(books, year, tags);
     }
 
