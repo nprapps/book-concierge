@@ -51,14 +51,13 @@
   }
 
   .cover {
-    @media @tablet {
-      margin-left: 11px;
-      width: 33%;
-      max-width: 100px;
-      float: right;
-    }
+    float: right;
+    margin-left: 11px;
+    margin-bottom: 11px;
+    max-width: 100px;
+    width: 33%;
+
     @media @tablet-above {
-      float: right;
       margin-left: 16px;
       margin-bottom: 16px;
       max-width: 240px;
@@ -145,16 +144,6 @@
       display: inline-block;
       align-items: baseline;
       margin-bottom: -1px;
-    }
-  }
-
-  @media @tablet-above {
-    h2.title,
-    .author,
-    .tags,
-    .text,
-    .links {
-      margin-right: 260px;
     }
   }
 }
