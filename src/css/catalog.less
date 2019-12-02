@@ -26,6 +26,11 @@
     cursor: pointer;
     margin-left: 6px;
 
+    @media @mobile {
+      // we've got our own button on mobile
+      display: none;
+    }
+
     &::before {
       content: "";
       margin-left: 4px;
