@@ -43,7 +43,7 @@ var defaults = {
 };
 
 // hashes update filters (usually redundant) and render the main panel
-channel.on("hashchange", async function(params, previous) {
+channel.on("hashchange", async function(params, pastParams = {}) {
   var bodyData = document.body.dataset;
   var existing = getFilters();
   // hash params override existing filters override defaults
@@ -97,7 +97,7 @@ channel.on("hashchange", async function(params, previous) {
     var { year, tags, view } = merged;
 
     // did the year change? If so, remove those books
-    if (merged.year != previous.year) {
+    if (merged.year != pastParams.year) {
       $(".book-container").forEach(el => el.parentElement.removeChild(el));
     }
 
@@ -110,8 +110,8 @@ channel.on("hashchange", async function(params, previous) {
       await renderCovers(books, year, tags);
     }
 
-    if (!merged.reset && previous.book && previous.year == merged.year) {
-      var clicked = $.one(`[data-id="${previous.book}"] a`);
+    if (!merged.reset && pastParams.book && pastParams.year == merged.year) {
+      var clicked = $.one(`[data-id="${pastParams.book}"] a`);
       if (clicked) {
         // give it a frame to do layout
         requestAnimationFrame(() => {
