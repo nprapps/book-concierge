@@ -34,9 +34,6 @@ The hash is always the source of truth.
 
 */
 
-var tagMemory = [];
-var viewMemory = "covers";
-
 var defaults = {
   view: "covers",
   year: 2019
@@ -53,23 +50,16 @@ channel.on("hashchange", async function(params, pastParams = {}) {
   bodyData.tags = (merged.tags || []).length;
 
   setFilters(merged);
-  if (merged.tags) {
-    tagMemory = merged.tags;
-  }
-
-  if (merged.view) {
-    viewMemory = merged.view;
-  }
 
   // single book rendering
   if (merged.book) {
     // get book data
     var [book, books] = await Promise.all([
       bookService.getDetail(merged.year, merged.book),
-      bookService.getYear(merged.year, viewMemory)
+      bookService.getYear(merged.year, merged.view)
     ]);
     // find the location of this book in the current filter view
-    var shelf = filterBooks(books, tagMemory);
+    var shelf = filterBooks(books, merged.tags);
     var shelved = shelf.filter(b => b.id == book.id).pop();
     var index = shelf.indexOf(shelved);
     // generate next and previous links
@@ -80,8 +70,8 @@ channel.on("hashchange", async function(params, pastParams = {}) {
     // generate a back link from the year
     var back = hash.serialize({
       year: merged.year,
-      view: viewMemory,
-      tags: tagMemory
+      view: merged.view,
+      tags: merged.tags
     });
     // look up the reviewer from the table
     var reviewer = window.conciergeData.reviewers[book.reviewer] || {};
