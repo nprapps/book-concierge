@@ -12,7 +12,7 @@ var DIMENSION_PARENT_INITIAL_WIDTH = 'dimension3';
 
 var a = document.createElement("a");
 
-var slug = window.location.pathname.replace(/^\/|\/$/g, "");
+var slug = window.location.pathname.replace(/^\/|\/$|\/?index.html$/g, "");
 
 var track = function(eventAction, eventLabel, eventValue) {
   var event = {
