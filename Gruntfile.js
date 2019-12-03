@@ -2,6 +2,9 @@ module.exports = function(grunt) {
   //load tasks
   grunt.loadTasks("./tasks");
 
+  grunt.registerTask("update", "Download content from remote services", function(target = "stage") {
+    grunt.task.run(["sheets", "docs", `sync:${target}`]);
+  });
   grunt.registerTask("content", "Load content from data files", [
     "state",
     "json",
