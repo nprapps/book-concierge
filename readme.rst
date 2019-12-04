@@ -17,7 +17,7 @@ With those installed, you can then set the project up using your terminal:
 #. Pull the code - ``git clone git@github.com:nprapps/book-concierge``
 #. Enter the project folder - ``cd book-concierge``
 #. Install dependencies from NPM - ``npm install``
-#. Pull data and covers: ``grunt sheets sync``
+#. Pull data and covers: ``grunt update``
 #. Start the server - ``grunt``
 
 Running tasks
@@ -38,6 +38,7 @@ Common tasks that you may want to run include:
   * ``publish:live`` uploads to production
   * ``publish:simulated`` does a dry run of uploaded files and their compressed sizes
 
+* ``sync`` - gets/sets cover files from S3 (publish will not push them)
 * ``validate`` - runs various integrity tests on the data. You can specify specific tests with the ``--check`` argument:
 
   * ``integrity`` - checks internal data on the book (IDs and other required fields)
@@ -47,6 +48,9 @@ Common tasks that you may want to run include:
   * ``reviewers`` - checks that all reviewers have a book on the shelf somewhere
   * ``reviewed`` - checks that all books have a matching reviewer
   * ``links`` - identifies orphan links (no book on the shelf matches its metadata)
+
+* ``scrape`` - downloads book metadata from various service endpoints
+* ``covers`` - downloads book covers from Baker & Taylor and Seamus
 
 Analytics
 ---------
@@ -60,6 +64,48 @@ The concierge tracks the following events:
 * ``clear-filters``
 * ``fab-select`` - logs the number of selected tags in the mobile filter
 * ``clicked-link`` - tracks links with a ``[data-track]`` attribute
+
+Schema
+------
+
+The application expects to have access to a Google Doc with the text for the about page, as well as a workbook containing book data. There are four named sheets that the app expects to exist, with the following columns:
+
+* **copy** - contains template text strings as key/value pairs
+
+  * ``key``
+  * ``value``
+
+* **links** - related story links for each book
+
+  * ``year`` - year for the book
+  * ``id`` - id for the book
+  * ``source`` - human-readable text for the link origin
+  * ``text`` - link contents
+  * ``url`` - link href value
+
+* **reviewers** - reviewer metadata for all blurbs
+
+  * ``key`` - reviewer name
+  * ``title`` - reviewer title
+  * ``link`` - reviewer home page or profile link
+
+* **years** - index for actual book data
+
+  * ``year`` - calendar year value
+  * ``sheet`` - name of sheet containing books for that year
+  * ``current`` - flag value to mark this as "checked" by default on page load
+
+* Within the sheet for each year of book data, the following columns are expected:
+
+  * ``id`` - primary key for the book, used for permalinks and table relationships
+  * ``title``
+  * ``reviewer`` - this name should match the key in the reviewer sheet
+  * ``text`` - recommendation blurb
+  * ``tags`` - filter categories, separated by ``|`` characters
+  * ``isbn``
+  * ``seamus``
+  * ``itunes``
+  * ``goodreads``
 
 Troubleshooting
 ---------------
