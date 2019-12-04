@@ -47,7 +47,11 @@ var setFilters = function(state) {
   return state;
 };
 
-var clearFilters = function() {
+var clearFilters = function(e) {
+  if (e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }
   track("clear-filters");
   setFilters({ tags: [] });
   onChange();
