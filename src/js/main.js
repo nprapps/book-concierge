@@ -71,7 +71,8 @@ channel.on("hashchange", async function(params, pastParams = {}) {
     var back = hash.serialize({
       year: merged.year,
       view: merged.view,
-      tags: merged.tags
+      tags: merged.tags,
+      reset: !pastParams.year // don't restore focus if this is the starting view
     });
     // look up the reviewer from the table
     var reviewer = window.conciergeData.reviewers[book.reviewer] || {};
