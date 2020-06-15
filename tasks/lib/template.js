@@ -152,7 +152,7 @@ var template = function(string, options) {
     var result = f.apply(undefined, values);
   } catch(err) {
     console.error("Couldn't compile template", err.message, err.stack);
-  };
+  }
 
   // Provide the compiled function's source by its `toString` method or
   // the `source` property as a convenience for inlining compiled templates.

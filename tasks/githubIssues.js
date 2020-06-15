@@ -38,7 +38,7 @@ module.exports = function(grunt) {
 
     var package = grunt.file.readJSON("package.json");
     var repo = package.repository.url;
-    var [_, org, repo] = repo.match(/github.com\/([^\/]+)\/(.+?)\.git/);
+    var [_, org, repo] = repo.match(/github.com\/([^\/]+)\/(.+?)\.git/); // eslint-disable-line
     console.log(`Setting up issues on ${org}/${repo}...`);
 
     var issuesFile = grunt.file.read("tasks/issues.csv");

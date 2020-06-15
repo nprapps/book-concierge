@@ -49,7 +49,7 @@ module.exports = function(grunt) {
       auth = authenticate();
     } catch (err) {
       console.log("No access token from ~/.google_oauth_token, private spreadsheets will be unavailable.", err)
-    };
+    }
 
     var sheetKeys = project.sheets;
 
@@ -61,7 +61,7 @@ module.exports = function(grunt) {
 
     for (var spreadsheetId of sheetKeys) {
       var book = (await api.spreadsheets.get({ auth, spreadsheetId })).data;
-      var { sheets, spreadsheetId } = book;
+      var { sheets, spreadsheetId } = book; // eslint-disable-line
       for (var sheet of sheets) {
         if (sheet.properties.title[0] == "_") continue;
         var response = await api.spreadsheets.values.get({

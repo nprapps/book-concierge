@@ -31,7 +31,7 @@ module.exports = function(grunt) {
     }
     var rareTags = Object.keys(counts).filter(t => counts[t].length < 20);
     if (!rareTags.length) return true;
-    for (var t of rareTags) {
+    for (t of rareTags) {
       console.log(`Tag "${t}" has very few books (used: ${counts[t].join(", ")})`);
     }
   };

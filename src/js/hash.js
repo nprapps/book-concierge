@@ -34,7 +34,7 @@ var parse = function() {
       var [cast = String] = def;
       params[k] = value ? value.split("|").map(cast) : [];
     } else if (value) {
-      var cast = def || String;
+      cast = def || String;
       params[k] = cast(value);
     }
   }

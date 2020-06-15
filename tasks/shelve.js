@@ -70,7 +70,7 @@ var shelve = async function(grunt) {
       shelf.push(book);
       index.push(indexEntry);
       lookup[book.id] = book;
-    };
+    }
     grunt.file.write(`build/${year}.json`, JSON.stringify(index, null, 2));
     grunt.file.write(`build/${year}-detail.json`, JSON.stringify(lookup, null, 2));
   }

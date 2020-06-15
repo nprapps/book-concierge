@@ -92,7 +92,7 @@ channel.on("hashchange", async function(params, pastParams = {}) {
       $(".book-container").forEach(el => el.parentElement.removeChild(el));
     }
 
-    var books = await bookService.getYear(year, view);
+    books = await bookService.getYear(year, view);
 
     if (view == "list") {
       await renderList(books, year, tags);
