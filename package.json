@@ -49,5 +49,8 @@
       "./tasks/lib/browserify-less",
       "./tasks/lib/browserify-text"
     ]
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
   }
 }

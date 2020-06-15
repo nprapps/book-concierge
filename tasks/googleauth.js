@@ -30,6 +30,9 @@ var task = function(grunt) {
 
     var done = this.async();
 
+    // load environment variables from .env
+    require('dotenv').config()
+
     var clientID = process.env.GOOGLE_OAUTH_CLIENT_ID;
     var secret = process.env.GOOGLE_OAUTH_CONSUMER_SECRET;
 
