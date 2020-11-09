@@ -7,9 +7,6 @@ check for existing data to merge--it does a fresh pull every time.
 */
 
 var project = require("../project.json");
-var async = require("async");
-var os = require("os");
-var path = require("path");
 var { google } = require("googleapis");
 var api = google.sheets("v4");
 
@@ -59,11 +56,11 @@ module.exports = function(grunt) {
 
     var done = this.async();
 
-    for (var spreadsheetId of sheetKeys) {
+    var bookRequests = sheetKeys.map(async function(spreadsheetId) {
       var book = (await api.spreadsheets.get({ auth, spreadsheetId })).data;
       var { sheets, spreadsheetId } = book;
-      for (var sheet of sheets) {
-        if (sheet.properties.title[0] == "_") continue;
+      var sheetRequests = sheets.map(async function(sheet) {
+        if (sheet.properties.title[0] == "_") return;
         var response = await api.spreadsheets.values.get({
           auth,
           spreadsheetId,
@@ -72,6 +69,14 @@ module.exports = function(grunt) {
         });
         var { values } = response.data;
         var header = values.shift();
+        var types = header.map(function(h, i) {
+          var [ column, type ] = h.split(":");
+          if (type) {
+            header[i] = column;
+            return type;
+          }
+          return null;
+        })
         var isKeyed = header.indexOf("key") > -1;
         var isValued = header.indexOf("value") > -1;
         var out = isKeyed ? {} : [];
@@ -81,8 +86,29 @@ module.exports = function(grunt) {
           var obj = {};
           row.forEach(function(value, i) {
             var key = header[i];
-            if (key[0] == "_" || !key) return;
-            obj[key] = cast(value);
+            var type = types[i];
+            // manual cast
+            if (type) {
+              switch (type) {
+                case "number":
+                case "numeric":
+                case "int":
+                case "float":
+                  obj[key] = value * 1;
+                  break;
+
+                case "boolean":
+                case "bool":
+                  obj[key] = !!value;
+                  break;
+
+                default:
+                  obj[key] = value + "";
+              }
+            } else {
+              // auto cast
+              obj[key] = cast(value);
+            }
           });
           if (isKeyed) {
             out[obj.key] = isValued ? obj.value : obj;
@@ -93,8 +119,12 @@ module.exports = function(grunt) {
         var filename = `data/${sheet.properties.title.replace(/\s+/g, "_")}.sheet.json`;
         console.log(`Saving sheet to ${filename}`);
         grunt.file.write(filename, JSON.stringify(out, null, 2));
-      }
-    }
+      });
+
+      await Promise.all(sheetRequests);
+    });
+
+    await Promise.all(bookRequests);
 
     done();
 
