@@ -59,9 +59,23 @@ module.exports = function(grunt) {
       grunt.fail.fatal(checklist);
     }
 
-    var bucketConfig = deploy != "simulated" ? config.s3[deploy] : {
-      path: "SIMULATION"
-    };
+    var bucketConfig;
+    switch (deploy) {
+      case "simulated":
+        bucketConfig = {
+          path: "SIMULATION"
+        };
+        break;
+
+      case "live":
+        bucketConfig = config.s3.live;
+        break;
+
+      case "stage":
+        bucketConfig = require("../stage.json");
+        break;
+    }
+
     //strip slashes for safety
     bucketConfig.path = bucketConfig.path.replace(/^\/|\/$/g, "");
     if (!bucketConfig.path) {
@@ -88,14 +102,11 @@ module.exports = function(grunt) {
           Bucket: bucketConfig.bucket,
           Key: join(bucketConfig.path, upload.path.replace(/^\\?build/, "")),
           Body: upload.buffer,
-          // ACL: "public-read",
+          ACL: "public-read",
           ContentType: mime.getType(upload.path),
           CacheControl: "public,max-age=60"
         });
       }, function(obj, next) {
-        if (deploy == "live") {
-          obj.ACL = "public-read";
-        }
         //check for GZIP support
         var extension = upload.path.split(".").pop();
         if (gzippable.indexOf(extension) == -1) return next(null, obj);

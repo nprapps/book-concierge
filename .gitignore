@@ -8,3 +8,4 @@ data/*.json
 data/*.csv
 data/*.txt
 src/assets/covers
+stage.json
