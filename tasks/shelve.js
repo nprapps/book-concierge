@@ -34,6 +34,11 @@ var shelve = async function(grunt) {
       if (isbn.length == 9) isbn = "0" + isbn;
       book.isbn = isbn;
 
+      // allows for both isbn and non-isbn cover images
+      var cover = String(book.cover).trim();
+      if (cover.length == 9) cover = "0" + cover;
+      book.cover = cover;
+
       // create 13-digit ISBN
       if (book.isbn.length == 13) {
         book.isbn13 = book.isbn;
@@ -57,11 +62,12 @@ var shelve = async function(grunt) {
         author: book.author,
         dimensions: {},
         isbn: book.isbn,
+        cover: book.cover,
         tags: book.tags,
         id: book.id
       };
       try {
-        var size = await imageSize(`src/assets/covers/${book.isbn}.jpg`);
+        var size = await imageSize(`src/assets/covers/${book.cover}.jpg`);
         indexEntry.dimensions = {
           width: size.width,
           height: size.height
