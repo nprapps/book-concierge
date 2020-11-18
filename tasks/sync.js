@@ -17,7 +17,8 @@ module.exports = function(grunt) {
     shell.mkdir("-p", "src/assets/covers");
 
     var config = require("../project.json");
-    var dest = config.s3[target];
+    var stage = require("../stage.json");
+    var dest = target == "stage" ? stage : config.s3[target];
     var localSynced = "src/assets/covers";
     var remoteSynced = path.join(dest.path, "assets/covers");
 
@@ -120,14 +121,12 @@ module.exports = function(grunt) {
           var buffer = fs.readFileSync(path.join(localSynced, item.file));
           var obj = {
             Bucket: dest.bucket,
+            ACL: "public-read",
             Key: path.join(remoteSynced, item.file),
             Body: buffer,
             ContentType: mime.getType(item.file),
             CacheControl: "public,max-age=300"
           };
-          if (target == "live") {
-            obj.ACL = "public-read";
-          }
           s3.putObject(obj, function(err, data) {
             callback();
           })
