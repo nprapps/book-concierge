@@ -81,8 +81,8 @@ module.exports = function(grunt) {
     // Check which books are missing a cover image
     var passed = true;
     for (var book of grunt.data.shelf) {
-      var { isbn, title, year } = book;
-      var coverPath = `src/assets/covers/${isbn}.jpg`;
+      var { cover, title, year } = book;
+      var coverPath = `src/assets/covers/${cover}.jpg`;
       try {
         await asyncFS.stat(coverPath);
       } catch (err) {
