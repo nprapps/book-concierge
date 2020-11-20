@@ -19,12 +19,18 @@
   <%= data.book.text %>
   <div class="reviewer">
     &mdash;
-    <% if (data.reviewer.link) { %>
-    <a href="<%= data.reviewer.link %>"><%= data.book.reviewer %></a>,
+    <% if (data.reviewer) { %>
+    <% (data.reviewer).forEach(function(rev, i) { %>
+    <% if (rev.link) { %>
+    <a href="<%= rev.link %>"><%= rev.key %></a>,
     <% } else { %>
-    <%= data.book.reviewer %>,
+    <%= rev.key %>,
     <% } %>
-    <%= poorMD(data.reviewer.title || "NPR Staff") %>
+    <%= poorMD(rev.title || "NPR Staff") %>
+    <% if(i == 0) {%> and
+    <% } %>
+    <% }); %>
+    <% } %>
   </div>
 </div>
 <ul class="links">

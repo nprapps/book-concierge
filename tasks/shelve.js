@@ -39,6 +39,9 @@ var shelve = async function(grunt) {
       if (cover.length == 9) cover = "0" + cover;
       book.cover = cover;
 
+      // formats multiple reviewers into a comma seperated array
+      book.reviewer_array = book.reviewer.replace(/\s*,\s*/g, ",").split(',')
+
       // create 13-digit ISBN
       if (book.isbn.length == 13) {
         book.isbn13 = book.isbn;

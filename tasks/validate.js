@@ -97,7 +97,7 @@ module.exports = function(grunt) {
     // Are all reviewers used somewhere?
     var passed = true;
     Object.keys(grunt.data.json.reviewers).forEach(function(reviewer) {
-      var matched = grunt.data.shelf.some(book => book.reviewer == reviewer);
+      var matched = grunt.data.shelf.some(book => (book.reviewer_array.includes(reviewer)));
       if (!matched) {
         console.log(`Reviewer ${reviewer} has no reviewed books.`);
         passed = false;
@@ -108,7 +108,7 @@ module.exports = function(grunt) {
 
   var reviewed = async function() {
     // Do all books have a valid reviewer?
-    var noReviewer = grunt.data.shelf.filter(b => !(b.reviewer in grunt.data.json.reviewers));
+    var noReviewer = grunt.data.shelf.filter(b => !(b.reviewer_array[0] in grunt.data.json.reviewers || b.reviewer_array[1] in grunt.data.json.reviewers));
     noReviewer.forEach(b => console.log(`Book "${b.title}" (${b.year}) doesn't have a valid reviewer (${b.reviewer}).`));
     return !noReviewer.length;
   };
