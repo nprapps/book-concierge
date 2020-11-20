@@ -74,8 +74,6 @@ channel.on("hashchange", async function(params, pastParams = {}) {
       tags: merged.tags,
       reset: !pastParams.year // don't restore focus if this is the starting view
     });
-    // look up the reviewer from the table - the single author way
-    // var reviewer = window.conciergeData.reviewers[book.reviewer] || {};
     
     // look up the reviewer from the table - inclues entries with two reviewers
     var all_rev = [];

@@ -99,7 +99,7 @@ The application expects to have access to a Google Doc with the text for the abo
 
   * ``id`` - primary key for the book, used for permalinks and table relationships
   * ``title``
-  * ``reviewer`` - this name should match the key in the reviewer sheet
+  * ``reviewers`` - an array of comma separated names should match keys in the reviewer sheet
   * ``text`` - recommendation blurb
   * ``tags`` - filter categories, separated by ``|`` characters
   * ``isbn``
