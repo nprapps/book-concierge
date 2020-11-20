@@ -79,14 +79,14 @@ channel.on("hashchange", async function(params, pastParams = {}) {
     
     // look up the reviewer from the table - inclues entries with two reviewers
     var all_rev = [];
-    book.reviewer_array.forEach(function(rev){
+    book.reviewers.forEach(function(rev){
       one_rev = window.conciergeData.reviewers[rev] || {};
       all_rev.push(one_rev)
     });
-    var reviewer = all_rev || {};
+    var reviewers = all_rev || {};
     
     track("book-selected", `${book.title} by ${book.author}`);
-    renderBook({ book, next, previous, back, hash, reviewer });
+    renderBook({ book, next, previous, back, hash, reviewers });
     document.body.setAttribute("data-mode", "book");
   } else {
     // filtered view rendering
