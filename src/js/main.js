@@ -36,7 +36,7 @@ The hash is always the source of truth.
 
 var defaults = {
   view: "covers",
-  year: 2019
+  year: 2020
 };
 
 // hashes update filters (usually redundant) and render the main panel
@@ -74,10 +74,17 @@ channel.on("hashchange", async function(params, pastParams = {}) {
       tags: merged.tags,
       reset: !pastParams.year // don't restore focus if this is the starting view
     });
-    // look up the reviewer from the table
-    var reviewer = window.conciergeData.reviewers[book.reviewer] || {};
+    
+    // look up the reviewer from the table - inclues entries with two reviewers
+    var all_rev = [];
+    book.reviewers.forEach(function(rev){
+      var one_rev = window.conciergeData.reviewers[rev] || {};
+      all_rev.push(one_rev)
+    });
+    var reviewers = all_rev || {};
+    
     track("book-selected", `${book.title} by ${book.author}`);
-    renderBook({ book, next, previous, back, hash, reviewer });
+    renderBook({ book, next, previous, back, hash, reviewers });
     document.body.setAttribute("data-mode", "book");
   } else {
     // filtered view rendering

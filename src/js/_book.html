@@ -19,12 +19,16 @@
   <%= data.book.text %>
   <div class="reviewer">
     &mdash;
-    <% if (data.reviewer.link) { %>
-    <a href="<%= data.reviewer.link %>"><%= data.book.reviewer %></a>,
-    <% } else { %>
-    <%= data.book.reviewer %>,
-    <% } %>
-    <%= poorMD(data.reviewer.title || "NPR Staff") %>
+    <% if (data.reviewers) data.reviewers.forEach(function(rev, i) { 
+      var name = rev.link ? `<a href="${rev.link}">${rev.key}</a>` : rev.key;
+      var output = `${name}, ${poorMD(rev.title || "NPR Staff")}`;
+      if (i <= data.reviewers.length - 3) {
+        output += ", ";
+      } else if (i == data.reviewers.length - 2) {
+        output += " and ";
+      } %>
+      <%= output %>
+    <% }); %>
   </div>
 </div>
 <ul class="links">

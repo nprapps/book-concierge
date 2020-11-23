@@ -29,7 +29,7 @@ var shelve = async function(grunt) {
       book.year = year;
       book.tags = normalizeTags(book.tags || "");
       book.text = grunt.template.renderMarkdown(book.text || "");
-      "title author reviewer text".split(" ").forEach(p => book[p] = book[p].toString().trim());
+      "title author reviewers text".split(" ").forEach(p => book[p] = book[p].toString().trim());
       var isbn = String(book.isbn).trim();
       if (isbn.length == 9) isbn = "0" + isbn;
       book.isbn = isbn;
@@ -38,6 +38,9 @@ var shelve = async function(grunt) {
       var cover = String(book.cover).trim();
       if (cover.length == 9) cover = "0" + cover;
       book.cover = cover;
+
+      // formats multiple reviewers into a comma seperated array
+      book.reviewers = book.reviewers.split(/,\s*/)
 
       // create 13-digit ISBN
       if (book.isbn.length == 13) {
