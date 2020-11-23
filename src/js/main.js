@@ -145,3 +145,8 @@ document.body.addEventListener("click", function(e) {
     track("clicked-link", target.dataset.track, target.href);
   }
 });
+
+var here = new URL(window.location);
+if (here.searchParams.has("screenshot")) {
+  document.body.classList.add("screenshot");
+}
