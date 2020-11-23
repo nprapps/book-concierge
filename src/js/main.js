@@ -36,7 +36,7 @@ The hash is always the source of truth.
 
 var defaults = {
   view: "covers",
-  year: 2019
+  year: 2020
 };
 
 // hashes update filters (usually redundant) and render the main panel
@@ -78,7 +78,7 @@ channel.on("hashchange", async function(params, pastParams = {}) {
     // look up the reviewer from the table - inclues entries with two reviewers
     var all_rev = [];
     book.reviewers.forEach(function(rev){
-      one_rev = window.conciergeData.reviewers[rev] || {};
+      var one_rev = window.conciergeData.reviewers[rev] || {};
       all_rev.push(one_rev)
     });
     var reviewers = all_rev || {};
