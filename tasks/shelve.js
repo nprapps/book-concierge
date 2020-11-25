@@ -35,8 +35,13 @@ var shelve = async function(grunt) {
         if (isbn.length == 9) isbn = "0" + isbn;
         book.isbn = isbn;
 
-        // create 13-digit ISBN
+        // ISBN codes are 9 unique digits plus a checksum digit
+        // All 13-digit codes start with 978 for books
+        // However, the checksum calculation is different for 10- and 13-digit starting points.
+        // Do not just assume that one is the other plus/minus a prefix!
+        // see also https://isbn-information.com/the-13-digit-isbn.html
         if (book.isbn.length == 13) {
+          // generate the 10-digit ISBN
           book.isbn13 = book.isbn;
           var isbn = book.isbn.slice(3, 12)
           var digits = isbn.split("").map(Number);
@@ -49,6 +54,7 @@ var shelve = async function(grunt) {
           if (check == 10) check = "X";
           book.isbn10 = isbn + check;
         } else {
+          // generate the 10-digit ISBN
           var isbn10 = book.isbn;
           var isbn13 = "978" + isbn10.slice(0, 9);
           var odds = [1, 3, 5, 7, 9, 11].map(n => Number(isbn13[n])).reduce((acc, n) => n + acc) * 3;
