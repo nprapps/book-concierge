@@ -124,7 +124,7 @@ var scrape = async function(books, year, sources) {
   // call each scraper, passing in the set of books
   // call the Seamus scraper to get its particular metadata
   // update and output CSVs with the updated metadata
-  var scrapers = { goodreads, itunes, seamus };
+  var scrapers = { goodreads, itunes };
   var results = {};
 
   sources = sources || Object.keys(scrapers);
