@@ -40,11 +40,14 @@ var shelve = async function(grunt) {
           book.isbn13 = book.isbn;
           var isbn = book.isbn.slice(3, 12)
           var digits = isbn.split("").map(Number);
-          var check = 0;
+          var sum = 0;
           for (var i = 0; i < digits.length; i++) {
-            check += (i + 1) * digits[i];
+            sum += (10 - i) * digits[i];
           }
-          book.isbn10 = isbn + (check % 11);
+          var modulus = sum % 11;
+          var check = 11 - modulus;
+          if (check == 10) check = "X";
+          book.isbn10 = isbn + check;
         } else {
           var isbn10 = book.isbn;
           var isbn13 = "978" + isbn10.slice(0, 9);
