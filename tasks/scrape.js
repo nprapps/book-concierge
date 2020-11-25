@@ -47,11 +47,13 @@ var goodreads = async function(books) {
 var itunes = async function(books) {
   var output = {};
   var endpoint = "https://itunes.apple.com/search";
+  var suspicious = [];
   for (var book of books) {
-    await wait(5000);
+    await wait(2000);
     var url = new URL(endpoint);
+    var surtitle = book.title.split(":")[0];
     var params = {
-      term: book.title.split(":")[0],
+      term: `${surtitle} ${book.author}`,
       country: "US",
       media: "ebook",
       attribute: "titleTerm",
@@ -72,15 +74,20 @@ var itunes = async function(books) {
       console.log(`No iTunes results found for "${params.term}"`);
       continue;
     }
-    var topResult = response.data.results[0];
-    var itunesURL = topResult.trackViewUrl;
-    var matched = itunesURL.match(idMatcher);
-    if (!matched || !matched[1]) {
-      console.log(`Unable to find an iTunes ID for "${params.term}" in "${topResult.trackViewUrl}`);
-      continue;
+    var [ topResult ] = response.data.results;
+    var id = topResult.trackId;
+    // check the titles against each other to be sure
+    // ignore case, because style may vary
+    // may also want to check artistName in the future
+    var shortened = topResult.trackName.trim().split(/[:\(]/)[0].replace(/&amp;/g, "&");
+    if (shortened.toLowerCase() != surtitle.toLowerCase()) {
+      console.log(`Title mismatch for "${surtitle}": "${shortened}"`);
+      suspicious.push(([book, id]));
     }
-    output[book.id] = matched[1];
+    output[book.id] = id;
   }
+  console.log(`Suspicious results: ${suspicious.length}`)
+  console.log(suspicious.map(([b, id]) => ` - ${b.title} - https://itunes.apple.com/us/book/id${id}`).join("\n"));
   return output;
 };
 
