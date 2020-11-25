@@ -30,29 +30,41 @@ var shelve = async function(grunt) {
       book.tags = normalizeTags(book.tags || "");
       book.text = grunt.template.renderMarkdown(book.text || "");
       "title author reviewers text".split(" ").forEach(p => book[p] = book[p].toString().trim());
-      var isbn = String(book.isbn).trim();
-      if (isbn.length == 9) isbn = "0" + isbn;
-      book.isbn = isbn;
+      if (book.isbn) {
+        var isbn = String(book.isbn).trim();
+        if (isbn.length == 9) isbn = "0" + isbn;
+        book.isbn = isbn;
 
-      // allows for both isbn and non-isbn cover images
+        // create 13-digit ISBN
+        if (book.isbn.length == 13) {
+          book.isbn13 = book.isbn;
+          var isbn = book.isbn.slice(3, 12)
+          var digits = isbn.split("").map(Number);
+          var check = 0;
+          for (var i = 0; i < digits.length; i++) {
+            check += (i + 1) * digits[i];
+          }
+          book.isbn10 = isbn + (check % 11);
+        } else {
+          var isbn10 = book.isbn;
+          var isbn13 = "978" + isbn10.slice(0, 9);
+          var odds = [1, 3, 5, 7, 9, 11].map(n => Number(isbn13[n])).reduce((acc, n) => n + acc) * 3;
+          var evens = [0, 2, 4, 6, 8, 10].map(n => Number(isbn13[n])).reduce((acc, n) => n + acc);
+          var remainder = (odds + evens) % 10;
+          var check = remainder ? 10 - remainder : 0;
+          book.isbn13 = isbn13 + check;
+          book.isbn10 = isbn10;
+        }
+      }
+
+      // covers are usually--but not always--an ISBN
+      // for non-ISBN covers, name them as `${year}${id}X.jpg`
       var cover = String(book.cover).trim();
       if (cover.length == 9) cover = "0" + cover;
       book.cover = cover;
 
       // formats multiple reviewers into a comma seperated array
-      book.reviewers = book.reviewers.split(/,\s*/)
-
-      // create 13-digit ISBN
-      if (book.isbn.length == 13) {
-        book.isbn13 = book.isbn;
-      } else {
-        var isbn13 = "978" + book.isbn.slice(0, 9);
-        var odds = [1, 3, 5, 7, 9, 11].map(n => Number(isbn13[n])).reduce((acc, n) => n + acc) * 3;
-        var evens = [0, 2, 4, 6, 8, 10].map(n => Number(isbn13[n])).reduce((acc, n) => n + acc);
-        var remainder = (odds + evens) % 10;
-        var check = remainder ? 10 - remainder : 0;
-        book.isbn13 = isbn13 + check;
-      }
+      book.reviewers = book.reviewers.split(/,\s*/);
 
       // join against links, reviewers
       book.links = links.filter(l => l.id == book.id);
@@ -64,7 +76,6 @@ var shelve = async function(grunt) {
         title: book.title,
         author: book.author,
         dimensions: {},
-        isbn: book.isbn,
         cover: book.cover,
         tags: book.tags,
         id: book.id
