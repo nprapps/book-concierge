@@ -20,26 +20,28 @@
         </filter>
         <rect x=0 y=0 width="100%" height="100%" filter="url(#grain)" opacity=".4" />
       </svg>
-      <a href="https://npr.org/books" class="books-home">
-        <img src="./assets/logo-outline.svg" alt="NPR">
-        books
-      </a>
-      <h1><%= json.copy.title %></h1>
-      <p class="bylines">
-        <%= json.copy.bylines %>
-      </p>
+      <div class="raised">
+        <a href="https://npr.org/books" class="books-home">
+          <img src="./assets/logo-outline.svg" alt="NPR">
+          books
+        </a>
+        <h1><%= json.copy.title %></h1>
+        <p class="bylines">
+          <%= json.copy.bylines %>
+        </p>
 
-      <p class="about-link">
-        <a href="about.html">About</a>
-      </p>
+        <p class="about-link">
+          <a href="about.html">About</a>
+        </p>
 
-      <!-- <h3>Filters</h3> -->
-      <fieldset class="years" aria-label="Select a year">
-        <% grunt.data.json.years.forEach(function(y) { %>
-        <input type="radio" name="year-radio" id="year-<%= y.year %>" value="<%= y.year %>" <%= y.current ? "checked=checked" : "" %>>
-        <label for="year-<%= y.year %>"><%= y.year %></label>
-        <% }); %>
-      </fieldset>
+        <!-- <h3>Filters</h3> -->
+        <fieldset class="years" aria-label="Select a year">
+          <% grunt.data.json.years.forEach(function(y) { %>
+          <input type="radio" name="year-radio" id="year-<%= y.year %>" value="<%= y.year %>" <%= y.current ? "checked=checked" : "" %>>
+          <label for="year-<%= y.year %>"><%= y.year %></label>
+          <% }); %>
+        </fieldset>
+      </div>
     </header>
 
     <main class="concierge">
