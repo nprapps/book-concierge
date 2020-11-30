@@ -51,7 +51,7 @@ module.exports = function(grunt) {
         console.log(`Book #${book.id} in ${book.year} ("${book.title}") has a duplicate ID`);
       }
       yearIDs[book.year].add(book.id);
-      "title text reviewers tags isbn".split(" ").forEach(function(p) {
+      "title text reviewers tags cover".split(" ").forEach(function(p) {
         if (!book[p]) {
           passed = false;
           console.log(`Book #${book.id} (${book.year}) is missing property "${p}"`);
