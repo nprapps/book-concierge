@@ -15,8 +15,15 @@
     <header class="hero">
       <svg class="texture">
         <filter id="grain">
-          <feTurbulence numOctaves=2 baseFrequency="1" type="fractalNoise" />
-          <feColorMatrix type="saturate" values="0" />
+          <feTurbulence numOctaves=8 baseFrequency=".8" type="fractalNoise" />
+          <!-- <feColorMatrix type="saturate" values="0" /> -->
+          <feColorMatrix values="
+            0 0 0 0 0
+            0 0 0 0 0
+            0 0 0 0 0
+            0 0 0 1 0
+          " />
+          <feGaussianBlur stdDeviation=".5" />
         </filter>
         <rect x=0 y=0 width="100%" height="100%" filter="url(#grain)" opacity=".4" />
       </svg>
