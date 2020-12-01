@@ -11,9 +11,8 @@
       <%
         // initialize tags
         var tags = json.tags.map(r => r.tag);
-        var capitalize = t => t.replace(/(^|\s)(\w)/g, l => l.toUpperCase());
         tags.sort().forEach(function(tag) { %>
-      <option value="<%= tag %>"><%= capitalize(tag) %></option>
+      <option value="<%= tag.toLowerCase() %>"><%= tag %></option>
         <%
         })
       %>
