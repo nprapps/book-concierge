@@ -10,7 +10,9 @@ module.exports = function(grunt) {
     "json",
     "csv",
     "markdown",
-    "archieml",
+    "archieml"
+  ]);
+  grunt.registerTask("catalog", "Load/validate book data", [
     "shelve",
     "validate"
   ]);
@@ -22,13 +24,15 @@ module.exports = function(grunt) {
     "copy",
     "bundle",
     "less",
-    "template"
+    "template",
+    "catalog"
   ]);
   grunt.registerTask("default", ["clean", "static", "connect:dev", "watch"]);
   grunt.registerTask("quick", "Build without assets", [
     "clean",
     "bundle",
     "less",
+    "catalog",
     "template"
   ]);
   grunt.registerTask("unclean", "Start dev server without a clean build", ["connect:dev", "watch"])
