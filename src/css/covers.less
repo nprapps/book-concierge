@@ -4,18 +4,13 @@
   display: none;
   columns: 3;
   column-gap: @bookGridGap;
+  column-fill: balance;
   line-height: 1;
   margin: 0;
   padding: 0;
 
   [data-mode="covers"] & {
     display: block;
-    // display: flex;
-    flex-wrap: wrap;
-
-    .book-container {
-      flex: 0 0 10%;
-    }
   }
 
   @media (min-width: 1200px) {
