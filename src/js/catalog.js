@@ -15,6 +15,7 @@ var bookCounter = $.one(".book-count");
 var renderBook = async function(data) {
   bookPanel.innerHTML = bookTemplate(data);
   document.body.setAttribute("data-mode", "book");
+  bookPanel.scrollIntoView();
   var h2 = $.one("h2", bookPanel);
   h2.focus();
 };
