@@ -12,12 +12,14 @@ var bookPanel = $.one(".book-detail");
 var bookCounter = $.one(".book-count");
 
 // single book rendering
-var renderBook = async function(data) {
+var renderBook = async function(data, scroll = false) {
   bookPanel.innerHTML = bookTemplate(data);
   document.body.setAttribute("data-mode", "book");
-  bookPanel.scrollIntoView();
   var h2 = $.one("h2", bookPanel);
   h2.focus();
+  if (scroll) {
+    bookPanel.scrollIntoView();
+  }
 };
 
 // check a given book against the filters

@@ -84,7 +84,10 @@ channel.on("hashchange", async function(params, pastParams = {}) {
     var reviewers = all_rev || {};
     
     track("book-selected", `${book.title} by ${book.author}`);
-    renderBook({ book, next, previous, back, hash, reviewers });
+    // scroll into view if this is an internal navigation
+    // not on page load
+    var scrollToBook = !!pastParams.year;
+    renderBook({ book, next, previous, back, hash, reviewers }, scrollToBook);
     document.body.setAttribute("data-mode", "book");
   } else {
     // filtered view rendering
