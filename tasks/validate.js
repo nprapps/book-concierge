@@ -59,28 +59,12 @@ module.exports = function(grunt) {
     return passed;
   };
 
-  var badCovers = async function() {
-    // Check for book images that read as "NO IMAGE AVAILABLE"
-    var coverFiles = await asyncFS.readdir("src/assets/covers");
-    var passed = true;
-    for (var f of coverFiles) {
-      var file = `src/assets/covers/${f}`
-      var stat = await asyncFS.stat(file);
-      if (stat.size < 4000) {
-        // var digest = await checksum(file);
-        passed = false;
-        console.log(`Cover ${f} is probably broken`);
-      }
-    }
-    return passed;
-  };
-
   var missingCovers = async function() {
     // Check which books are missing a cover image
     var passed = true;
     for (var book of grunt.data.shelf) {
       var { cover, title, year } = book;
-      var coverPath = `src/assets/covers/${cover}.jpg`;
+      var coverPath = `src/assets/synced/covers/${year}/${cover}.jpg`;
       try {
         await asyncFS.stat(coverPath);
       } catch (err) {
@@ -121,7 +105,7 @@ module.exports = function(grunt) {
 
   var validate = async function(tasks = null) {
 
-    var validation = { integrity, tags, badCovers, missingCovers, reviewers, reviewed, links };
+    var validation = { integrity, tags, missingCovers, reviewers, reviewed, links };
 
     for (var k in validation) {
       if (!tasks || tasks.indexOf(k) > -1) {
