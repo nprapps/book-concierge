@@ -90,7 +90,7 @@ var shelve = async function(grunt) {
         id: book.id
       };
       try {
-        var size = await imageSize(`src/assets/covers/${book.cover}.jpg`);
+        var size = await imageSize(`src/assets/synced/covers/${book.year}/${book.cover}.jpg`);
         indexEntry.dimensions = {
           width: size.width,
           height: size.height
