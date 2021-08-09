@@ -11,16 +11,17 @@ module.exports = function(grunt) {
   var shell = require("shelljs");
   var mime = require("mime");
   
-  grunt.registerTask("sync", "Sync to S3 for assets", function(target = "stage") {
+  grunt.registerTask("sync", "Sync to S3 using the AWS CLI", function(target = "stage") {
     var done = this.async();
 
-    shell.mkdir("-p", "src/assets/covers");
+    var folder = grunt.option("sync-folder") || "synced";
+
+    shell.mkdir("-p", `src/assets/${folder}`);
 
     var config = require("../project.json");
-    var stage = require("../stage.json");
-    var dest = target == "stage" ? stage : config.s3[target];
-    var localSynced = "src/assets/covers";
-    var remoteSynced = path.join(dest.path, "assets/covers");
+    var dest = config.s3[target];
+    var localSynced = `src/assets/${folder}`;
+    var remoteSynced = path.join(dest.path, `assets/${folder}`);
 
     var creds = {
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -46,13 +47,13 @@ module.exports = function(grunt) {
     var getRemote = function(callback, list = [], Marker = null) {
       s3.listObjects({
         Bucket: dest.bucket,
-        Prefix: path.join(dest.path, "assets/covers"),
+        Prefix: remoteSynced,
         Marker
       }, function(err, results) {
         if (err) return callback(err);
         list.push(...results.Contents.map(function(obj) {
           return {
-            file: obj.Key.replace(/.*?assets\/covers\//, ""),
+            file: obj.Key.replace(new RegExp(`.*?assets/${folder}/`), ""),
             size: obj.Size,
             key: obj.Key,
             mtime: obj.LastModified
@@ -70,9 +71,20 @@ module.exports = function(grunt) {
     async.waterfall([
       getRemote,
       function(remote, next) {
+
+        // early exit for forced push/pull
+        if (grunt.option("pull")) {
+          return next(null, [], remote);
+        }
+
+        if (grunt.option("push")) {
+          return next(null, local, []);
+        }
+
         // compare files
         var up = [];
         var down = [];
+
         // check for existing local files and their counterparts
         local.forEach(function(localItem) {
           var remoteItem = remote.filter(r => r.file == localItem.file).pop();
@@ -121,15 +133,16 @@ module.exports = function(grunt) {
           var buffer = fs.readFileSync(path.join(localSynced, item.file));
           var obj = {
             Bucket: dest.bucket,
-            ACL: "public-read",
             Key: path.join(remoteSynced, item.file),
             Body: buffer,
             ContentType: mime.getType(item.file),
-            CacheControl: "public,max-age=300"
+            CacheControl: "public,max-age=300",
+            ACL: "public-read"
           };
-          s3.putObject(obj, function(err, data) {
-            callback();
-          })
+          if (target == "live") {
+            obj.ACL = "public-read";
+          }
+          s3.putObject(obj, callback)
         }, next)
       }
     ], function(err) {
