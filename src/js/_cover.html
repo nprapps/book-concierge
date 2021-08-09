@@ -8,7 +8,7 @@
   class="cover-link">
   <div class="cover-container" style="<%= aspect %>">
     <img 
-      <%= nativeLazy ? "src" : "data-src" %>="./assets/covers/<%= book.cover %>.jpg"
+      <%= nativeLazy ? "src" : "data-src" %>="./assets/synced/covers/<%= book.year %>/<%= book.cover %>.jpg"
       class="cover"
       alt="<%= book.title %>"
       decoding="async"

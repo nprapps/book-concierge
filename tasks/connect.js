@@ -45,7 +45,7 @@ module.exports = function(grunt) {
               var href = url.parse(req.url).pathname;
               var location = path.join(base, href);
               var filename = path.basename(href);
-              var isSynced = /^\/?synced\//;
+              var isSynced = /^\/?assets\/synced\//;
               var syncedFolder = "./src/assets/synced/";
               if (isSynced.test(href)) {
                 var file = href.replace(isSynced, "");

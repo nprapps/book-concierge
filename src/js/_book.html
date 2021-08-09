@@ -6,7 +6,10 @@
   <li class="next"><a href="#<%= data.next %>">next book &rsaquo;</a></li>
 </ul>
 
-<img src="./assets/covers/<%= data.book.cover %>.jpg" class="cover" alt="">
+<img 
+  src="./assets/synced/covers/<%= data.book.year %>/<%= data.book.cover %>.jpg"
+  class="cover" alt=""
+>
 
 <h2 class="title" tabindex="-1"><%= data.book.title %></h2>
 <h3 class="author"><%= data.book.author %></h3>

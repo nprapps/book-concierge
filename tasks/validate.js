@@ -15,9 +15,7 @@ var checksum = function(filename, callback) {
 
 module.exports = function(grunt) {
 
-  var header = function(title) {
-    console.log(`\n======== ${title} ========\n`);
-  }
+  var header = title => console.log(`\n======== ${title} ========\n`);
 
   var tags = async function() {
 
