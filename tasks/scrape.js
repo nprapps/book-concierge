@@ -10,7 +10,7 @@ You can also specify a particular scraper to run:
 `grunt content scrape --year-2019 --source=goodreads`
 */
 
-var axios = require("axios");
+var fetch = require("node-fetch");
 var cheerio = require("cheerio");
 var csv = require("csv");
 var fs = require("fs").promises;
@@ -33,8 +33,9 @@ var goodreads = async function(books) {
     }
     console.log(`Searching for "${book.title}" (${book.isbn}) on Goodreads...`);
     try {
-      var response = await axios.get(url.toString());
-      var $ = cheerio.load(response.data);
+      var response = await fetch(url.toString());
+      var data = await response.text();
+      var $ = cheerio.load(data);
       var id = $("best_book id").eq(0).text();
       output[book.id] = id;
     } catch (err) {
@@ -64,17 +65,18 @@ var itunes = async function(books) {
     }
     console.log(`Searching for "${params.term}" on iTunes...`);
     try {
-      var response = await axios.get(url.toString());
+      var response = await fetch(url.toString());
+      var data = await response.json();
     } catch (err) {
       console.log(`Request to API failed: `, err.message);
       continue;
     }
     var idMatcher = /id(\d+)/;
-    if (!response.data.resultCount) {
+    if (!data.resultCount) {
       console.log(`No iTunes results found for "${params.term}"`);
       continue;
     }
-    var [ topResult ] = response.data.results;
+    var [ topResult ] = data.results;
     var id = topResult.trackId;
     // check the titles against each other to be sure
     // ignore case, because style may vary
@@ -102,8 +104,9 @@ var seamus = async function(books) {
     if (!seamus) continue;
     var url = endpoint + seamus;
     try {
-      var response = await axios.get(url);
-      var $ = cheerio.load(response.data);
+      var response = await fetch(url);
+      var data = await response.text();
+      var $ = cheerio.load(data);
       var links = $(".storylist article.item .title a");
       links.each(function() {
         var link = this;
