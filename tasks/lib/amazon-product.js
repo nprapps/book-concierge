@@ -24,8 +24,6 @@
  *
  */
 
-("use strict");
-
 // sources of inspiration:
 // http://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-query-string-auth.html
 
@@ -255,6 +253,7 @@ var searchProductAPI = async function (query) {
   }
 
   var json = await response.json();
+  if (!json.SearchResult) return [];
   return json.SearchResult.Items || [];
 };
 

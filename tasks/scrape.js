@@ -130,7 +130,6 @@ var seamus = async function(books) {
 };
 
 var scrape = async function(books, year, sources) {
-  // load a CSV containing the existing scraped data
   // call each scraper, passing in the set of books
   // call the Seamus scraper to get its particular metadata
   // update and output CSVs with the updated metadata
@@ -160,12 +159,17 @@ var scrape = async function(books, year, sources) {
   });
 
   var idCSV = await csvStringify(ids, { header: true });
-  await fs.writeFile(`data/ids-${year}.generated.csv`, idCSV);
+  try {
+    await fs.mkdir("temp")
+  } catch (err) {
+    // may already exist
+  }
+  await fs.writeFile(`temp/ids-${year}.generated.csv`, idCSV);
 
   // output links and excerpts from seamus
   if (results.seamus) {
     var linksCSV = await csvStringify(results.seamus, { header: true });
-    await fs.writeFile(`data/links-${year}.generated.csv`, linksCSV);
+    await fs.writeFile(`temp/links-${year}.generated.csv`, linksCSV);
   }
 };
 
@@ -177,13 +181,13 @@ module.exports = function(grunt) {
     var done = this.async();
 
     var year = grunt.option("year");
+    if (!year) {
+      grunt.fail.fatal("Please provide a --year parameter to scrape");
+    }
+
     var sources = grunt.option("source");
     if (typeof sources == "string") {
       sources = [sources];
-    }
-
-    if (!year) {
-      grunt.fail.fatal("Please provide a --year parameter to scrape");
     }
 
     var books = grunt.data.shelf.filter(b => b.year == year);
