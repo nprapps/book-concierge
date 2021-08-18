@@ -5,6 +5,8 @@ module.exports = function(grunt) {
 
   var wait = delay => new Promise(ok => setTimeout(ok, delay));
 
+  // using this instead of optional chaining in case of older Node versions
+  // after v14, easier to just write result.ItemInfo?.Title?.DisplayValue
   var prop = function(target, key, fallback) {
     var path = key.split(".");
     while (path.length) {
