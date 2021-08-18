@@ -1,9 +1,12 @@
+/*
+
+This expects the sheet to have metadata for "image" (meaning the Amazon image
+endpoint) and "cover" (meaning the filename to save).
+
+*/
+
 var fetch = require("node-fetch");
 var fs = require("fs").promises;
-var qs = require("querystring");
-var cheerio = require("cheerio");
-
-var getEndpoint = query => `http://images.btol.com/ContentCafe/Jacket.aspx?${qs.stringify(query)}`;
 
 module.exports = function(grunt) {
 
@@ -35,7 +38,7 @@ module.exports = function(grunt) {
     }
   };
 
-  grunt.registerTask("covers", "Get cover images from Baker & Taylor", function() {
+  grunt.registerTask("covers", "Get cover images from Amazon", function() {
 
     var done = this.async();
 
