@@ -5,6 +5,32 @@ module.exports = function(grunt) {
 
   var wait = delay => new Promise(ok => setTimeout(ok, delay));
 
+  var prop = function(target, key, fallback) {
+    var path = key.split(".");
+    while (path.length) {
+      var segment = path.shift();
+      if (!(segment in target)) return fallback;
+      target = target[segment];
+    }
+    return target;
+  }
+
+  var flattenAmazon = function(result) {
+    var p = prop.bind(null, result);
+    return {
+      title: p("ItemInfo.Title.DisplayValue"),
+      isbn: p("ItemInfo.ExternalIds.ISBNs.DisplayValues", [])[0],
+      image: p("Images.Primary.Large.URL"),
+      author: p("ItemInfo.ByLineInfo.Contributors", []).map(d => d.Name),
+      publisher: p("ItemInfo.ByLineInfo.Brand.DisplayValue") || p("ByLineInfo.Manufacturer.DisplayValue"),
+      language: p("ItemInfo.ContentInfo.Languages.DisplayValues", []).map(d => d.DisplayValue)[0],
+      published: new Date(p("ItemInfo.ContentInfo.PublicationDate.DisplayValue")),
+      released: new Date(p("ItemInfo.ProductInfo.ReleaseDate.DisplayValue")),
+      asin: result.ASIN,
+      url: result.DetailPageURL
+    }
+  }
+
   var amazon = async function(books) {
     var output = [];
 
@@ -18,11 +44,14 @@ module.exports = function(grunt) {
             Keywords: book.title,
             Author: book.author
           });
-          await wait(1000);
+          if (results) {
+            console.log(results.map(flattenAmazon));
+          }
           break;
         } catch (err) {
           console.log(`Retrying...`);
         }
+        await wait(1000);
       }
     }
   }
@@ -38,7 +67,7 @@ module.exports = function(grunt) {
 
     var shelf = grunt.data.shelf.filter(b => b.year == year);
 
-    shelf = shelf.slice(0, 10);
+    shelf = shelf.slice(0, 3);
 
     var done = this.async();
 
