@@ -41,13 +41,15 @@ module.exports = function(grunt) {
     for (var book of books) {
       console.log(`Product search: ${book.title}...`);
       var attempts = 0;
+      var query = {
+        Keywords: book.title.replace(/:.*?$/, ""),
+        Author: book.author.replace(/,.*?$|\sand\s.*?$|\swith\s.*?$|\(.*?\)/g, "")
+      }
+      // console.log(query);
       while (attempts < 10) {
         attempts++;
         try {
-          var results = await searchProductAPI({
-            Keywords: book.title.replace(/:.*?$/, ""),
-            Author: book.author.replace(/\(.*?\)/g, "")
-          });
+          var results = await searchProductAPI(query);
           console.log(`  ${results ? results.length : 0} results returned`)
           if (results && results.length) {
             results = results.map(flattenAmazon);
