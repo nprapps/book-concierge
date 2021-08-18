@@ -45,8 +45,8 @@ module.exports = function(grunt) {
         attempts++;
         try {
           var results = await searchProductAPI({
-            Keywords: book.title,
-            Author: book.author
+            Keywords: book.title.replace(/:.*?$/, ""),
+            Author: book.author.replace(/\(.*?\)/g, "")
           });
           console.log(`  ${results ? results.length : 0} results returned`)
           if (results && results.length) {
