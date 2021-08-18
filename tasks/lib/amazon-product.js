@@ -257,16 +257,35 @@ var searchProductAPI = async function (query) {
   return json.SearchResult.Items || [];
 };
 
+// using this instead of optional chaining in case of older Node versions
+// after v14, easier to just write result.ItemInfo?.Title?.DisplayValue
+var prop = function(target, key, fallback) {
+  var path = key.split(".");
+  while (path.length) {
+    var segment = path.shift();
+    if (!(segment in target)) return fallback;
+    target = target[segment];
+  }
+  return target;
+}
+
+var flattenAmazon = function(result) {
+  var p = prop.bind(null, result);
+  return {
+    title: p("ItemInfo.Title.DisplayValue"),
+    isbn: p("ItemInfo.ExternalIds.ISBNs.DisplayValues", [])[0],
+    image: p("Images.Primary.Large.URL"),
+    author: p("ItemInfo.ByLineInfo.Contributors", []).map(d => d.Name).join("; "),
+    publisher: p("ItemInfo.ByLineInfo.Brand.DisplayValue") || p("ByLineInfo.Manufacturer.DisplayValue"),
+    language: p("ItemInfo.ContentInfo.Languages.DisplayValues", []).map(d => d.DisplayValue)[0],
+    published: new Date(p("ItemInfo.ContentInfo.PublicationDate.DisplayValue")).getFullYear(),
+    released: new Date(p("ItemInfo.ProductInfo.ReleaseDate.DisplayValue")).getFullYear(),
+    asin: result.ASIN,
+    url: result.DetailPageURL
+  };
+};
+
 module.exports = {
-  searchProductAPI
+  searchProductAPI,
+  flattenAmazon
 };
-
-var test = async function () {
-  var response = await searchProductAPI({
-    Keyword: "Data Feminism",
-    Author: "d'ignazio"
-  });
-  console.log(JSON.stringify(response[0], null, 2));
-};
-
-// test();

@@ -1,61 +1,84 @@
+var csv = require("csv");
+var fs = require("fs").promises;
+var util = require("util");
 
-var { searchProductAPI } = require("./lib/amazon-product");
+var { searchProductAPI, flattenAmazon } = require("./lib/amazon-product");
+
+var csvStringify = util.promisify(csv.stringify);
 
 module.exports = function(grunt) {
 
   var wait = delay => new Promise(ok => setTimeout(ok, delay));
 
-  // using this instead of optional chaining in case of older Node versions
-  // after v14, easier to just write result.ItemInfo?.Title?.DisplayValue
-  var prop = function(target, key, fallback) {
-    var path = key.split(".");
-    while (path.length) {
-      var segment = path.shift();
-      if (!(segment in target)) return fallback;
-      target = target[segment];
+  var filterBook = function(npr, amazon) {
+    // check for matches in the authors
+    var nprAuthorWords = new Set(npr.author.match(/\w+/g).filter(w => w != "and"));
+    var amazonAuthorWords = new Set(amazon.author.match(/\w+/g));
+    var count = 0;
+    for (var word of nprAuthorWords) {
+      if (amazonAuthorWords.has(word)) count++;
     }
-    return target;
-  }
+    // must have at least two common "name" segments
+    if (count < 2) return false;
 
-  var flattenAmazon = function(result) {
-    var p = prop.bind(null, result);
-    return {
-      title: p("ItemInfo.Title.DisplayValue"),
-      isbn: p("ItemInfo.ExternalIds.ISBNs.DisplayValues", [])[0],
-      image: p("Images.Primary.Large.URL"),
-      author: p("ItemInfo.ByLineInfo.Contributors", []).map(d => d.Name),
-      publisher: p("ItemInfo.ByLineInfo.Brand.DisplayValue") || p("ByLineInfo.Manufacturer.DisplayValue"),
-      language: p("ItemInfo.ContentInfo.Languages.DisplayValues", []).map(d => d.DisplayValue)[0],
-      published: new Date(p("ItemInfo.ContentInfo.PublicationDate.DisplayValue")),
-      released: new Date(p("ItemInfo.ProductInfo.ReleaseDate.DisplayValue")),
-      asin: result.ASIN,
-      url: result.DetailPageURL
+    // check that a title substring matches
+    var trimmedTitle = npr.title.toLowerCase().replace(/:.*?$/, "").trim();
+    if (!amazon.title.toLowerCase().includes(trimmedTitle)) return false;
+    
+    // check that the year is the same or later
+    if (amazon.published || amazon.released) {
+      var d = amazon.published || amazon.released;
+      if (d < npr.year) return false;
     }
-  }
 
-  var amazon = async function(books) {
+    // otherwise, let it through
+    return true;
+  };
+
+  var amazon = async function(books, year) {
     var output = [];
 
     for (var book of books) {
+      console.log(`Product search: ${book.title}...`);
       var attempts = 0;
       while (attempts < 10) {
         attempts++;
-        console.log(`Product search: ${book.title}...`);
         try {
           var results = await searchProductAPI({
             Keywords: book.title,
             Author: book.author
           });
-          if (results) {
-            console.log(results.map(flattenAmazon));
+          console.log(`  ${results ? results.length : 0} results returned`)
+          if (results && results.length) {
+            results = results.map(flattenAmazon);
+            var check = filterBook.bind(null, book);
+            var [ passed ] = results.filter(check);
+            if (passed) {
+              var row = {
+                id: book.id,
+                ...passed
+              }
+              output.push(row);
+            } else {
+              console.log("  No satisfactory results found.");
+            }
           }
           break;
         } catch (err) {
-          console.log(`Retrying...`);
+          console.log(`  Retrying...`);
         }
-        await wait(1000);
       }
+      await wait(1000);
     }
+
+    // write the output to a CSV
+    var csv = await csvStringify(output, { header: true });
+    try {
+      await fs.mkdir("temp");
+    } catch (err) {
+      // fine if it exists
+    }
+    await fs.writeFile(`temp/amazon-${year}.generated.csv`, csv);
   }
 
   grunt.registerTask("amazon", function() {
@@ -69,11 +92,11 @@ module.exports = function(grunt) {
 
     var shelf = grunt.data.shelf.filter(b => b.year == year);
 
-    shelf = shelf.slice(0, 3);
+    // shelf = shelf.slice(0, 3);
 
     var done = this.async();
 
-    amazon(shelf).then(done);
+    amazon(shelf, year).then(done);
 
   });
 
