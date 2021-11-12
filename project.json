@@ -15,7 +15,7 @@
   "scripts": {
     "src/js/main.js": "build/app.js"
   },
-  "title": "NPR's Book Concierge",
+  "title": "Books We Love",
   "description": "",
   "url": "https://apps.npr.org/best-books/",
   "image": "assets/social-2020.jpg",
@@ -29,5 +29,5 @@
     "secondaryTopics": ["Books", "Arts \u0026amp; Life"]
   },
   "embedded": false,
-  "production": true
+  "production": false
 }

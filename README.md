@@ -14,11 +14,19 @@ To run this project you will need:
 
 With those installed, you can then set the project up using your terminal:
 
-#. Pull the code - ``git clone git@github.com:nprapps/book-concierge``
-#. Enter the project folder - ``cd book-concierge``
-#. Install dependencies from NPM - ``npm install``
-#. Pull data and covers: ``grunt update``
-#. Start the server - ``grunt``
+1. Pull the code - ``git clone git@github.com:nprapps/book-concierge``
+2. Enter the project folder - ``cd book-concierge``
+3. Install dependencies from NPM - ``npm install``
+4. Pull data and covers: ``grunt update``
+5. Start the server - ``grunt``
+
+**Optional flags**
+
+* `port` - By default, this project runs on port 8000. Use this to specify a different port.
+* `year` - Limit data processing to just a single year's worth of book data when developing locally
+
+To start the local server and just include 2021's data, you would run `grunt --year=2021`
+
 
 Running tasks
 -------------

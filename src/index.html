@@ -32,10 +32,14 @@
           <img src="./assets/logo-outline.svg" alt="NPR">
           books
         </a>
-        <h1><%= json.copy.title %></h1>
-        <p class="bylines">
-          <%= json.copy.bylines %>
-        </p>
+        <h1>
+          <img src="./assets/books-we-love.svg" alt="">
+          <span class="sr-only"><%= json.copy.title %></span>
+        </h1>
+
+        <% if (json.copy.bylines) { %>
+          <p class="bylines"><%= json.copy.bylines %></p>
+        <% } %>
 
         <p class="about-link">
           <a href="about.html">About</a>
