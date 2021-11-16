@@ -37,7 +37,11 @@ var goodreads = async function(books) {
       var data = await response.text();
       var $ = cheerio.load(data);
       var id = $("best_book id").eq(0).text();
-      output[book.id] = id;
+      if (id == "40188904") {
+        console.log(`Invalid id returned for ${book.title}.`);
+      } else {
+        output[book.id] = id;
+      }
     } catch (err) {
       console.log(`Unable to find ${book.title}.`, err.message);
     }
