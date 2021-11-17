@@ -57,8 +57,8 @@ Common tasks that you may want to run include:
   * ``reviewed`` - checks that all books have a matching reviewer
   * ``links`` - identifies orphan links (no book on the shelf matches its metadata)
 
-* ``scrape`` - downloads book metadata from various service endpoints
 * ``amazon`` - downloads book metadata from Amazon
+* ``scrape`` - downloads book metadata from Goodreads and iTunes
 * ``covers`` - downloads book covers
 
 #### Useful NPR-specific combinations of tasks:
@@ -69,8 +69,8 @@ Each of these tasks outputs a CSV in the `/temp/` folder in your project. Upload
 
 Neither of these tasks will return information for all of the books on the list. The Books team will need to fill in what's missing and validate what's returned.
 
-* ``grunt content catalog scrape --year=2021`` - Scrapes book metadata for 2021 from various endpoints (including Goodreads and iTunes)
 * ``grunt content catalog amazon --year=2021`` - Pull ISBN, cover and image information
+* ``grunt content catalog scrape --year=2021`` - Scrape book IDs for Goodreads and iTunes (run the `amazon` task first and link up the scratch sheets so you have the ISBNs to work with)
 
 **Book covers**
 
@@ -79,6 +79,14 @@ This task will not be useful until you've completed the Amazon scrape and pulled
 * ``grunt sheets content catalog covers --year=2021`` - Pull the latest data from the sheet, then download all the image files in the `image` column of this year's sheet. Images are stored in a `/temp/YYYY/` folder in your project. Copy these images to `/src/assets/synced/covers/`, then run ``grunt sync`` (or ``grunt sync:live``) to push them to the server.
 
 Troubleshooting: If you sync up a cover and then it turns out to be the wrong cover, you may need to go into S3 and delete the old incorrect cover for the new one to sync up correctly. Sync sometimes doesn’t recognize it needs to push a file if a file already exists on S3 that is the same size/name.
+
+Not a task, but related to this:
+
+**Generating a book cover tile promo image**
+
+Add `?screenshot=1` to the URL before the hash params (so, for example: https://apps.npr.org/best-books/?screenshot=1#view=covers&year=2020) to get a dense view of the photo grid. Take a screenshot using a Retina display, for maximum pixels.
+
+You can adjust the density of the grid in [seed.less](https://github.com/nprapps/book-concierge/blob/master/src/css/seed.less#L40-L53).
 
 Analytics
 ---------

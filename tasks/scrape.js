@@ -19,6 +19,10 @@ var csvStringify = util.promisify(csv.stringify);
 
 var wait = delay => new Promise(ok => setTimeout(ok, delay));
 
+/*
+GOODREADS
+retrieve IDs so we can link to a related book page on this service
+*/
 var goodreads = async function(books) {
   var output = {};
   var endpoint = "https://www.goodreads.com/search/index.xml";
@@ -49,6 +53,10 @@ var goodreads = async function(books) {
   return output;
 };
 
+/*
+ITUNES
+retrieve IDs so we can link to a related book page on this service
+*/
 var itunes = async function(books) {
   var output = {};
   var endpoint = "https://itunes.apple.com/search";
@@ -97,7 +105,11 @@ var itunes = async function(books) {
   return output;
 };
 
-// different kind of scraper--finds links and excerpts
+/*
+SEAMUS (DEPRECATED)
+different kind of scraper--finds links and excerpts
+this function relies on a seamus feature that no longer exists.
+*/
 var seamus = async function(books) {
   var endpoint = "http://www.npr.org/";
   var source = "NPR.org";
