@@ -58,7 +58,27 @@ Common tasks that you may want to run include:
   * ``links`` - identifies orphan links (no book on the shelf matches its metadata)
 
 * ``scrape`` - downloads book metadata from various service endpoints
-* ``covers`` - downloads book covers from Baker & Taylor and Seamus
+* ``amazon`` - downloads book metadata from Amazon
+* ``covers`` - downloads book covers
+
+#### Useful NPR-specific combinations of tasks:
+
+**Book metadata**
+
+Each of these tasks outputs a CSV in the `/temp/` folder in your project. Upload this file to a scratch sheet in the main project spreadsheet. Link it up to the main datasheet for this year via VLOOKUP. (Use the `id` column as the key to match them up.)
+
+Neither of these tasks will return information for all of the books on the list. The Books team will need to fill in what's missing and validate what's returned.
+
+* ``grunt content catalog scrape --year=2021`` - Scrapes book metadata for 2021 from various endpoints (including Goodreads and iTunes)
+* ``grunt content catalog amazon --year=2021`` - Pull ISBN, cover and image information
+
+**Book covers**
+
+This task will not be useful until you've completed the Amazon scrape and pulled the resulting info into this year's data sheet.
+
+* ``grunt sheets content catalog covers --year=2021`` - Pull the latest data from the sheet, then download all the image files in the `image` column of this year's sheet. Images are stored in a `/temp/YYYY/` folder in your project. Copy these images to `/src/assets/synced/covers/`, then run ``grunt sync`` (or ``grunt sync:live``) to push them to the server.
+
+Troubleshooting: If you sync up a cover and then it turns out to be the wrong cover, you may need to go into S3 and delete the old incorrect cover for the new one to sync up correctly. Sync sometimes doesn’t recognize it needs to push a file if a file already exists on S3 that is the same size/name.
 
 Analytics
 ---------
