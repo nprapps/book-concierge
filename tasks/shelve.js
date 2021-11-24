@@ -79,7 +79,7 @@ var shelve = async function(grunt) {
       book.links = links.filter(l => l.id == book.id);
 
       // add smart quotes to the link text
-      book.links.forEach(l => l.text = typogrify(l.text));
+      // book.links.forEach(l => l.text = typogrify(l.text));
 
       var indexEntry = {
         title: book.title,
