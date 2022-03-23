@@ -25,7 +25,7 @@ With those installed, you can then set the project up using your terminal:
 * `port` - By default, this project runs on port 8000. Use this to specify a different port.
 * `year` - Limit data processing to just a single year's worth of book data when developing locally
 
-To start the local server and just include 2021's data, you would run `grunt --year=2021`
+To start the local server and just include 2022's data, you would run `grunt --year=2022`
 
 
 Running tasks
@@ -69,14 +69,14 @@ Each of these tasks outputs a CSV in the `/temp/` folder in your project. Upload
 
 Neither of these tasks will return information for all of the books on the list. The Books team will need to fill in what's missing and validate what's returned.
 
-* ``grunt content catalog amazon --year=2021`` - Pull ISBN, cover and image information
-* ``grunt content catalog scrape --year=2021`` - Scrape book IDs for Goodreads and iTunes (run the `amazon` task first and link up the scratch sheets so you have the ISBNs to work with)
+* ``grunt content catalog amazon --year=2022`` - Pull ISBN, cover and image information
+* ``grunt content catalog scrape --year=2022`` - Scrape book IDs for Goodreads and iTunes (run the `amazon` task first and link up the scratch sheets so you have the ISBNs to work with)
 
 **Book covers**
 
 This task will not be useful until you've completed the Amazon scrape and pulled the resulting info into this year's data sheet.
 
-* ``grunt sheets content catalog covers --year=2021`` - Pull the latest data from the sheet, then download all the image files in the `image` column of this year's sheet. Images are stored in a `/temp/YYYY/` folder in your project. Copy these images to `/src/assets/synced/covers/`, then run ``grunt sync`` (or ``grunt sync:live``) to push them to the server.
+* ``grunt sheets content catalog covers --year=2022`` - Pull the latest data from the sheet, then download all the image files in the `image` column of this year's sheet. Images are stored in a `/temp/YYYY/` folder in your project. Copy these images to `/src/assets/synced/covers/`, then run ``grunt sync`` (or ``grunt sync:live``) to push them to the server.
 
 Troubleshooting: If you sync up a cover and then it turns out to be the wrong cover, you may need to go into S3 and delete the old incorrect cover for the new one to sync up correctly. Sync sometimes doesn’t recognize it needs to push a file if a file already exists on S3 that is the same size/name.
 
