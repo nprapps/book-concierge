@@ -184,4 +184,27 @@ header.hero {
       }
     }
   }
+
+  // Sample tab layout on mobile.
+  .years-container {
+    @media @tablet {
+
+      // Make scrollable
+      overflow-x: auto;
+      overflow-y: hidden;
+
+      // Padding to determine scrollable area
+      padding: 0px 50% 0px 12px;
+
+      // Fade the years on the right
+      -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 90%, rgba(0, 0, 0, 0));
+
+      // Set label padding (it was collapsing)
+      input[type="checkbox"], input[type="radio"] {
+        & + label {
+          padding: 8px;
+        }
+      }
+    }
+  }
 }
