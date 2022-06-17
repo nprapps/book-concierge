@@ -24,7 +24,7 @@ module.exports = function(grunt) {
     // check that a title substring matches
     var trimmedTitle = npr.title.toLowerCase().replace(/:.*?$/, "").trim();
     if (!amazon.title.toLowerCase().includes(trimmedTitle)) return false;
-    
+
     // check that the year is the same or later
     if (amazon.published || amazon.released) {
       var d = amazon.published || amazon.released;
@@ -39,6 +39,9 @@ module.exports = function(grunt) {
     var output = [];
 
     for (var book of books) {
+      book.title = book["Book title"];
+      book.author = book["Author's name"];
+
       console.log(`Product search: ${book.title}...`);
       var attempts = 0;
       var query = {
@@ -83,22 +86,26 @@ module.exports = function(grunt) {
     await fs.writeFile(`temp/amazon-${year}.generated.csv`, csv);
   }
 
+// run: grunt state json amazon
   grunt.registerTask("amazon", function() {
 
-    grunt.task.requires("shelve");
+    grunt.task.requires("state");
+    grunt.task.requires("json");
 
-    var year = grunt.option("year");
-    if (!year) {
-      grunt.fail.fatal("Please specify --year");
-    }
+    // var year = grunt.option("year");
+    // if (!year) {
+    //   grunt.fail.fatal("Please specify --year");
+    // }
 
-    var shelf = grunt.data.shelf.filter(b => b.year == year);
+    // var shelf = grunt.data.shelf.filter(b => b.year == year);
 
-    // shelf = shelf.slice(0, 3);
+    var bookData = grunt.data.json.final_choices;
+    var year = "50states";
+    console.log(bookData);
 
     var done = this.async();
 
-    amazon(shelf, year).then(done);
+    amazon(bookData, year).then(done);
 
   });
 

@@ -38,21 +38,28 @@ module.exports = function(grunt) {
     }
   };
 
+
+  // run: grunt state json covers
   grunt.registerTask("covers", "Get cover images from Amazon", function() {
 
     var done = this.async();
 
-    grunt.task.requires("shelve");
+    // grunt.task.requires("shelve");
 
-    grunt.file.mkdir("src/assets/covers");
+    // grunt.file.mkdir("src/assets/covers");
 
     // get all books from all sheets
-    var books = grunt.data.shelf;
-    var year = grunt.option("year");
-    if (!year) {
-      grunt.fail.fatal("Please specify --year");
-    }
+    // var books = grunt.data.shelf;
+    // var year = grunt.option("year");
+    // if (!year) {
+    //   grunt.fail.fatal("Please specify --year");
+    // }
+
+    var books = grunt.data.json.final_choices;
+    var year = "50states";
+    // console.log(books);
+
     getCovers(books, year).then(done);
-    
+
   });
 };

@@ -19,7 +19,10 @@
   "description": "Great reads, every year, thoughtfully curated by NPR",
   "url": "https://apps.npr.org/best-books/",
   "image": "assets/social-2021.jpg",
-  "sheets": ["1su06H8CvfSHtRkoMw4TDSJI51ND8mSqoxJgC_2g3pXw"],
+  "sheets": [
+    "1su06H8CvfSHtRkoMw4TDSJI51ND8mSqoxJgC_2g3pXw",
+    "1tZAJmRhjKkHBHGslTbObLMRJMLsBCelRjY9o-lOqqgI"
+  ],
   "docs": {
     "about": "1oum9jMONZLRj0tVrS57kpZXp5LyPFswWEgnE5CnsoUo"
   },
