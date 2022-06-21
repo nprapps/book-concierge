@@ -20,6 +20,7 @@ window.grumi = window.grumi || {
             '4952276315': true, // IntowowBillable
             '88382072': true, // NPR - Programmatic
             '5056504790': true, // Pubmatic
+            '5116496584': true, // Index Exchange
         },
     },
     key: '880a45f2-0015-49d2-b38f-2d26be44ae09',
@@ -47,7 +48,6 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
     if (columnWidth > 728) {
         adSizeArray.push([728, 90]);
     }
-    var advelvetTargeting = [String(Math.floor(Math.random() * 20) + 1)];
     // value can be set to 'true' on testing servers. Must be set to 'false' on Prod
     var isStagingServer = 'false';
 
@@ -56,7 +56,6 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
         googletag.defineSlot(adUnitString, adSizeArray, 'ad-centerstage-wrap').addService(googletag.pubads());
         googletag.pubads().enableSingleRequest();
         googletag.pubads().collapseEmptyDivs();
-        googletag.pubads().setTargeting('advelvet', advelvetTargeting);
         googletag.pubads().setTargeting('ad_location_name', 'story_centerstage');
         googletag.pubads().setTargeting('testserver', [isStagingServer]);
         googletag.pubads().addEventListener('slotRenderEnded', function(event) {
