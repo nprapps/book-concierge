@@ -1,7 +1,6 @@
 header.hero {
   background-color: var(--header, #333);
-  background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, .3));
-  // background-image: url(./assets/books-header.png);
+  // background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, .3));
   transition: background-color .3s linear;
   color: white;
   position: relative;
@@ -9,6 +8,11 @@ header.hero {
 
   @media @tablet-above {
     padding: 65px 40px 0 40px;
+
+    background-image: url(./assets/synced/illo-character.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right bottom;
   }
 
   svg.texture {
@@ -112,6 +116,12 @@ header.hero {
     }
   }
 
+  h1, h2, p {
+    @media @tablet-above {
+      text-align: center;
+    }
+  }
+
   // years in the header
   fieldset {
     border: none;
@@ -172,13 +182,14 @@ header.hero {
       }
 
       &:focus + label {
-        text-decoration: underline;
+        // text-decoration: underline;
       }
 
       &:checked + label {
         background-color: #F8F8F8;
         font-weight: bold;
-        color: var(--accent);
+        color: #000;
+        // color: var(--accent);
         border-top: 2px solid var(--accent);
         margin-top: -2px;
       }

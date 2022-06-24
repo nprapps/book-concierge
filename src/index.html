@@ -25,20 +25,21 @@
           " />
           <feGaussianBlur stdDeviation=".5" />
         </filter>
-        <rect x=0 y=0 width="100%" height="100%" filter="url(#grain)" opacity=".4" />
+        <rect x=0 y=0 width="100%" height="100%" filter="url(#grain)" opacity=".2" />
       </svg>
       <div class="raised">
-        <a href="https://npr.org/books" class="books-home">
-          <img src="./assets/logo-outline.svg" alt="NPR">
-          books
-        </a>
         <h1>
           <img src="./assets/books-we-love.svg" alt="">
           <span class="sr-only"><%= json.copy.title %></span>
         </h1>
 
         <% if (json.copy.bylines) { %>
-          <p class="bylines"><%= json.copy.bylines %></p>
+          <p class="bylines"><%= json.copy.bylines %>
+            <a href="https://npr.org/books" class="books-home">
+              <img src="./assets/logo-outline.svg" alt="NPR">
+              books
+            </a>
+          </p>
         <% } %>
 
         <p class="about-link">
