@@ -7,14 +7,21 @@
   <body>
 
     <header class="hero">
-      <a href="https://npr.org/books" class="books-home">
-        <img src="./assets/logo-outline.svg" alt="NPR">
-        books
-      </a>
       <h1>
         <img src="./assets/books-we-love.svg" alt="">
         <span class="sr-only"><%= json.copy.title %></span>
       </h1>
+
+      <% if (json.copy.subtitle) { %>
+      <h2>
+        <img src="./assets/thoughtfully-curated.svg" alt="">
+        <span class="sr-only"><%= json.copy.subtitle %></span>
+      </h2>
+      <% } %>
+
+      <% if (json.copy.bylines) { %>
+        <p class="bylines"><%= json.copy.bylines %></p>
+      <% } %>
 
       <p class="back-link">
         <a href="index.html">&lsaquo; Back to books</a>

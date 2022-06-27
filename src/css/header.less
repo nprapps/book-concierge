@@ -7,12 +7,16 @@ header.hero {
   padding: 20px 20px 0 20px;
 
   @media @tablet-above {
-    padding: 65px 40px 0 40px;
+    padding: 40px 40px 0 40px;
 
-    background-image: url(./assets/synced/illo-character.png);
-    background-size: contain;
+    background-image: url(./assets/synced/illo-character-solo.png);
+    background-size: 225px;
     background-repeat: no-repeat;
-    background-position: right bottom;
+    background-position: right 5% top 20px;
+  }
+  @media @desktop-above {
+    padding-top: 65px;
+    background-size: 275px;
   }
 
   svg.texture {
@@ -29,7 +33,7 @@ header.hero {
   }
 
   .books-home {
-    color: white;
+    color: @books-offwhite;
     text-decoration: none;
     font-size: 16px;
     .gotham();
@@ -57,9 +61,18 @@ header.hero {
     font-weight: bold;
     font-size: 28px;
     line-height: 1.0;
-    margin-bottom: .3em;
+    margin-bottom: .1em;
 
-    img { max-width: 600px; }
+    img {
+      max-width: 400px;
+
+      @media @tablet-above {
+        max-width: 500px;
+      }
+      @media @desktop-above {
+        max-width: 600px;
+      }
+    }
 
     @media @mobile-above {
       font-size: 48px;
@@ -68,7 +81,18 @@ header.hero {
 
   h2 {
     font-size: 20px;
-    margin: 0 0 1.5em 0;
+    margin: 0 0 .5em 0;
+
+    img {
+      max-width: 300px;
+
+      @media @tablet-above {
+        max-width: 350px;
+      }
+      @media @desktop-above {
+        max-width: 400px;
+      }
+    }
   }
 
   p {
@@ -86,16 +110,8 @@ header.hero {
     &.about-link {
       margin: 0;
       position: absolute;
-
-      @media @tablet {
-        right: 0;
-        top: 0;
-      }
-
-      @media @tablet-above {
-        right: 0;
-        bottom: 10px;
-      }
+      right: 0;
+      top: 0;
     }
 
     &.back-link {
@@ -117,7 +133,7 @@ header.hero {
   }
 
   h1, h2, p {
-    @media @tablet-above {
+    @media @desktop-above {
       text-align: center;
     }
   }
@@ -178,7 +194,7 @@ header.hero {
       &:hover + label,
       &:focus + label {
         z-index: 999;
-        background: fade(#fff, 20%);
+        background: fade(@books-offwhite, 30%);
       }
 
       &:focus + label {
@@ -186,11 +202,11 @@ header.hero {
       }
 
       &:checked + label {
-        background-color: #F8F8F8;
+        background-color: @books-offwhite;
         font-weight: bold;
         color: #000;
         // color: var(--accent);
-        border-top: 2px solid var(--accent);
+        // border-top: 2px solid var(--accent);
         margin-top: -2px;
       }
     }
