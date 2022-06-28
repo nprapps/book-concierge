@@ -1,40 +1,18 @@
-@header-2013: darken(#f2ece2, 30%);
-@accent-2013: #cd4932;
-@header-2014: #7c99c9;
-@accent-2014: spin(#7c99c9, -20%);
-@header-2015: #45798a;
-@accent-2015: #74b7a9;
-@header-2016: spin(#399868, 20%);
-@accent-2016: #399868;
-@header-2017: #dd5d36;
-@accent-2017: #b53765;
-@header-2018: @accent-2018;
-@accent-2018: #1097c3;
-@header-2019: #4e174e;
-@accent-2019: #9a4a9a;
-@header-2020: #130f60;
-@accent-2020: #914ee3;
-@header-2021: #cf573f;
-@accent-2021: @header-2021;
-@header-2022: #cf573f;
-@accent-2022: @header-2022;
-
 .setup-year(@year, @accent, @header) {
   body[data-year="@{year}"] {
-    --accent: @accent;
-    --accent-spin: darken(saturate(spin(@accent, 60), 5%), 10%);
+    --accent: @header;
+    --accent-spin: @accent;
     --header: @header;
-    --header-dark: darken(@header, 8%);
   };
 }
 
-.setup-year(2013, @accent-2013, @header-2013);
-.setup-year(2014, @accent-2014, @header-2014);
-.setup-year(2015, @accent-2015, @header-2015);
-.setup-year(2016, @accent-2016, @header-2016);
-.setup-year(2017, @accent-2017, @header-2017);
-.setup-year(2018, @accent-2018, @header-2018);
-.setup-year(2019, @accent-2019, @header-2019);
-.setup-year(2020, @accent-2020, @header-2020);
-.setup-year(2021, @accent-2021, @header-2021);
-.setup-year(2022, @accent-2022, @header-2022);
+.setup-year(2013, @books-red, @books-gold);
+.setup-year(2014, @books-red, @books-gold);
+.setup-year(2015, @books-blue, @books-red);
+.setup-year(2016, @books-gold, @books-blue);
+.setup-year(2017, @books-red, @books-gold);
+.setup-year(2018, @books-blue, @books-red);
+.setup-year(2019, @books-gold, @books-blue);
+.setup-year(2020, @books-red, @books-gold);
+.setup-year(2021, @books-blue, @books-red);
+.setup-year(2022, @books-gold, @books-blue);
