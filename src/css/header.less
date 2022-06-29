@@ -80,6 +80,7 @@ header.hero {
     @media @mobile {
       margin-bottom: .2em;
       width: calc(100% - 70px);
+      min-width: 200px;
     }
   }
 
@@ -99,6 +100,7 @@ header.hero {
     }
     @media @mobile {
       width: calc(100% - 70px);
+      min-width: 200px;
     }
   }
 
@@ -153,11 +155,6 @@ header.hero {
     display: flex;
     flex-wrap: nowrap;
 
-    @media @mobile {
-      margin-left: -7px;
-      margin-right: -7px;
-    }
-
     @media @tablet-above {
       padding-top: 22px;
       display: block;
@@ -187,6 +184,7 @@ header.hero {
           margin-bottom: -8px;
           width: floor((100% / 9) - 1);
           margin-right: 1em;
+          padding: 8px;
         }
 
         @media @mobile-above {
@@ -214,32 +212,24 @@ header.hero {
         color: #000;
         // color: var(--accent);
         // border-top: 2px solid var(--accent);
-        // margin-top: -2px;
       }
     }
   }
 
-  // Sample tab layout on mobile.
+  // Scrollable tabs on smaller screens
   .years-container {
     @media @tablet {
-      margin-top: -2px;
-      // Padding to determine scrollable area
-      .years {
-        padding: 0px 200px 6px 12px;
-      }
-
       // Make scrollable
       overflow-x: scroll;
       overflow-y: hidden;
 
       // Fade the years on the right
+      mask-image: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0.3) 90%, rgba(0, 0, 0, 0));
       -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0.3) 90%, rgba(0, 0, 0, 0));
 
-      // Set label padding (it was collapsing)
-      input[type="checkbox"], input[type="radio"] {
-        & + label {
-          padding: 8px;
-        }
+      .years {
+        // Padding at the end of scrollable area
+        padding-right: 200px;
       }
     }
   }
