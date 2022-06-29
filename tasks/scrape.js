@@ -3,11 +3,11 @@ Scrape endpoints for additional book metadata, storing this as a CSV for upload 
 
 You must run this task with a year parameter, it doesn't run for all sheets:
 
-`grunt content catalog scrape --year=2021`
+`grunt content catalog scrape --year=2022`
 
 You can also specify a particular scraper to run:
 
-`grunt content catalog scrape --year=2021 --source=goodreads`
+`grunt content catalog scrape --year=2022 --source=goodreads`
 */
 
 var fetch = require("node-fetch");

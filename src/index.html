@@ -49,12 +49,14 @@
         </p>
 
         <!-- <h3>Filters</h3> -->
-        <fieldset class="years" aria-label="Select a year">
-          <% grunt.data.json.years.forEach(function(y) { %>
-          <input type="radio" name="year-radio" id="year-<%= y.year %>" value="<%= y.year %>" <%= y.current ? "checked=checked" : "" %>>
-          <label for="year-<%= y.year %>"><%= y.year %></label>
-          <% }); %>
-        </fieldset>
+        <div class="years-container">
+          <fieldset class="years" aria-label="Select a year">
+            <% grunt.data.json.years.forEach(function(y) { %>
+            <input type="radio" name="year-radio" id="year-<%= y.year %>" value="<%= y.year %>" <%= y.current ? "checked=checked" : "" %>>
+            <label for="year-<%= y.year %>"><%= y.year %></label>
+            <% }); %>
+          </fieldset>
+        </div>
       </div>
     </header>
 
