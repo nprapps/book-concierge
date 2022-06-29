@@ -78,14 +78,15 @@ header.hero {
       font-size: 48px;
     }
     @media @mobile {
-      width: calc(100% - 60px);
+      margin-bottom: .2em;
+      width: calc(100% - 70px);
     }
   }
 
   h2 {
-    font-size: 20px;
+    // font-size: 20px;
     margin: 0 0 .5em 0;
-
+    line-height: 0;
     img {
       max-width: 300px;
 
@@ -95,6 +96,9 @@ header.hero {
       @media @desktop-above {
         max-width: 400px;
       }
+    }
+    @media @mobile {
+      width: calc(100% - 70px);
     }
   }
 
