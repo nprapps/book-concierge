@@ -23,7 +23,6 @@ var setupGoogleAnalytics = function() {
       dimension6: window.PROJECT_ANALYTICS.secondaryTopics || [],
       dimension22: document.title
     });
-    // do not send pageview because we'll handle that virtually
   }
   ga("send", "pageview");
   googleAnalyticsAlreadyInitialized = true;
