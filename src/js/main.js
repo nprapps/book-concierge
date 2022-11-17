@@ -3,6 +3,7 @@ var debounce = require("./lib/debounce");
 var dot = require("./lib/dot");
 var track = require("./lib/tracking");
 require("./lazyLoading");
+require("./analytics");
 
 var channel = require("./pubsub");
 var bookService = require("./bookService");

@@ -1,25 +1,3 @@
-<!-- Google Analytics -->
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-<% if (json.project.embedded) { %>
-ga('create', 'UA-5828686-75', 'auto');
-<% } else { %>
-ga('create', 'UA-5828686-4', 'auto');
-<% } %>
-ga('set', {
-  dimension2: <%= JSON.stringify(json.project.analytics.topicIDs || []) %>,
-  dimension3: <%= JSON.stringify(json.project.analytics.primaryTopic || "News") %>,
-  dimension6: <%= JSON.stringify(json.project.analytics.secondaryTopics || []) %>,
-  dimension22: document.title
-});
-ga('send', 'pageview');
-</script>
-<!-- End Google Analytics -->
-
 <% if (!json.project.embedded) { %>
 <!-- Chartbeat bottom -->
 <script>
