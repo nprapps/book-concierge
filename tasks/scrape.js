@@ -12,6 +12,7 @@ You can also specify a particular scraper to run:
 
 var fetch = require("node-fetch");
 var cheerio = require("cheerio");
+var puppeteer = require("puppeteer");
 var csv = require("csv");
 var fs = require("fs").promises;
 var util = require("util");
@@ -106,6 +107,44 @@ var itunes = async function(books) {
 };
 
 /*
+Bookshop
+retrieve bookshop.org urls 
+*/
+var bookshop = async function(books) {
+  var output = {};
+  var endpoint = "https://bookshop.org/books/";
+  var suspicious = [];
+
+  for (var book of books) {
+    if (!book.isbn13) continue;
+    var browser = await puppeteer.launch({});
+    var page = await browser.newPage();
+    await wait(1000);
+    var url = new URL(endpoint);
+    var params = {
+      keywords: book.isbn13
+    };
+    for (var k in params) {
+      url.searchParams.set(k, params[k]);
+    }
+    console.log(`Searching for "${book.title}" on Bookshop.org...`);
+    try {
+      await page.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36");
+      await page.goto(url.toString());
+      var href = await page.$eval(".booklist-book a", element => element.href);
+      if (href && href.split("?")[0]) {
+        output[book.id] = href.split("?")[0];
+      }
+    } catch (err) {
+      console.log(`Unable to find ${book.title}.`, err.message);
+    }
+    await page.close()
+    await browser.close();
+  }
+  return output;
+}
+
+/*
 SEAMUS (DEPRECATED)
 different kind of scraper--finds links and excerpts
 this function relies on a seamus feature that no longer exists.
@@ -149,7 +188,7 @@ var scrape = async function(books, year, sources) {
   // call each scraper, passing in the set of books
   // call the Seamus scraper to get its particular metadata
   // update and output CSVs with the updated metadata
-  var scrapers = { goodreads, itunes };
+  var scrapers = { goodreads, itunes, bookshop };
   var results = {};
 
   sources = sources || Object.keys(scrapers);
@@ -166,7 +205,7 @@ var scrape = async function(books, year, sources) {
       id: book.id,
       isbn: book.isbn
     };
-    ["goodreads", "itunes"].forEach(function(f) {
+    ["goodreads", "itunes", "bookshop"].forEach(function(f) {
       if (results[f]) {
         row[f] = results[f][book.id];
       }

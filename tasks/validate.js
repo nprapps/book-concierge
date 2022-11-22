@@ -14,6 +14,7 @@ var checksum = function(filename, callback) {
 }
 
 module.exports = function(grunt) {
+  var yearOption = grunt.option("year");
 
   var header = title => console.log(`\n======== ${title} ========\n`);
 
@@ -96,11 +97,12 @@ module.exports = function(grunt) {
   };
 
   var links = async function() {
-    return grunt.data.json.links.every(function(link) {
-      var linked = grunt.data.shelf.some(b => b.id == link.id && b.year == link.year);
-      if (!linked) console.log(`Unreferenced link: ${link.source} on ${link.book} (${link.year}).`);
-      return linked;
-    });
+    // Are all links accounted for?
+    var unreferencedLinks = grunt.data.json.links.filter(link => !(grunt.data.shelf.some(b => b.id == link.id && b.year == link.year))) 
+      // Only find unreferenced links from the specified year 
+      .filter(link => yearOption ? link.year == yearOption : true);
+    unreferencedLinks.forEach(link => console.log(`Unreferenced link: ${link.source} on ${link.book} (${link.year}).`))
+    return !unreferencedLinks.length;
   };
 
   var validate = async function(tasks = null) {
