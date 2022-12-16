@@ -159,13 +159,13 @@ var bookshop = async function(books) {
 
   for (var book of books) {
     if (!book.isbn13) continue;
-    await wait(1000);
+    await wait(200);
     var url = new URL(baseUrl + book.isbn13);
     console.log(`Searching for "${book.title}" on Bookshop.org...`);
     try {
       var response = await fetch(url.toString(), { method: 'HEAD' });
       if (response.status == 200) {
-        output[book.id] = true;
+        output[book.id] = book.isbn13;
       }
     } catch (err) {
       console.log(`Unable to find ${book.title}.`, err.message);
@@ -187,7 +187,7 @@ var appleBooks = async function(books) {
 
   for (var book of books) {
     if (!book.isbn13) continue;
-    await wait(1000);
+    await wait(200);
     var url = new URL(baseUrl + book.isbn13);
     var params = {
       // NPR's affiliate ID
@@ -206,7 +206,7 @@ var appleBooks = async function(books) {
       // it might return a redirect to http://books.apple.com/
       // or an author page, like "https://books.apple.com/us/author/..."
       if (response.status == 302 && location.startsWith("https://books.apple.com/us/book/")) {
-        output[book.id] = true;
+        output[book.id] = book.isbn13;
       }
     } catch (err) {
       console.log(`Unable to find ${book.title}.`, err.message);
@@ -220,8 +220,8 @@ var scrape = async function(books, year, sources) {
   // call the Seamus scraper to get its particular metadata
   // update and output CSVs with the updated metadata
   var scrapers = {
-    goodreads,
-    itunes,
+    // goodreads,
+    // itunes,
     bookshop,
     appleBooks
   };
@@ -241,7 +241,8 @@ var scrape = async function(books, year, sources) {
       id: book.id,
       isbn: book.isbn
     };
-    ["goodreads", "itunes", "bookshop"].forEach(function(f) {
+    ["bookshop", "appleBooks"].forEach(function(f) {
+    // ["goodreads", "itunes", "bookshop", "appleBooks"].forEach(function(f) {
       if (results[f]) {
         row[f] = results[f][book.id];
       }
