@@ -54,58 +54,6 @@ var goodreads = async function(books) {
 };
 
 /*
-ITUNES
-retrieve IDs so we can link to a related book page on this service
-*/
-var itunes = async function(books) {
-  var output = {};
-  var endpoint = "https://itunes.apple.com/search";
-  var suspicious = [];
-  for (var book of books) {
-    await wait(2000);
-    var url = new URL(endpoint);
-    var surtitle = book.title.split(":")[0];
-    var params = {
-      term: `${surtitle} ${book.author}`,
-      country: "US",
-      media: "ebook",
-      attribute: "titleTerm",
-      explicit: "No"
-    };
-    for (var k in params) {
-      url.searchParams.set(k, params[k]);
-    }
-    console.log(`Searching for "${params.term}" on iTunes...`);
-    try {
-      var response = await fetch(url.toString());
-      var data = await response.json();
-    } catch (err) {
-      console.log(`Request to API failed: `, err.message);
-      continue;
-    }
-    var idMatcher = /id(\d+)/;
-    if (!data.resultCount) {
-      console.log(`No iTunes results found for "${params.term}"`);
-      continue;
-    }
-    var [ topResult ] = data.results;
-    var id = topResult.trackId;
-    // check the titles against each other to be sure
-    // ignore case, because style may vary
-    // may also want to check artistName in the future
-    var shortened = topResult.trackName.trim().split(/[:\(]/)[0].replace(/&amp;/g, "&");
-    if (shortened.toLowerCase() != surtitle.toLowerCase()) {
-      console.log(`Title mismatch for "${surtitle}": "${shortened}"`);
-      suspicious.push(([book, id]));
-    }
-    output[book.id] = id;
-  }
-  console.log(`Suspicious results: ${suspicious.length}`)
-  console.log(suspicious.map(([b, id]) => ` - ${b.title} - https://itunes.apple.com/us/book/id${id}`).join("\n"));
-  return output;
-};
-
-/*
 SEAMUS (DEPRECATED)
 different kind of scraper--finds links and excerpts
 this function relies on a seamus feature that no longer exists.
@@ -175,13 +123,13 @@ var bookshop = async function(books) {
 }
 
 /*
-Apple Books
+iTunes aka Apple Books
 Makes an HTTP GET request to check if an Apple Books page exists for a given ISBN.
 
 Books can be looked up via their ISBN:
   https://goto.applebooks.apple/US/__ISBN__?at=__AFFILIATE_ID__
 */
-var appleBooks = async function(books) {
+var itunes = async function(books) {
   var output = {};
   var baseUrl = "https://goto.applebooks.apple/US/";
 
@@ -219,7 +167,7 @@ var scrape = async function(books, year, sources) {
   // call each scraper, passing in the set of books
   // call the Seamus scraper to get its particular metadata
   // update and output CSVs with the updated metadata
-  var scrapers = { goodreads, appleBooks, bookshop };
+  var scrapers = { goodreads, itunes, bookshop };
   var results = {};
 
   sources = sources || Object.keys(scrapers);
@@ -236,7 +184,7 @@ var scrape = async function(books, year, sources) {
       id: book.id,
       isbn: book.isbn
     };
-    ["goodreads", "appleBooks", "bookshop"].forEach(function(f) {
+    ["goodreads", "itunes", "bookshop"].forEach(function(f) {
       if (results[f]) {
         row[f] = results[f][book.id];
       }
