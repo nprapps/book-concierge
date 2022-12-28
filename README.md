@@ -58,7 +58,7 @@ Common tasks that you may want to run include:
   * ``links`` - identifies orphan links (no book on the shelf matches its metadata)
 
 * ``amazon`` - downloads book metadata from Amazon
-* ``scrape`` - downloads book metadata from Goodreads and iTunes
+* ``scrape`` - downloads book metadata from Goodreads, iTunes and Bookshop
 * ``covers`` - downloads book covers
 
 #### Useful NPR-specific combinations of tasks:
@@ -70,7 +70,7 @@ Each of these tasks outputs a CSV in the `/temp/` folder in your project. Upload
 Neither of these tasks will return information for all of the books on the list. The Books team will need to fill in what's missing and validate what's returned.
 
 * ``grunt content catalog amazon --year=2022`` - Pull ISBN, cover and image information
-* ``grunt content catalog scrape --year=2022`` - Scrape book IDs for Goodreads and iTunes (run the `amazon` task first and link up the scratch sheets so you have the ISBNs to work with)
+* ``grunt content catalog scrape --year=2022`` - Scrape book IDs for Goodreads, iTunes and Bookshop (run the `amazon` task first and link up the scratch sheets so you have the ISBNs to work with)
 
 **Book covers**
 
@@ -142,6 +142,7 @@ The application expects to have access to a Google Doc with the text for the abo
   * ``seamus``
   * ``itunes``
   * ``goodreads``
+  * ``bookshop``
 
 Troubleshooting
 ---------------
