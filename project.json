@@ -29,5 +29,5 @@
     "secondaryTopics": ["Books", "Arts \u0026amp; Life"]
   },
   "embedded": false,
-  "production": true
+  "production": false
 }
