@@ -48,6 +48,10 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
     if (columnWidth > 728) {
         adSizeArray.push([728, 90]);
     }
+    // Only add 970x250 ad to the ad request if the column width is wide enough to fit that ad.
+    if (columnWidth > 970) {
+        adSizeArray.push([970, 250]);
+    }
     // value can be set to 'true' on testing servers. Must be set to 'false' on Prod
     var isStagingServer = 'false';
 
@@ -67,5 +71,22 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
         googletag.enableServices();
         googletag.display('ad-centerstage-wrap');
     });
+
+    googletag.cmd.push(function() {
+        googletag.defineSlot(adUnitString, adSizeArray, 'ad-secondary').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.pubads().collapseEmptyDivs();
+        googletag.pubads().setTargeting('ad_location_name', 'story_centerstage');
+        googletag.pubads().setTargeting('testserver', [isStagingServer]);
+        googletag.pubads().addEventListener('slotRenderEnded', function(event) {
+            // This class makes the "NPR thanks our sponsors" text visible only and only if an ad is returned in the request
+            if (!event.isEmpty) {
+                document.getElementById('ad-secondary').classList.add('has-sponsorship');
+            }
+        });
+        googletag.enableServices();
+        googletag.display('ad-secondary');
+    });
+
 // })
 </script>
