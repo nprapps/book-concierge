@@ -7,34 +7,49 @@
 @desktop-above: ~"(min-width: 1001px)";
 
 // Fonts
-@gotham: 'Gotham SSm', Helvetica, Arial, sans-serif;
-@knockout: 'Knockout 31 4r','Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+@lato: 'Lato', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+@sourceSansPro: 'Source Sans Pro', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+@gotham: @lato;
+@knockout: @sourceSansPro;
 @sans: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 @serif: Georgia, "Times New Roman", Times, serif;
 
+.lato() {
+  font-family: @lato;
+  font-weight: normal;
+  letter-spacing: 0.015em;
+}
 .gotham() {
-    font-family: @gotham;
-    font-weight: normal;
-    font-weight: 400;
+  .lato();
 }
 
 // Normal Knockout
+.sourceSansPro() {
+  font-family: @sourceSansPro;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
 .knockout() {
-    font-family: @knockout;
-    font-weight: normal;
+  .sourceSansPro();
 }
 
 // Knockout, uppercased
+.sourceSansPro-upper() {
+  .sourceSansPro();
+  text-transform: uppercase;
+}
 .knockout-upper() {
-    .knockout();
-    text-transform: uppercase;
+  .sourceSansPro-upper();
 }
 
 // Knockout for headings
+.sourceSansPro-header() {
+  .sourceSansPro-upper();
+  letter-spacing: 0.05em;
+  -webkit-font-smoothing: antialiased;
+}
 .knockout-header() {
-    .knockout-upper();
-    letter-spacing: 0.05em;
-    -webkit-font-smoothing: antialiased;
+  .sourceSansPro-header();
 }
 
 // colors
