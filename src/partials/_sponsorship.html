@@ -56,36 +56,23 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
     var isStagingServer = 'false';
 
     window.googletag = window.googletag || {cmd: []};
-    googletag.cmd.push(function() {
-        googletag.defineSlot(adUnitString, adSizeArray, 'ad-centerstage-wrap').addService(googletag.pubads());
-        googletag.pubads().enableSingleRequest();
-        googletag.pubads().collapseEmptyDivs();
-        googletag.pubads().setTargeting('ad_location_name', 'story_centerstage');
-        googletag.pubads().setTargeting('testserver', [isStagingServer]);
-        googletag.pubads().addEventListener('slotRenderEnded', function(event) {
-            // This class makes the "NPR thanks our sponsors" text visible only and only if an ad is returned in the request
-            if (!event.isEmpty) {
-                document.getElementById('ad-centerstage-wrap').classList.add('has-sponsorship');
-            }
-        });
-        googletag.enableServices();
-        googletag.display('ad-centerstage-wrap');
-    });
 
-    googletag.cmd.push(function() {
-        googletag.defineSlot(adUnitString, adSizeArray, 'ad-secondary').addService(googletag.pubads());
+    [ 'ad-centerstage-wrap', 'ad-secondary-wrap' ].forEach(function(adSlot) {
+      googletag.cmd.push(function() {
+        googletag.defineSlot(adUnitString, adSizeArray, adSlot).addService(googletag.pubads());
         googletag.pubads().enableSingleRequest();
         googletag.pubads().collapseEmptyDivs();
         googletag.pubads().setTargeting('ad_location_name', 'story_centerstage');
-        googletag.pubads().setTargeting('testserver', [isStagingServer]);
+        googletag.pubads().setTargeting('testserver', [ isStagingServer ]);
         googletag.pubads().addEventListener('slotRenderEnded', function(event) {
-            // This class makes the "NPR thanks our sponsors" text visible only and only if an ad is returned in the request
-            if (!event.isEmpty) {
-                document.getElementById('ad-secondary').classList.add('has-sponsorship');
-            }
+          // This class makes the "NPR thanks our sponsors" text visible only if an ad is returned in the request
+          if (!event.isEmpty) {
+            document.getElementById(adSlot).classList.add('has-sponsorship');
+          }
         });
         googletag.enableServices();
-        googletag.display('ad-secondary');
+        googletag.display(adSlot);
+      });
     });
 
 // })
