@@ -83,4 +83,10 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
     });
 
 // })
+  window.addEventListener('refreshAd', function() {
+    console.log("refreshAd")
+    window.googletag.cmd.push(() => {
+      window.googletag.pubads().refresh()
+    })
+  });
 </script>

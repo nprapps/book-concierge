@@ -26,6 +26,8 @@ hash.define({
   reset: Boolean
 });
 
+var refreshAd = new Event("refreshAd");
+
 /*
 
 State flow:
@@ -37,7 +39,7 @@ The hash is always the source of truth.
 
 var defaults = {
   view: "covers",
-  year: 2022
+  year: 2023
 };
 
 // hashes update filters (usually redundant) and render the main panel
@@ -90,6 +92,9 @@ channel.on("hashchange", async function(params, pastParams = {}) {
     var scrollToBook = !!pastParams.year;
     renderBook({ book, next, previous, back, hash, reviewers }, scrollToBook);
     document.body.setAttribute("data-mode", "book");
+
+    // trigger ad refresh
+    window.dispatchEvent(refreshAd);
   } else {
     // filtered view rendering
     document.body.classList.add("loading");
