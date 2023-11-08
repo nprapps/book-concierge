@@ -53,7 +53,7 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
         adSizeArray.push([970, 250]);
     }
     // value can be set to 'true' on testing servers. Must be set to 'false' on Prod
-    var isStagingServer = 'false';
+    var isStagingServer = 'true';
 
     window.googletag = window.googletag || {cmd: []};
     googletag.cmd.push(function() {
@@ -83,10 +83,18 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
     });
 
 // })
+  var adsRefreshed = 0;
   window.addEventListener('refreshAd', function() {
-    console.log("refreshAd")
-    window.googletag.cmd.push(() => {
-      window.googletag.pubads().refresh()
-    })
+    // TODO: does this need to be limited to every [x] clicks? otherwise i'm getting errors from pubads about throttling on their end
+    if (adsRefreshed == 4) {
+      console.log("refreshAd")
+      window.googletag.cmd.push(() => {
+        window.googletag.pubads().refresh()
+      });
+      adsRefreshed = 0;
+    } else {
+      adsRefreshed++;
+      console.log("don't refreshAd", adsRefreshed);
+    }
   });
 </script>

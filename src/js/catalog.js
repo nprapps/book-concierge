@@ -18,7 +18,11 @@ var renderBook = async function(data, scroll = false) {
   var h2 = $.one("h2", bookPanel);
   h2.focus();
   if (scroll) {
-    bookPanel.scrollIntoView();
+    // bookPanel.scrollIntoView();
+    console.log("scroll to ad slot");
+    var topAdSlot = $.one(".years-container");
+    console.log(topAdSlot);
+    topAdSlot.scrollIntoView();
   }
 };
 
