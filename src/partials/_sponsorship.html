@@ -83,18 +83,12 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
     });
 
 // })
-  var adsRefreshed = 0;
-  window.addEventListener('refreshAd', function() {
-    // TODO: does this need to be limited to every [x] clicks? otherwise i'm getting errors from pubads about throttling on their end
-    if (adsRefreshed == 4) {
-      console.log("refreshAd")
-      window.googletag.cmd.push(() => {
-        window.googletag.pubads().refresh()
-      });
-      adsRefreshed = 0;
-    } else {
-      adsRefreshed++;
-      console.log("don't refreshAd", adsRefreshed);
-    }
-  });
+
+  // refresh ads every 60 seconds
+  var refreshAd = setInterval(() => {
+    console.log("refreshAd")
+    window.googletag.cmd.push(() => {
+      window.googletag.pubads().refresh()
+    });
+  }, 60000);
 </script>

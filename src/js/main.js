@@ -26,8 +26,6 @@ hash.define({
   reset: Boolean
 });
 
-var refreshAd = new Event("refreshAd");
-
 /*
 
 State flow:
@@ -93,8 +91,6 @@ channel.on("hashchange", async function(params, pastParams = {}) {
     renderBook({ book, next, previous, back, hash, reviewers }, scrollToBook);
     document.body.setAttribute("data-mode", "book");
 
-    // trigger ad refresh
-    window.dispatchEvent(refreshAd);
   } else {
     // filtered view rendering
     document.body.classList.add("loading");
