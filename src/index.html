@@ -130,6 +130,6 @@
     </script>
     <script src="app.js" async></script>
     <%= t.include("partials/_analytics.html") %>
-    <%= t.include("partials/_sponsorship.html") %>
+    <%= t.include("partials/_sponsorship.html", { "production": json.project.production }) %>
   </body>
 </html>
