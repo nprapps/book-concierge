@@ -53,7 +53,7 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
         adSizeArray.push([970, 250]);
     }
     // value can be set to 'true' on testing servers. Must be set to 'false' on Prod
-    var isStagingServer = production ? false | true;
+    var isStagingServer = production ? false : true;
     // var isStagingServer = false;
 
     window.googletag = window.googletag || {cmd: []};
