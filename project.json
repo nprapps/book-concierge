@@ -10,7 +10,9 @@
     }
   },
   "styles": {
-    "src/css/seed.less": "build/style.css"
+    "src/css/seed.less": "build/style.css",
+    "src/css/Lato.css": "build/css/Lato.css",
+    "src/css/SourceSansPro.css": "build/css/SourceSansPro.css"
   },
   "scripts": {
     "src/js/main.js": "build/app.js"
