@@ -280,7 +280,7 @@ var flattenAmazon = function(result) {
     language: p("ItemInfo.ContentInfo.Languages.DisplayValues", []).map(d => d.DisplayValue)[0],
     published: new Date(p("ItemInfo.ContentInfo.PublicationDate.DisplayValue")).getFullYear(),
     released: new Date(p("ItemInfo.ProductInfo.ReleaseDate.DisplayValue")).getFullYear(),
-    pages: new Date(p("ItemInfo.ContentInfo.PagesCount.DisplayValue")),
+    pages: p("ItemInfo.ContentInfo.PagesCount.DisplayValue"),
     asin: result.ASIN,
     url: result.DetailPageURL
   };
