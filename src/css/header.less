@@ -155,7 +155,7 @@ header.hero {
     display: flex;
     flex-wrap: nowrap;
 
-    @media @tablet-above {
+    @media @year-scroll-above {
       padding-top: 22px;
       display: block;
     }
@@ -179,7 +179,7 @@ header.hero {
         text-align: center;
         font-size: 11px;
 
-        @media @tablet {
+        @media @year-scroll {
           display: inline-block;
           margin-bottom: -8px;
           width: floor((100% / 9) - 1);
@@ -191,7 +191,7 @@ header.hero {
           font-size: 14px;
         }
 
-        @media @tablet-above {
+        @media @year-scroll-above {
           padding: 10px 15px;
         }
       }
@@ -218,7 +218,7 @@ header.hero {
 
   // Scrollable tabs on smaller screens
   .years-container {
-    @media @tablet {
+    @media @year-scroll {
       // Make scrollable
       overflow-x: scroll;
       overflow-y: hidden;
