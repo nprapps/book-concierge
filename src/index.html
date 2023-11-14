@@ -119,7 +119,7 @@
     </main>
 
     <%= t.include("partials/_footer.html", { content: t.include("_footer.html") }) %>
-
+    <%= t.include("partials/_schema.html", { data: json.year2023 }) %>
     <script>
     window.conciergeData = {
       reviewers: <%= JSON.stringify(json.reviewers) %>
