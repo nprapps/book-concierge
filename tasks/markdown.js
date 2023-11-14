@@ -28,7 +28,8 @@ module.exports = function(grunt) {
     var render = grunt.template.renderMarkdown = function(input) {
       input = typo.widont(typo.smartypants(input))
         .replace(/&#8211;/g, "&mdash;")
-        .replace(/([’']) ([”"])/g, "$1&nbsp;$2");
+        .replace(/([’']) ([”"])/g, "$1&nbsp;$2")
+        .replace("s&#8217;$2 ","s&rsquo; ");
         
       var parsed = reader.parse(input);
 
