@@ -1,35 +1,38 @@
-#ad-centerstage-wrap {
-    max-width: 800px;
+#ad-centerstage-wrap,
+#ad-secondary-wrap {
+    max-width: 970px;
     margin: 0 auto;
     text-align: center;
-}
-#ad-centerstage-wrap iframe {
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-}
 
-#ad-centerstage-wrap.has-sponsorship {
-  &:before {
-      font-size: 14px;
+    iframe {
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+  }
+    
+  &.has-sponsorship {
+    &:before {
+      .lato();
+      font-size: 13px;
       content: "NPR thanks our sponsors";
       display: block;
       text-align: center;
       line-height: 1.3;
       font-weight: 600;
-      font-family: 'Gotham SSm',Helvetica,Arial,sans-serif;
       -webkit-font-smoothing: antialiased;
       color: #555;
       padding: 15px;
-  }
-
-  &:after {
-      padding-top: 25px;
-      content: "";
-      display: block;
+    }
+  
+    &:after {
+        padding-top: 25px;
+        content: "";
+        display: block;
+    }
   }
 }
 
-#ad-centerstage-wrap.has-sponsorship + main.concierge {
-  border-top: 1px solid #eee;
+#ad-centerstage-wrap.has-sponsorship + main.concierge,
+main.concierge + #ad-secondary-wrap.has-sponsorship {
+  border-top: 1px solid #fff;
 }
