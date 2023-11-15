@@ -74,12 +74,10 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
       googletag.pubads().addEventListener('slotRenderEnded', function(event) {
         // This class makes the "NPR thanks our sponsors" text visible only and only if an ad is returned in the request
         var slotElement = document.getElementById(`${event.slot.getSlotElementId()}`);
-        console.log(event);
+        // console.log(event);
         if (!event.isEmpty) {
-          console.log("add sponsorship header");
           slotElement.classList.add('has-sponsorship');
         } else {
-          console.log("remove sponsorship header");
           // slotElement.classList.remove('has-sponsorship')
         }
       });
@@ -92,7 +90,6 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
 
   // refresh ads every 60 seconds
   var refreshAd = setInterval(() => {
-    console.log("refreshAd")
     window.googletag.cmd.push(() => {
       window.googletag.pubads().refresh()
     });
