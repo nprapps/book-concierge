@@ -1,4 +1,6 @@
 <script>
+var isProduction = <%= production %>;
+
 var googletag = googletag || {};
 googletag.cmd = googletag.cmd || [];
 (function() {
@@ -33,8 +35,8 @@ const lastNode = document.getElementsByTagName('script')[0];
 lastNode.parentNode.insertBefore(geoEdge, lastNode);
 
 // This code does not necessarily need to be wrapped in a DOMContentLoaded event
-// if the divs being referenced here are guaranteed to be in the DOM at the time its executed
-// main.concierge and #ad-centerstage-wrap
+// if the divs being referenced here are guaranteed to be in the DOM at the time it's executed
+// main.concierge and #ad-centerstage-wrap and #ad-secondary-wrap
 // window.addEventListener('DOMContentLoaded', function() {
     var adSizeArray = [[320, 50]];
     var adUnitString = '/6735/NPR.APPS/arts___life_books/book_concierge';
@@ -48,24 +50,48 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
     if (columnWidth > 728) {
         adSizeArray.push([728, 90]);
     }
+    // Only add 970x250 ad to the ad request if the column width is wide enough to fit that ad.
+    if (columnWidth > 970) {
+        adSizeArray.push([970, 250]);
+    }
     // value can be set to 'true' on testing servers. Must be set to 'false' on Prod
-    var isStagingServer = 'false';
+    var isStagingServer = isProduction ? false : true;
+    // var isStagingServer = false;
 
     window.googletag = window.googletag || {cmd: []};
     googletag.cmd.push(function() {
-        googletag.defineSlot(adUnitString, adSizeArray, 'ad-centerstage-wrap').addService(googletag.pubads());
-        googletag.pubads().enableSingleRequest();
-        googletag.pubads().collapseEmptyDivs();
-        googletag.pubads().setTargeting('ad_location_name', 'story_centerstage');
-        googletag.pubads().setTargeting('testserver', [isStagingServer]);
-        googletag.pubads().addEventListener('slotRenderEnded', function(event) {
-            // This class makes the "NPR thanks our sponsors" text visible only and only if an ad is returned in the request
-            if (!event.isEmpty) {
-                document.getElementById('ad-centerstage-wrap').classList.add('has-sponsorship');
-            }
-        });
-        googletag.enableServices();
-        googletag.display('ad-centerstage-wrap');
+      googletag.pubads().enableSingleRequest();
+      googletag.pubads().collapseEmptyDivs();
+      googletag.pubads().setTargeting('testserver', [isStagingServer]);
+
+      googletag.defineSlot(adUnitString, adSizeArray, 'ad-centerstage-wrap')
+        .setTargeting('ad_location_name', 'story_centerstage')
+        .addService(googletag.pubads());
+      googletag.defineSlot(adUnitString, adSizeArray, 'ad-secondary-wrap')
+        .setTargeting('ad_location_name', 'secondary')
+        .addService(googletag.pubads());
+
+      googletag.pubads().addEventListener('slotRenderEnded', function(event) {
+        // This class makes the "NPR thanks our sponsors" text visible only and only if an ad is returned in the request
+        var slotElement = document.getElementById(`${event.slot.getSlotElementId()}`);
+        // console.log(event);
+        if (!event.isEmpty) {
+          slotElement.classList.add('has-sponsorship');
+        } else {
+          // slotElement.classList.remove('has-sponsorship')
+        }
+      });
+      googletag.enableServices();
+      googletag.display('ad-centerstage-wrap');
+      googletag.display('ad-secondary-wrap');
     });
+
 // })
+
+  // refresh ads every 60 seconds
+  var refreshAd = setInterval(() => {
+    window.googletag.cmd.push(() => {
+      window.googletag.pubads().refresh()
+    });
+  }, 60000);
 </script>

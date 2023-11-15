@@ -36,7 +36,7 @@ header.hero {
     color: @books-offwhite;
     text-decoration: none;
     font-size: 16px;
-    .gotham();
+    .lato();
     display: inline-block;
     margin-bottom: 1em;
 
@@ -53,7 +53,7 @@ header.hero {
 
   h1, h2 {
     color: white;
-    .gotham();
+    .lato();
     margin: 0;
   }
 
@@ -105,7 +105,7 @@ header.hero {
   }
 
   p {
-    .gotham();
+    .lato();
     font-size: 12px;
     margin: 0 0 1.5em 0;
 
@@ -155,7 +155,7 @@ header.hero {
     display: flex;
     flex-wrap: nowrap;
 
-    @media @tablet-above {
+    @media @year-scroll-above {
       padding-top: 22px;
       display: block;
     }
@@ -168,7 +168,7 @@ header.hero {
       .sr-only;
 
       & + label {
-        .gotham();
+        .lato();
         position: relative;
         cursor: pointer;
         text-transform: uppercase;
@@ -179,7 +179,7 @@ header.hero {
         text-align: center;
         font-size: 11px;
 
-        @media @tablet {
+        @media @year-scroll {
           display: inline-block;
           margin-bottom: -8px;
           width: floor((100% / 9) - 1);
@@ -191,7 +191,7 @@ header.hero {
           font-size: 14px;
         }
 
-        @media @tablet-above {
+        @media @year-scroll-above {
           padding: 10px 15px;
         }
       }
@@ -218,7 +218,7 @@ header.hero {
 
   // Scrollable tabs on smaller screens
   .years-container {
-    @media @tablet {
+    @media @year-scroll {
       // Make scrollable
       overflow-x: scroll;
       overflow-y: hidden;

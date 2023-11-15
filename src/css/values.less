@@ -6,6 +6,10 @@
 @desktop: ~"(max-width: 1000px)";
 @desktop-above: ~"(min-width: 1001px)";
 
+// Year scroll width fix
+@year-scroll: ~"(max-width: 830px)";
+@year-scroll-above: ~"(min-width: 830.1px)";
+
 // Fonts
 @lato: 'Lato', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 @sourceSansPro: 'Source Sans Pro', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
@@ -17,12 +21,11 @@
 .lato() {
   font-family: @lato;
   font-weight: normal;
-  letter-spacing: 0.025em;
+  letter-spacing: 0.015em;
 }
 .gotham() {
   .lato();
 }
-
 
 // Normal Knockout
 .sourceSansPro() {
@@ -52,11 +55,6 @@
 .knockout-header() {
   .sourceSansPro-header();
 }
-
-.sans-serif() {
-  font-family: @sans;
-}
-
 
 // colors
 @accent-dark: #4774CC;
