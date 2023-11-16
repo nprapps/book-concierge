@@ -1,0 +1,3 @@
+<script type="application/ld+json">
+  {"@context": "https://schema.org","@type": "ItemList","itemListElement": [<% data.forEach(function(book, i) { %>{"@type": "ListItem","item": {"@type": "Book","name": <%= JSON.stringify(book.title) %>,"author": <%= JSON.stringify(book.author) %>}}<% if (i < (data.length - 1)) { %>,<% } %><% }); %>]}
+</script>
