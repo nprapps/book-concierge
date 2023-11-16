@@ -1,6 +1,4 @@
 <script>
-var isProduction = <%= production %>;
-
 var googletag = googletag || {};
 googletag.cmd = googletag.cmd || [];
 (function() {
@@ -40,6 +38,7 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
 // window.addEventListener('DOMContentLoaded', function() {
     var adSizeArray = [[300, 50]];
     var adUnitString = '/6735/NPR.APPS/arts___life_books/book_concierge';
+    var storyID = '1211179894';
 
     var mainColumn = document.querySelector('main.concierge');
     var columnWidth = window.innerWidth;
@@ -55,6 +54,7 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
         adSizeArray.push([970, 250]);
     }
     // value can be set to 'true' on testing servers. Must be set to 'false' on Prod
+    var isProduction = <%= production %>;
     var isStagingServer = isProduction ? false : true;
     // var isStagingServer = false;
 
@@ -63,7 +63,7 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
       googletag.pubads().enableSingleRequest();
       googletag.pubads().collapseEmptyDivs();
       googletag.pubads().setTargeting('testserver', `${isStagingServer}`);
-      googletag.pubads().setTargeting('storyId', '1211179894');
+      googletag.pubads().setTargeting('storyId', storyID);
 
       googletag.defineSlot(adUnitString, adSizeArray, 'ad-centerstage-wrap')
         .setTargeting('ad_location_name', 'story_centerstage')

@@ -19,9 +19,9 @@ var renderBook = async function(data, scroll = false) {
   h2.focus();
   if (scroll) {
     // bookPanel.scrollIntoView();
-    console.log("scroll to ad slot");
+    // console.log("scroll to ad slot");
     var topAdSlot = $.one(".years-container");
-    console.log(topAdSlot);
+    // console.log(topAdSlot);
     topAdSlot.scrollIntoView();
   }
 };
