@@ -36,7 +36,7 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
 // if the divs being referenced here are guaranteed to be in the DOM at the time it's executed
 // main.concierge and #ad-centerstage-wrap and #ad-secondary-wrap
 // window.addEventListener('DOMContentLoaded', function() {
-    var adSizeArray = [[300, 50]];
+    var adSizeArray = [[320, 50], [300, 250]];
     var adUnitString = '/6735/NPR.APPS/arts___life_books/book_concierge';
     var storyID = '1211179894';
 
@@ -60,6 +60,12 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
 
     window.googletag = window.googletag || {cmd: []};
     googletag.cmd.push(function() {
+      googletag.pubads().enableLazyLoad({
+        fetchMarginPercent: 100, // fetch and render ads within this % of viewport
+        renderMarginPercent: 100,
+        mobileScaling: 1, // Same on mobile.
+      });
+
       googletag.defineSlot(adUnitString, adSizeArray, 'ad-centerstage-wrap')
         .setTargeting('ad_location_name', 'story_centerstage')
         .addService(googletag.pubads());
@@ -70,11 +76,19 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
       googletag.pubads().addEventListener('slotRenderEnded', function(event) {
         // This class makes the "NPR thanks our sponsors" text visible only and only if an ad is returned in the request
         var slotElement = document.getElementById(`${event.slot.getSlotElementId()}`);
+        console.log(event);
         if (!event.isEmpty) {
           slotElement.classList.add('has-sponsorship');
         } else {
           slotElement.classList.remove('has-sponsorship')
-        }        
+        }
+
+        // refresh ads every 60 seconds
+        setTimeout(() => {
+          googletag.cmd.push(()=>{
+            googletag.pubads().refresh([event.slot])
+          });
+        }, 60000)
       });
 
       googletag.pubads().setTargeting('testserver', `${isStagingServer}`);
@@ -88,11 +102,4 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
     });
 
 // })
-
-  // refresh ads every 60 seconds
-  var refreshAd = setInterval(() => {
-    window.googletag.cmd.push(() => {
-      window.googletag.pubads().refresh()
-    });
-  }, 60000);
 </script>
