@@ -37,7 +37,7 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
 // main.concierge and #ad-centerstage-wrap and #ad-secondary-wrap
 // window.addEventListener('DOMContentLoaded', function() {
     var adSizeArray = [[320, 50], [300, 250]];
-    var adUnitString = '/6735/NPR.APPS/arts___life_books/book_concierge';
+    var adUnitString = '/6735/n6735.NPR/arts___life_books/book_concierge';
     var storyID = '1211179894';
 
     var mainColumn = document.querySelector('main.concierge');
@@ -76,7 +76,6 @@ lastNode.parentNode.insertBefore(geoEdge, lastNode);
       googletag.pubads().addEventListener('slotRenderEnded', function(event) {
         // This class makes the "NPR thanks our sponsors" text visible only and only if an ad is returned in the request
         var slotElement = document.getElementById(`${event.slot.getSlotElementId()}`);
-        console.log(event);
         if (!event.isEmpty) {
           slotElement.classList.add('has-sponsorship');
         } else {
