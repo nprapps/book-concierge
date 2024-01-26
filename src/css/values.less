@@ -11,13 +11,32 @@
 @year-scroll-above: ~"(min-width: 830.1px)";
 
 // Fonts
-@nprSans: 'NPRSans', @sans;
-@sans: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+@sans: 'NPRSans', @sans-base;
+@serif: 'NPRSerif', @serif-base;
+@condensed: 'Source Sans Pro', @sans-base;
 
-.nprSans() {
-  font-family: @nprSans;
+@sans-base: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+@serif-base: Georgia, "Times New Roman", Times, serif;
+
+.sans() {
+  font-family: @sans;
   font-weight: normal;
   letter-spacing: 0.01em;
+}
+
+.serif() {
+  font-family: @serif;
+  font-weight: normal;
+  font-kerning: normal;
+  letter-spacing: 0.02em;
+}
+
+.sans-header() {
+  .sans();
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
 }
 
 // colors

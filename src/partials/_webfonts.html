@@ -1,20 +1,20 @@
 <!-- webfonts -->
 <script>
 /*
- * Copyright 2013 Small Batch, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
+  * Copyright 2013 Small Batch, Inc.
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+  * use this file except in compliance with the License. You may obtain a copy of
+  * the License at
+  *
+  * http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+  * License for the specific language governing permissions and limitations under
+  * the License.
+  */
 ;(function(window,document,undefined){
 var j=!0,k=null,l=!1;function p(a){return function(){return this[a]}}var aa=this;function q(a,b){var c=a.split("."),d=aa;!(c[0]in d)&&d.execScript&&d.execScript("var "+c[0]);for(var e;c.length&&(e=c.shift());)!c.length&&void 0!==b?d[e]=b:d=d[e]?d[e]:d[e]={}}function ba(a,b,c){return a.call.apply(a.bind,arguments)}
 function ca(a,b,c){if(!a)throw Error();if(2<arguments.length){var d=Array.prototype.slice.call(arguments,2);return function(){var c=Array.prototype.slice.call(arguments);Array.prototype.unshift.apply(c,d);return a.apply(b,c)}}return function(){return a.apply(b,arguments)}}function s(a,b,c){s=Function.prototype.bind&&-1!=Function.prototype.bind.toString().indexOf("native code")?ba:ca;return s.apply(k,arguments)}var da=Date.now||function(){return+new Date};function ea(a,b){this.G=a;this.u=b||a;this.z=this.u.document}ea.prototype.createElement=function(a,b,c){a=this.z.createElement(a);if(b)for(var d in b)b.hasOwnProperty(d)&&("style"==d?a.style.cssText=b[d]:a.setAttribute(d,b[d]));c&&a.appendChild(this.z.createTextNode(c));return a};function fa(a,b,c){a=a.z.getElementsByTagName(b)[0];a||(a=document.documentElement);a&&a.lastChild&&a.insertBefore(c,a.lastChild)}
@@ -50,10 +50,12 @@ $.prototype.v=function(a,b){var c=this.d.id,d=this.d,e=this.c.u,f=this;c?(e.__we
 WebFont.load({
   custom: {
     families: [
-      'NPRSans:n4,n9,i4,i9'
+      'NPRSans:n4,n9,i4,i9',
+      'NPRSerif:n4,n7,i4,i7'
     ],
     urls: [
-      'https://s.npr.org/templates/css/fonts/NPRSans.css'
+      'https://s.npr.org/templates/css/fonts/NPRSans.css',
+      'https://s.npr.org/templates/css/fonts/NPRSerif.css'
     ]
   },
   timeout: 10000
