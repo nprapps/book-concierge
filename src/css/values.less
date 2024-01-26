@@ -1,5 +1,3 @@
-@import "NPRSans";
-
 // Media queries
 @mobile: ~"(max-width: 600px)";
 @mobile-above: ~"(min-width: 601px)";
@@ -13,53 +11,13 @@
 @year-scroll-above: ~"(min-width: 830.1px)";
 
 // Fonts
-@nprSans: 'NPRSans', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-@sourceSansPro: @nprSans;
-@lato: @nprSans;
-@gotham: @nprSans;
-@knockout: @sourceSansPro;
+@nprSans: 'NPRSans', @sans;
 @sans: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-@serif: Georgia, "Times New Roman", Times, serif;
 
 .nprSans() {
   font-family: @nprSans;
   font-weight: normal;
   letter-spacing: 0.01em;
-}
-.lato() {
-  .nprSans();
-}
-.gotham() {
-  .nprSans();
-}
-
-// Normal Knockout
-.sourceSansPro() {
-  font-family: @sourceSansPro;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-}
-.knockout() {
-  .sourceSansPro();
-}
-
-// Knockout, uppercased
-.sourceSansPro-upper() {
-  .sourceSansPro();
-  text-transform: uppercase;
-}
-.knockout-upper() {
-  .sourceSansPro-upper();
-}
-
-// Knockout for headings
-.sourceSansPro-header() {
-  .sourceSansPro-upper();
-  letter-spacing: 0.05em;
-  -webkit-font-smoothing: antialiased;
-}
-.knockout-header() {
-  .sourceSansPro-header();
 }
 
 // colors
