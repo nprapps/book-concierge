@@ -10,6 +10,7 @@ var setupGoogleAnalytics = function() {
 	{
 		var gtagID = "G-XK44GJHVBE" 
 	}
+
   // Bail early if opted out of Performance and Analytics consent groups
   if (!DataConsent.hasConsentedTo(DataConsent.PERFORMANCE_AND_ANALYTICS)) return;
 
@@ -21,7 +22,7 @@ var setupGoogleAnalytics = function() {
 
   var script_embed = document.createElement("script")
 
-  script_embed.innerHTML = "window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', '" + gtagID + "');"
+  script_embed.innerHTML = "window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', '" + gtagID + "', { 'send_page_view': false });"
 
   document.head.append(script, script_embed)
 
@@ -45,8 +46,7 @@ if (window.top !== window) {
         customData["dimension1"] = parentUrl;
         customData["dimension2"] = parentHostname;
         customData["dimension3"] = initialWidth;
-		gtag('config', gtagID, {'custom_map': {'dimension1': 'parentUrl', 'dimension2': 'parentHostname', 'dimension3': 'initialWidth'}});
-		gtag('event', 'page_view', customData)
+		// gtag('config', gtagID, {'custom_map': {'dimension1': 'parentUrl', 'dimension2': 'parentHostname', 'dimension3': 'initialWidth'}});
 	} else { 
 
 		// Secondary topics
@@ -76,7 +76,7 @@ if (window.top !== window) {
 		customData["dimension22"] = document.title;
 	
 	// // gtag('set', 'send_page_view', false);
-    gtag('config', gtagID, {'custom_map': {'dimension2': '', 'dimension3': '', 'dimension6': '', 'dimension22': ''}});
+    // gtag('config', gtagID, {'custom_map': {'dimension2': '', 'dimension3': '', 'dimension6': '', 'dimension22': ''}});
 	}
 
     gtag('event', 'page_view', customData)
@@ -84,8 +84,26 @@ if (window.top !== window) {
 }
 
 // Add GA initialization to window.onload
-var oldOnload = window.onload;
-window.onload = (typeof window.onload != 'function') ? setupGoogleAnalytics : function() { oldOnload(); setupGoogleAnalytics(); };
+// var oldOnload = window.onload;
+// window.onload = (typeof window.onload != 'function') ? setupGoogleAnalytics() : function() { oldOnload(); setupGoogleAnalytics(); };
+
+function addLoadEvent(func) {
+	var oldOnLoad = window.onload;
+	if (typeof window.onload != 'function') {
+		window.onload = func;
+	} else {
+		window.onload = function() {
+			if (oldOnLoad) {
+				oldOnLoad();
+			}
+			func();
+		}
+	}
+}
+
+addLoadEvent(setupGoogleAnalytics);
+
+
 
 // Listen for DataConsentChanged event 
 document.addEventListener('npr:DataConsentChanged', () => {
