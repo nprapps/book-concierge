@@ -271,12 +271,13 @@ var prop = function(target, key, fallback) {
 
 var flattenAmazon = function(result) {
   var p = prop.bind(null, result);
+
   return {
     title: p("ItemInfo.Title.DisplayValue"),
     isbn: p("ItemInfo.ExternalIds.ISBNs.DisplayValues", [])[0],
     image: p("Images.Primary.Large.URL"),
     author: p("ItemInfo.ByLineInfo.Contributors", []).map(d => d.Name).join("; "),
-    publisher: p("ItemInfo.ByLineInfo.Brand.DisplayValue") || p("ByLineInfo.Manufacturer.DisplayValue"),
+    publisher: p("ItemInfo.ByLineInfo.Brand.DisplayValue") || p("ItemInfo.ByLineInfo.Manufacturer.DisplayValue"),
     language: p("ItemInfo.ContentInfo.Languages.DisplayValues", []).map(d => d.DisplayValue)[0],
     published: new Date(p("ItemInfo.ContentInfo.PublicationDate.DisplayValue")).getFullYear(),
     released: new Date(p("ItemInfo.ProductInfo.ReleaseDate.DisplayValue")).getFullYear(),
