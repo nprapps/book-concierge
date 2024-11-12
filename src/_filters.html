@@ -3,6 +3,15 @@
   <p class="chatter">
     <%= json.copy.chatter %>
   </p>
+
+  <div class="years-container">
+    <select class="years" aria-label="Select a year">
+      <% grunt.data.json.years.forEach(function(y) { %>
+      <option value="<%= y.year %>" <%= y.current ? "selected" : "" %>><%= y.year %></option>
+      <% }); %>
+    </select>
+  </div>
+  
   <%
     // initialize tags
     var tags = json.tags.map(t => t.tag);

@@ -3,7 +3,7 @@ var track = require("./lib/tracking");
 
 var channel = require("./pubsub");
 
-var yearFilters = $.one("fieldset.years");
+var yearFilters = $.one("select.years");
 var tagFilters = $.one("fieldset.tags");
 var viewToggle = $.one(".view-controls");
 var fabSelect = $.one(".fab-form .tags");
@@ -11,8 +11,7 @@ var fabCount = $.one(".fab-count");
 var fabClear = $.one(".fab-button.clear");
 
 var getFilters = function() {
-  var years = $(".years input:checked").map(el => el.value * 1);
-  var year = years.pop();
+  var year = yearFilters.value;
   var tags = $(".tags input:checked", tagFilters).map(el => el.value);
   var view = $.one(".view-controls input:checked").value;
 
@@ -24,9 +23,7 @@ var setFilters = function(state) {
 
   // update form
   if (year) {
-    $("input", yearFilters).forEach(
-      input => (input.checked = input.value * 1 == year)
-    );
+    yearFilters.value = year;
   }
   if (tags) {
     fabCount.innerHTML = tags.length;
