@@ -147,6 +147,35 @@ header.hero {
     }
   }
 
+  .outbound {
+    list-style-type: none;
+    padding: 10px 0 0 0;
+    margin: 25px 0 0 0;
+    border-top: 1px solid fade(white, 40%);
+
+    @media @desktop-above {
+      max-width: 450px;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    > li {
+      display: inline-block;
+      font-size: 13px;
+
+      + li { margin-left: 15px; }
+
+      a, a:link, a:visited {
+        color: fade(#fff, 75%);
+        text-decoration: none;
+      }
+      a:hover, a:active, a:focus {
+        color: fade(white, 55%);
+      }
+    }
+  }
+
   // years in the header
   fieldset {
     border: none;
