@@ -4,10 +4,10 @@ header.hero {
   transition: background-color .3s linear;
   color: white;
   position: relative;
-  padding: 20px 20px 0 20px;
+  padding: 20px 20px 15px 20px;
 
   @media @tablet-above {
-    padding: 40px 40px 0 40px;
+    padding: 40px 40px 20px 40px;
 
     background-image: url(./assets/synced/illo-character-solo-2023.png);
     background-size: 200px;
@@ -105,15 +105,11 @@ header.hero {
   }
 
   p {
-    .sans();
     font-size: 12px;
     margin: 0 0 1.5em 0;
 
     @media @mobile-above {
       font-size: 13px;
-    }
-
-    &.bylines {
     }
 
     &.about-link {
@@ -147,89 +143,31 @@ header.hero {
     }
   }
 
-  // years in the header
-  fieldset {
-    border: none;
-    padding: 0 0 6px 0;
-    clear: both;
-    display: flex;
-    flex-wrap: nowrap;
+  .outbound {
+    list-style-type: none;
+    padding: 10px 0 0 0;
+    margin: 25px 0 0 0;
+    border-top: 1px solid fade(white, 40%);
 
-    @media @year-scroll-above {
-      padding-top: 22px;
-      display: block;
+    @media @desktop-above {
+      max-width: 450px;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    .loading & {
-      pointer-events: none;
-    }
+    > li {
+      display: inline-block;
+      font-size: 13px;
 
-    input[type="checkbox"], input[type="radio"] {
-      .sr-only;
+      + li { margin-left: 15px; }
 
-      & + label {
-        .sans();
-        position: relative;
-        cursor: pointer;
-        text-transform: uppercase;
-        color: #fff;
-        padding: 8px 0;
-        border-top-left-radius: 4px;
-        border-top-right-radius: 4px;
-        text-align: center;
-        font-size: 11px;
-
-        @media @year-scroll {
-          display: inline-block;
-          margin-bottom: -8px;
-          width: floor((100% / 9) - 1);
-          margin-right: 1em;
-          padding: 8px;
-        }
-
-        @media @mobile-above {
-          font-size: 14px;
-        }
-
-        @media @year-scroll-above {
-          padding: 10px 15px;
-        }
+      a, a:link, a:visited {
+        color: fade(#fff, 75%);
+        text-decoration: none;
       }
-
-      &:hover + label,
-      &:focus + label {
-        z-index: 999;
-        background: fade(@books-offwhite, 30%);
-      }
-
-      &:focus + label {
-        // text-decoration: underline;
-      }
-
-      &:checked + label {
-        background-color: @books-offwhite;
-        font-weight: bold;
-        color: #000;
-        // color: var(--accent);
-        // border-top: 2px solid var(--accent);
-      }
-    }
-  }
-
-  // Scrollable tabs on smaller screens
-  .years-container {
-    @media @year-scroll {
-      // Make scrollable
-      overflow-x: scroll;
-      overflow-y: hidden;
-
-      // Fade the years on the right
-      mask-image: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0.3) 90%, rgba(0, 0, 0, 0));
-      -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0.3) 90%, rgba(0, 0, 0, 0));
-
-      .years {
-        // Padding at the end of scrollable area
-        padding-right: 200px;
+      a:hover, a:active, a:focus {
+        color: fade(white, 55%);
       }
     }
   }

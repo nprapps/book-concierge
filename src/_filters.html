@@ -5,7 +5,8 @@
   </p>
 
   <div class="years-container">
-    <select class="years" aria-label="Select a year">
+    <label for="years">First, select a year</label>
+    <select class="years" name="years" aria-label="Select a year">
       <% grunt.data.json.years.forEach(function(y) { %>
       <option value="<%= y.year %>" <%= y.current ? "selected" : "" %>><%= y.year %></option>
       <% }); %>
@@ -17,6 +18,7 @@
     var tags = json.tags.map(t => t.tag);
     var dashify = t => t.replace(/\s+/g, "-");
   %>
+  <label for="tags">Then select your filters</label>
   <fieldset class="tags" aria-label="Select tags">
     <input type="checkbox" id="tag-staff-picks" value="staff picks">
     <label for="tag-staff-picks">Staff Picks</label>
