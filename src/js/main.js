@@ -37,7 +37,7 @@ The hash is always the source of truth.
 
 var defaults = {
   view: "covers",
-  year: 2023
+  year: 2024
 };
 
 // hashes update filters (usually redundant) and render the main panel

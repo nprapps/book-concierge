@@ -43,26 +43,29 @@
         <% if (json.copy.bylines) { %>
           <p class="bylines"><%= json.copy.bylines %></p>
         <% } %>
-
-        <p class="about-link">
-          <a href="about.html">About</a>
-        </p>
+        <ul class="outbound">
+          <li><a href="about.html">About Books We Love</a></li>
+          <li><a href="https://www.npr.org/podcasts/510364/daily-books">Book of the Day Podcast</a></li>
+          <li><a href="https://www.npr.org/newsletter/books">Newsletter</a></li>
+        </ul>
 
         <!-- <h3>Filters</h3> -->
-        <div class="years-container">
-          <fieldset class="years" aria-label="Select a year">
-            <% grunt.data.json.years.forEach(function(y) { %>
-            <input type="radio" name="year-radio" id="year-<%= y.year %>" value="<%= y.year %>" <%= y.current ? "checked=checked" : "" %>>
-            <label for="year-<%= y.year %>"><%= y.year %></label>
-            <% }); %>
-          </fieldset>
-        </div>
-      </div>
     </header>
 
     <div id="ad-centerstage-wrap"></div>
 
     <main class="concierge">
+      <div class="years-outer-container">
+      <div class="years-container">
+        <fieldset class="years" aria-label="Select a year">
+          <% grunt.data.json.years.forEach(function(y) { %>
+          <input type="radio" name="year-radio" id="year-<%= y.year %>" value="<%= y.year %>" <%= y.current ? "checked=checked" : "" %>>
+          <label for="year-<%= y.year %>"><%= y.year %></label>
+          <% }); %>
+        </fieldset>
+      </div>
+      <div class="years-cover"></div>
+    </div>
       <%= t.include("_filters.html") %>
       <%= t.include("_fab.html") %>
 
