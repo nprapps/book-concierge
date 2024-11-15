@@ -20,7 +20,7 @@ var renderBook = async function(data, scroll = false) {
   if (scroll) {
     // bookPanel.scrollIntoView();
     // console.log("scroll to ad slot");
-    var topAdSlot = $.one(".years-container");
+    var topAdSlot = $.one("#ad-centerstage-wrap");
     // console.log(topAdSlot);
     topAdSlot.scrollIntoView();
   }
