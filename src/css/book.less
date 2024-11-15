@@ -1,8 +1,8 @@
-.book-detail {
+.book-detail-wrap {
   display: none;
   padding: 0 15px;
-  max-width: 800px;
-  flex:1;
+  max-width:  800px;
+  flex: 1;
 
   @media @mobile-above {
     padding: 0 40px 20px 40px;
@@ -11,7 +11,10 @@
   [data-mode="book"] & {
     display: block;
   }
+}
 
+.book-detail {
+  
   h2.title {
     line-height: 1.3;
     margin: 0 0 6px 0;
@@ -148,5 +151,11 @@
       align-items: baseline;
       margin-bottom: -1px;
     }
+  }
+}
+
+.newsletter-callout {
+  a {
+    color: var(--header, #333)
   }
 }
