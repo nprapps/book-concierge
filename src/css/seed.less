@@ -8,13 +8,17 @@ body {
 main.concierge {
   .sans();
   display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
   margin: auto;
   max-width: 2000px;
   min-height: 80vh;
-  padding: 20px 15px 40px 15px;
+  padding: 0px 0px 40px 0px;
 
   @media @tablet-above {
-    padding: 40px;
+    padding: 0px;
   }
 }
 

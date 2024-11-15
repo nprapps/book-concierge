@@ -50,20 +50,22 @@
         </ul>
 
         <!-- <h3>Filters</h3> -->
-        <div class="years-container">
-          <fieldset class="years" aria-label="Select a year">
-            <% grunt.data.json.years.forEach(function(y) { %>
-            <input type="radio" name="year-radio" id="year-<%= y.year %>" value="<%= y.year %>" <%= y.current ? "checked=checked" : "" %>>
-            <label for="year-<%= y.year %>"><%= y.year %></label>
-            <% }); %>
-          </fieldset>
-        </div>
-      </div>
     </header>
 
     <div id="ad-centerstage-wrap"></div>
 
     <main class="concierge">
+      <div class="years-outer-container">
+      <div class="years-container">
+        <fieldset class="years" aria-label="Select a year">
+          <% grunt.data.json.years.forEach(function(y) { %>
+          <input type="radio" name="year-radio" id="year-<%= y.year %>" value="<%= y.year %>" <%= y.current ? "checked=checked" : "" %>>
+          <label for="year-<%= y.year %>"><%= y.year %></label>
+          <% }); %>
+        </fieldset>
+      </div>
+      <div class="years-cover"></div>
+    </div>
       <%= t.include("_filters.html") %>
       <%= t.include("_fab.html") %>
 
