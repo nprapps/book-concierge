@@ -48,6 +48,7 @@
           <li><a href="https://www.npr.org/podcasts/510364/daily-books">Book of the Day Podcast</a></li>
           <li><a href="https://www.npr.org/newsletter/books">Newsletter</a></li>
         </ul>
+      </div>
 
         <!-- <h3>Filters</h3> -->
     </header>
@@ -68,6 +69,7 @@
     </div>
       <%= t.include("_filters.html") %>
       <%= t.include("_fab.html") %>
+      <div class="right-side">
 
       <section class="catalog" aria-label="Catalog">
 
@@ -107,7 +109,6 @@
             </button>
           </h3>
         </div>
-
         <ul class="catalog-covers">
           <% for (var i = 0; i < 100; i++) { %>
           <div class="placeholder book-container"></div>
@@ -115,6 +116,7 @@
         </ul>
 
         <div class="catalog-list"></div>
+
 
       </section>
 
@@ -124,9 +126,11 @@
         <p><em><%= json.copy.newsletter_language %></em></p>
       </div>
     </div>
+    <div id="ad-secondary-wrap"></div>
+  </div>
     </main>
 
-    <div id="ad-secondary-wrap"></div>
+    
 
     <%= t.include("partials/_footer.html", { content: t.include("_footer.html") }) %>
     <%= t.include("partials/_schema.html", { data: json.year2024 }) %>
