@@ -21,9 +21,10 @@ var setupGoogleAnalytics = function() {
 
   var script_embed = document.createElement("script")
 
-  script_embed.innerHTML = "window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', '" + gtagID + "');"
+  script_embed.innerHTML = "window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', '" + gtagID + "', {'send_page_view': false });"
 
   document.head.append(script, script_embed)
+
 
 if (window.top !== window) { 
 
@@ -45,8 +46,7 @@ if (window.top !== window) {
         customData["dimension1"] = parentUrl;
         customData["dimension2"] = parentHostname;
         customData["dimension3"] = initialWidth;
-		gtag('config', gtagID, {'custom_map': {'dimension1': 'parentUrl', 'dimension2': 'parentHostname', 'dimension3': 'initialWidth'}});
-		gtag('event', 'page_view', customData)
+		gtag('config', gtagID, {'send_page_view': false, 'custom_map': {'dimension1': 'parentUrl', 'dimension2': 'parentHostname', 'dimension3': 'initialWidth'}});
 	} else { 
 
 		// Secondary topics
@@ -75,10 +75,8 @@ if (window.top !== window) {
         customData["dimension6"] = dim6;
 		customData["dimension22"] = document.title;
 	
-	// // gtag('set', 'send_page_view', false);
-    gtag('config', gtagID, {'custom_map': {'dimension2': '', 'dimension3': '', 'dimension6': '', 'dimension22': ''}});
+    gtag('config', gtagID, {'send_page_view': false, 'custom_map': {'dimension2': '', 'dimension3': '', 'dimension6': '', 'dimension22': ''}});
 	}
-
     gtag('event', 'page_view', customData)
   googleAnalyticsAlreadyInitialized = true;
 }
