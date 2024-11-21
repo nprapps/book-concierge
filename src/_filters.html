@@ -11,9 +11,10 @@
   <fieldset class="tags" aria-label="Select tags">
     <% let groupedTags = Object.groupBy(tags, ({ section }) => section );
     
-    Object.keys(groupedTags).sort().forEach(function(group) {  %>
+    Object.keys(groupedTags).sort().forEach(function(group) {  
+        if (group != "a") { %>
           <div class="section-separator"></div>
-        <%
+        <% }
         function sortByOrder(a, b) {
           return a.order - b.order
         } 
