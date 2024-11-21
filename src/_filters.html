@@ -5,15 +5,21 @@
   </p>
   <%
     // initialize tags
-    var tags = json.tags.map(t => t.tag);
+    var tags = json.tags;
     var dashify = t => t.replace(/\s+/g, "-");
   %>
   <fieldset class="tags" aria-label="Select tags">
-    <input type="checkbox" id="tag-staff-picks" value="staff picks">
-    <label for="tag-staff-picks">Staff Picks</label>
-    <% tags.sort().filter(t => t != "Staff Picks").forEach(function(tag) { %>
-    <input type="checkbox" id="tag-<%= dashify(tag) %>" value="<%= tag.toLowerCase() %>">
-    <label for="tag-<%= dashify(tag) %>"><%= tag %></label>
-    <% }); %>
+    <% let groupedTags = Object.groupBy(tags, ({ section }) => section );
+    
+    Object.keys(groupedTags).sort().forEach(function(group) {  %>
+          <div class="section-separator"></div>
+        <%
+        function sortByOrder(a, b) {
+          return a.order - b.order
+        } 
+        groupedTags[group].sort(sortByOrder).forEach(function(tag) {  %>
+    <input type="checkbox" id="tag-<%= dashify(tag.tag) %>" value="<%= tag.tag.toLowerCase() %>">
+    <label for="tag-<%= dashify(tag.tag) %>"><%= tag.tag %></label>
+    <% }); }); %>
   </fieldset>
 </form>
