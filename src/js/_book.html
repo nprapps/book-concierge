@@ -36,13 +36,7 @@
 </div>
 <ul class="links">
   <% data.book.links.sort(function(a, b) {
-    if (a.source == b.source) {
-      if (a.text < b.text) return -1;
-      if (b.text < a.text) return 1;
-      return 0;
-    }
-    if (a.source == "NPR.org") return -1;
-    if (b.source == "NPR.org") return 1;
+    return 0;
   }).forEach(function(link) { %>
   <li> <b><%= link.source %> - </b> <a href="<%= link.url %>"><%= link.text %></a>
   <% }); %>
