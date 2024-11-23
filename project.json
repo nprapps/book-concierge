@@ -13,7 +13,8 @@
     "src/css/seed.less": "build/style.css"
   },
   "scripts": {
-    "src/js/main.js": "build/app.js"
+    "src/js/main.js": "build/app.js",
+    "src/js/loadHeaderBidding.js": "build/loadHeaderBidding.js"
   },
   "title": "Books We Love",
   "description": "Great reads, thoughtfully curated by NPR",

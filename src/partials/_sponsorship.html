@@ -1,104 +1,21 @@
-<script>
-var googletag = googletag || {};
-googletag.cmd = googletag.cmd || [];
-(function() {
-    var gads = document.createElement('script');
-    gads.async = true;
-    gads.type = 'text/javascript';
-    var useSSL = 'https:' == document.location.protocol;
-    gads.src = 'https://securepubads.g.doubleclick.net/tag/js/gpt.js'
-    var node = document.getElementsByTagName('script')[0];
-    node.parentNode.insertBefore(gads, node);
-})();
+<script class="remove-embedded" async="async" src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+<script class="remove-embedded">
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
 
-// GeoEdge is a vendor that lets us control which AdExchange ads show up on our website based on our guidelines.
-// It should be added after the doubleclick script has been added to the page and before the googletag slot definitions on line 58.
-window.grumi = window.grumi || {
-    cfg: {
-        advs: {
-            '19566752': true, // Google Inc
-            '4952276315': true, // IntowowBillable
-            '88382072': true, // NPR - Programmatic
-            '5056504790': true, // Pubmatic
-            '5116496584': true, // Index Exchange
-        },
-    },
-    key: '880a45f2-0015-49d2-b38f-2d26be44ae09',
-};
-const geoEdge = document.createElement('script');
-geoEdge.async = true;
-geoEdge.type = 'text/javascript';
-geoEdge.src = 'https://rumcdn.geoedge.be/880a45f2-0015-49d2-b38f-2d26be44ae09/grumi-ip.js';
-const lastNode = document.getElementsByTagName('script')[0];
-lastNode.parentNode.insertBefore(geoEdge, lastNode);
-
-// This code does not necessarily need to be wrapped in a DOMContentLoaded event
-// if the divs being referenced here are guaranteed to be in the DOM at the time it's executed
-// main.concierge and #ad-centerstage-wrap and #ad-secondary-wrap
-// window.addEventListener('DOMContentLoaded', function() {
-    var adSizeArray = [[320, 50], [300, 250]];
-    var adUnitString = '/6735/n6735.NPR/arts___life_books/book_concierge';
-    var storyID = '1211179894';
-
-    var mainColumn = document.querySelector('div.right-side');
-    var columnWidth = window.innerWidth;
-    if (mainColumn) {
-        columnWidth = mainColumn.offsetWidth;
-    }
-    // Only add 728x90 ad to the ad request if the column width is wide enough to fit that ad.
-    if (columnWidth > 728) {
-        adSizeArray.push([728, 90]);
-    }
-    // Only add 970x250 ad to the ad request if the column width is wide enough to fit that ad.
-    if (columnWidth > 970) {
-        adSizeArray.push([970, 250]);
-    }
-    // value can be set to 'true' on testing servers. Must be set to 'false' on Prod
-    var isProduction = <%= production %>;
-    var isStagingServer = isProduction ? false : true;
-    // var isStagingServer = false;
-
-    window.googletag = window.googletag || {cmd: []};
-    googletag.cmd.push(function() {
-      googletag.pubads().enableLazyLoad({
-        fetchMarginPercent: 100, // fetch and render ads within this % of viewport
-        renderMarginPercent: 100,
-        mobileScaling: 1, // Same on mobile.
-      });
-
-      googletag.defineSlot(adUnitString, adSizeArray, 'ad-centerstage-wrap')
-        .setTargeting('ad_location_name', 'story_centerstage')
-        .addService(googletag.pubads());
-      googletag.defineSlot(adUnitString, adSizeArray, 'ad-secondary-wrap')
-        .setTargeting('ad_location_name', 'secondary')
-        .addService(googletag.pubads());
-
-      googletag.pubads().addEventListener('slotRenderEnded', function(event) {
-        // This class makes the "NPR thanks our sponsors" text visible only and only if an ad is returned in the request
-        var slotElement = document.getElementById(`${event.slot.getSlotElementId()}`);
-        if (!event.isEmpty) {
-          slotElement.classList.add('has-sponsorship');
-        } else {
-          slotElement.classList.remove('has-sponsorship')
-        }
-
-        // refresh ads every 60 seconds
-        setTimeout(() => {
-          googletag.cmd.push(()=>{
-            googletag.pubads().refresh([event.slot])
-          });
-        }, 60000)
-      });
-
-      googletag.pubads().setTargeting('testserver', `${isStagingServer}`);
-      googletag.pubads().setTargeting('storyId', storyID);
-      googletag.pubads().enableSingleRequest();
-      googletag.pubads().collapseEmptyDivs();
-      googletag.enableServices();
-
-      googletag.display('ad-centerstage-wrap');
-      googletag.display('ad-secondary-wrap');
+  googletag.cmd.push(function () {
+    googletag.pubads().enableLazyLoad({
+      fetchMarginPercent: 100, // fetch and render ads within this % of viewport
+      renderMarginPercent: 100,
+      mobileScaling: 1, // Same on mobile.
     });
 
-// })
+    googletag.pubads().setTargeting("testserver", `true`);
+    // googletag.pubads().setTargeting("storyId", storyID);
+    googletag.pubads().enableSingleRequest();
+    googletag.pubads().enableAsyncRendering();
+    googletag.pubads().collapseEmptyDivs();
+    googletag.pubads().disableInitialLoad();
+    googletag.enableServices();
+  });
 </script>
