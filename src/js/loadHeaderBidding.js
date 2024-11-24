@@ -25,7 +25,7 @@ var setAdSlots = function() {
         var slotAdSizeMap = "[[[1024,768], [970,250]], [[769,400],[728,90]], [[300,250], [300,250]]]"
       }
 
-      var slotName = `6735/${slotID}/news_politics_elections`;
+      var slotName = `6735/${slotID}/arts___life_books/book_concierge`;
 
       ad.setAttribute("data-slot-name", slotName)
       ad.setAttribute("data-slot-sizes", slotSizes)
