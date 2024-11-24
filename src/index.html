@@ -125,9 +125,11 @@
       <div class="newsletter-callout">
         <p><em><%= json.copy.newsletter_language %></em></p>
       </div>
+      </div>
+      <div class="divider"></div>
+      <%= t.include("partials/_ad.html", {id: "ad-secondary"}) %>
+
     </div>
-    <%= t.include("partials/_ad.html", {id: "ad-secondary"}) %>
-  </div>
     </main>
 
     
