@@ -14,13 +14,32 @@ function log (message, data = null) {
 
 function initializeApsTag () {
   if (!apstagInitialized) {
-    window.apstag.init({
+    let apsTagConfig = {
       pubID: '5116',
       adServer: 'googletag',
       bidTimeout: 1000,
-      deals: true,
-      params: { si_section: 'News' }
-    })
+      deals: true
+    }
+
+    let params = { si_section: 'News' }
+
+    if (typeof __uspapi !== 'undefined') {
+      __uspapi('getUSPData', 1, (uspdata, success) =>  {
+        if (success) {
+          params = {...params, us_privacy: uspdata.uspString};
+        }
+      })
+    }
+
+    if (Object.keys(params).length) {
+
+      apsTagConfig = {
+        ...apsTagConfig,
+        params
+      }
+    }
+    
+    window.apstag.init(apsTagConfig)
     apstagInitialized = true
   }
 }
