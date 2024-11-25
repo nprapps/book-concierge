@@ -350,6 +350,11 @@ function onSlotRenderEnded (event) {
       adModule.remove()
     }
   }
+  setTimeout(() => {
+    googletag.cmd.push(()=>{
+      googletag.pubads().refresh([event.slot])
+    });
+  }, 60000)
 }
 
 function onWindowResize () {
