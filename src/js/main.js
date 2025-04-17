@@ -4,6 +4,7 @@ var dot = require("./lib/dot");
 var track = require("./lib/tracking");
 require("./lazyLoading");
 require("./analytics");
+require("./initializeHeaderBidding");
 
 var channel = require("./pubsub");
 var bookService = require("./bookService");

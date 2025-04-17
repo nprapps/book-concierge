@@ -12,6 +12,7 @@ const SOCIAL_MEDIA = 'C0005';
 function hasConsentedTo(category) {
   // checking for "window" because this could run in a windowless unit-test environment
   if (window && typeof window.OnetrustActiveGroups !== 'undefined') {
+    console.log(window.OnetrustActiveGroups)
     return window.OnetrustActiveGroups.split(',').includes(category);
   }
 

@@ -1,4 +1,4 @@
-<script class="remove-embedded" data-header-bidding-vendor="apstag" type="text/javascript">
+<!-- <script class="remove-embedded" data-header-bidding-vendor="apstag" type="text/javascript">
     !function(a9, a, p, s, t, A, g) {
         if (a[a9]) return;
         function q(c, r) {
@@ -18,10 +18,13 @@
         A.async = !0;
         A.src = t;
         g = p.getElementsByTagName(s)[0];
-        g.parentNode.insertBefore(A, g);
+        const refNode = p.querySelector('script[data-header-bidding-vendor="apstag"]')
+        if (window && typeof window.OnetrustActiveGroups !== 'undefined' && window.OnetrustActiveGroups.split(',').includes('C0004')) {
+        g.parentNode.insertBefore(A, refNode);
+        }
     }('apstag', window, document, 'script', '//c.amazon-adsystem.com/aax2/apstag.js');
-</script>
-<script class="remove-embedded" data-header-bidding-vendor="pwt" type="text/javascript">
+</script> -->
+<!-- <script class="remove-embedded" data-header-bidding-vendor="pwt" type="text/javascript">
     !function(globalWindow, globalDocument) {
         if (globalWindow.PWT && globalWindow.PWT.jsLoaded) {
             return;
@@ -45,13 +48,14 @@
         const profileVersionId = parseInt(urlParams.get('pwtv'), 10);
         el.src = `${url}${profileVersionId ? `/${profileVersionId}` : ''}/pwt.js`;
         const node = globalDocument.getElementsByTagName('script')[0];
-        node.parentNode.insertBefore(el, node);
+        const refNode = globalDocument.querySelector('script[data-header-bidding-vendor="[pwt]"]')
+        node.parentNode.insertBefore(el, refNode);
         if (localStorage.getItem('PS_GOOGLE_DFP_DEBUG')) {
             console.log('HeaderBidding: injected pwt.js', (new Date()).toISOString());
         }
     }(window, document);
-</script>
-<script class="remove-embedded" data-geoedge>
+</script> -->
+<!-- <script class="remove-embedded" data-geoedge>
     !function(w, d) {
         // GeoEdge is a vendor that blocks blacklisted ads
         if (w.grumi) {
@@ -76,7 +80,7 @@
         script.async = true;
         script.type = 'text/javascript';
         script.src = 'https://rumcdn.geoedge.be/880a45f2-0015-49d2-b38f-2d26be44ae09/grumi-ip.js';
-        const node = d.getElementsByTagName('script')[0];
-        node.parentNode.insertBefore(script, node);
+        const refNode = d.querySelector('script[data-geoedge]')
+        refNode.parentNode.insertBefore(script, refNode);
     }(window, document);
-    </script>
+    </script> -->
