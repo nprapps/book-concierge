@@ -74,7 +74,33 @@
 </script>
 
 <!-- Chartbeat top -->
-<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+<script type="text/javascript">
+var _sf_startpt=(new Date()).getTime()
+</script>
+
+<!-- Piano -->
+<script>
+    tp = window.tp || [];
+    // Set Application ID
+    tp.push(["setAid", 'c62mMqyQpu']);
+    // Is application in sandbox?
+    tp.push(["setSandbox", false]);
+    // Does application use Piano ID?
+    tp.push(["setUseTinypassAccounts", false]);
+    // Execute when the page is first loaded
+    tp.push(["init", function() {
+        tp.experience.init();
+    }]);
+    tp.push(["debug", true]);
+    (function(src) {
+        var a = document.createElement("script");
+        a.type = "text/javascript";
+        a.async = true;
+        a.src = src;
+        var b = document.getElementsByTagName("script")[0];
+        b.parentNode.insertBefore(a, b)
+    })("//cdn.piano.io/api/tinypass.min.js");
+</script>
 
 <!-- Header Bidding Head Scripts -->
 <%= t.include("partials/_headerBidding.html") %>

@@ -155,3 +155,7 @@ var here = new URL(window.location);
 if (here.searchParams.has("screenshot")) {
   document.body.classList.add("screenshot");
 }
+
+window.onload = function() {
+  tp.experience.execute();
+  }
