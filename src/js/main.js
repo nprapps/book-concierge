@@ -5,6 +5,12 @@ var track = require("./lib/tracking");
 require("./lazyLoading");
 require("./analytics");
 require("./initializeHeaderBidding");
+// const loadHeaderBidding =require("./loadHeaderBidding");
+
+// (async function headerBiddingStartup() {
+//   await initializeHeaderBidding.init();
+//   await loadHeaderBidding.init();
+// })
 
 var channel = require("./pubsub");
 var bookService = require("./bookService");
@@ -18,6 +24,7 @@ var {
 var { getFilters, setFilters, enableFilters } = require("./filters");
 
 var hash = require("./hash");
+const { load } = require("cheerio");
 hash.define({
   year: Number,
   book: String,

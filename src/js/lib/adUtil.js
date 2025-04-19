@@ -69,6 +69,7 @@ function resetAdConfigVariables (body) {
  * custom html ad elements get added. Subsequent page transitions use resetAdConfigVariables() to do the same.
  */
 function initializeAdConfigVariables () {
+  console.log("initialzeAdConfigVariables")
   setInitialExpectedAdCount(document)
   currentMediaQuery = getMediaQuery()
   ownerName = 'NPR'
