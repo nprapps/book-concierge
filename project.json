@@ -14,6 +14,8 @@
   },
   "scripts": {
     "src/js/main.js": "build/app.js",
+    "src/js/sponsorship.js": "build/sponsorship.js",
+    "src/js/gdpr-compliance.js": "build/gdpr-compliance.js",
     "src/js/loadHeaderBidding.js": "build/loadHeaderBidding.js"
   },
   "title": "Books We Love",
@@ -28,6 +30,30 @@
     "topicIDs": [1032,1008,1069977606],
     "primaryTopic": "Books",
     "secondaryTopics": ["Books", "Arts \u0026amp; Life"]
+  },
+  "sponsorship": {
+    "locations": {
+      "centerstage": {
+        "location": "centerstage",
+        "desktop_ad_unit": "n6735.NPR",
+        "mobile_ad_unit": "n6735.NPRMOBILE",
+        "gam_sizes": [[320, 240], [300, 250], [728, 90], [970, 250], [1300, 250], ["fluid"]],
+        "header_bidding_sizes": {
+          "aps": [[300, 250], [728, 90], [970, 250]],
+          "openwrap": [[300, 250], [728, 90], [970, 250]]
+        }
+      },
+      "secondary": {
+        "location": "secondary",
+        "desktop_ad_unit": "NPRSecondary",
+        "mobile_ad_unit": "NPRMobileSecondary",
+        "gam_sizes": [[320, 240], [300, 250], [728, 90], [970, 250], [1300, 250], ["fluid"]],
+        "header_bidding_sizes": {
+          "aps": [[300, 250], [728, 90], [970, 250]],
+          "openwrap": [[300, 250], [728, 90], [970, 250]]
+        }
+      }
+    }
   },
   "embedded": false,
   "production": true

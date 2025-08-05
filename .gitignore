@@ -10,3 +10,4 @@ data/*.txt
 src/assets/covers
 src/assets/synced
 stage.json
+.idea

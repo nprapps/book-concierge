@@ -6,7 +6,7 @@
 @param [label] - not usually visible in dashboard, defaults to title or URL
 */
 
-var DataConsent = require('./data-consent');
+var DataConsent = require('./dataConsent');
 
 var DIMENSION_PARENT_URL = 'dimension1';
 var DIMENSION_PARENT_HOSTNAME = 'dimension2';
