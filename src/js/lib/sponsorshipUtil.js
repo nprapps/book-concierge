@@ -91,6 +91,7 @@ function refreshSlotAfterCountdown(event, adModel) {
   }, adRefreshInterval);
   (slotTimeoutIds[adModel.id] = slotTimeoutIds[adModel.id] || []).push(timeoutId);
 }
+
 /**
  * Decide if a slot should refresh after the 60s countdown
  * @param {googletag.events} event
@@ -119,11 +120,11 @@ function slotRenderEndedCallback(event, adModel) {
   configureInViewObserver(slotElement, adModel);
 
   const adWrap = document.querySelector(`#${adModel.id}-wrap`);
-  if (!event.isEmpty) {
+  if (event.isEmpty) {
+    adWrap.classList.add('hidden');
+  } else {
     adWrap.classList.add('visible');
     adWrap.classList.remove('hidden');
-  } else {
-    adWrap.classList.add('hidden');
   }
 }
 

@@ -8,6 +8,10 @@
   &.visible {
     visibility: visible;
   }
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .ad-config-wrap {
@@ -19,6 +23,12 @@
   clear: both;
   text-align: center;
   margin-bottom: 30px;
+  overflow: hidden;
+  transition: 500ms ease;
+  display: table-cell !important; // Needs !important to override 'display: none' set by googleads JS SDK
+  flex-direction: column;
+  vertical-align: middle;
+  height: 250px;
 
   > div {
     animation: fadeIn 2s;
@@ -26,14 +36,6 @@
     -moz-animation: fadeIn 2s;
     -o-animation: fadeIn 2s;
   }
-
-  overflow: hidden;
-  transition: 500ms ease;
-
-  display: table-cell !important; // Needs !important to override 'display: none' set by googleads JS SDK
-  flex-direction: column;
-  vertical-align: middle;
-  padding-bottom: 30px;
 
   &.hidden {
     display: none !important; // needed here to override the !important above under the same specificity
