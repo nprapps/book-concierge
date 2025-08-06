@@ -112,5 +112,12 @@ if (window.NPR && window.NPR.OptanonWrapperLoaded) {
   }
 } else {
   Debug.log('sponsorship -> waiting for OptanonWrapper');
-  listenForConsent(waitForScriptInjection)
+  listenForConsent(() => {
+    if (DataConsent.hasConsentedTo(DataConsent.TARGETING_AND_SPONSOR)) {
+      waitForScriptInjection();
+    } else {
+      Debug.log('sponsorship -> user rejected consent.');
+      SponsorshipUtil.fetchAds(allAdModels);
+    }
+  })
 }

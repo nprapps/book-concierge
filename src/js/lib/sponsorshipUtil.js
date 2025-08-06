@@ -64,7 +64,7 @@ function fetchAds(models) {
  * @param {AdModel} adModel
  */
 function refreshSlotAfterCountdown(event, adModel) {
-  Debug.log(`sponsorshipUtil -> Slot '${adModel.id}' will refresh again in ${adRefreshInterval / 1000}s`);
+  Debug.log(`sponsorshipUtil -> Slot '${adModel.id}' will refresh again in ${adRefreshInterval / 1000}s. ${getFormattedTime()}`);
   const timeoutId = window.setTimeout(() => {
     windowVisibilityCheck(() => {
       const innerElement = document.querySelector(`#${adModel.id}`).querySelector('div');

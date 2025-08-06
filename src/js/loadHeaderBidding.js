@@ -131,14 +131,18 @@ function initializeApsTag(callback) {
 function listenForConsent(onConsentedCallback) {
   const onConsentChanged = () => {
     Debug.log('loadHeaderBidding -> consent changed.');
-    document.removeEventListener('npr:DataConsentChanged', onConsentChanged);
-    onConsentedCallback();
+    if (DataConsent.hasConsentedTo(DataConsent.TARGETING_AND_SPONSOR)) {
+      document.removeEventListener('npr:DataConsentChanged', onConsentChanged);
+      onConsentedCallback();
+    }
   }
 
   const onConsentAvailable = () => {
     Debug.log('loadHeaderBidding -> consent available.');
     document.removeEventListener('npr:DataConsentAvailable', onConsentAvailable);
-    onConsentedCallback();
+    if (DataConsent.hasConsentedTo(DataConsent.TARGETING_AND_SPONSOR)) {
+      onConsentedCallback();
+    }
   }
 
   document.addEventListener('npr:DataConsentChanged', onConsentChanged);
