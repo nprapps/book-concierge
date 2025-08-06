@@ -2,7 +2,7 @@
   /*
     Adds OneTrust scripts to the document head.
   */
-  const isTesting = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
+  const isTesting = ['stage-apps.npr.org','localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
   let autoBlock = document.createElement("script");
   autoBlock.src = `https://cdn.cookielaw.org/consent/82089dfe-410c-4e1b-a7f9-698174b62a86${isTesting ? '-test': ''}/OtAutoBlock.js`;
   autoBlock.type = 'text/javascript';
