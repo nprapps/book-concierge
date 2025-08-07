@@ -42,6 +42,7 @@ function bidAndFetchAds(models) {
     })
     .catch(e => {
       Debug.log(`sponsorshipUtil -> ${e}`);
+      fetchAds(models);
     })
 }
 
