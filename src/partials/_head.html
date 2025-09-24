@@ -14,7 +14,7 @@
 <meta name='format-detection' content='telephone=no'>
 
 <!-- GDPR compliance -->
-<script src="https://apps.npr.org/gdpr/gdprCompliance.js"></script>
+<script src="gdpr-compliance.js"></script>
 
 <% if (!project.embedded) { %>
 
@@ -102,8 +102,9 @@ var _sf_startpt=(new Date()).getTime()
     })("//cdn.piano.io/api/tinypass.min.js");
 </script>
 
+<%= t.include("partials/_geoedge.html") %>
 <!-- Header Bidding Head Scripts -->
-<%= t.include("partials/_headerBidding.html") %>
+<script src="loadHeaderBidding.js" async></script>
 
 <%
 // if !project.embedded...

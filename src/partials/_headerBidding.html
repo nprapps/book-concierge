@@ -51,32 +51,3 @@
         }
     }(window, document);
 </script>
-<script class="remove-embedded" data-geoedge>
-    !function(w, d) {
-        // GeoEdge is a vendor that blocks blacklisted ads
-        if (w.grumi) {
-            return;
-        }
-        w.grumi = {
-            cfg: {
-                pbGlobal: 'owpbjs',
-                advs: {
-                    '19566752': true, // Google Inc
-                    '4952276315': true, // IntowowBillable
-                    '88382072': true, // NPR - Programmatic
-                    '5056504790': true, // Pubmatic
-                    '5116496584': true, // Index Exchange
-                    '5212620189': true, // Pubmatic
-                    '5255949102': true, // Amazon
-                },
-            },
-            key: '880a45f2-0015-49d2-b38f-2d26be44ae09',
-        };
-        const script = d.createElement('script');
-        script.async = true;
-        script.type = 'text/javascript';
-        script.src = 'https://rumcdn.geoedge.be/880a45f2-0015-49d2-b38f-2d26be44ae09/grumi-ip.js';
-        const node = d.getElementsByTagName('script')[0];
-        node.parentNode.insertBefore(script, node);
-    }(window, document);
-    </script>

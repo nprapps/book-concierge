@@ -1,4 +1,4 @@
-var DataConsent = require('./lib/data-consent');
+var DataConsent = require('./lib/dataConsent');
 
 var googleAnalyticsAlreadyInitialized = false;
 

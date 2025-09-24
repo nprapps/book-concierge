@@ -1,38 +1,109 @@
-#ad-centerstage-wrap,
-#ad-secondary-wrap {
-    // max-width: 970px;
-    margin: 0 auto;
-    text-align: center;
+.ad-wrap {
+  animation: fadeIn 2s;
+  -webkit-animation: fadeIn 2s;
+  -moz-animation: fadeIn 2s;
+  -o-animation: fadeIn 2s;
+  visibility: hidden;
 
-    iframe {
-      margin-left: auto;
-      margin-right: auto;
-      display: block;
+  &.visible {
+    visibility: visible;
   }
-    
-  &.has-sponsorship {
-    &:before {
-      .sans();
-      font-size: 12px;
-      content: "Sponsor message";
-      display: block;
-      text-align: center;
-      line-height: 1.3;
-      font-weight: 500;
-      -webkit-font-smoothing: antialiased;
-      color: #555;
-      padding: 15px;
-    }
-  
-    &:after {
-        padding-top: 25px;
-        content: "";
-        display: block;
-    }
+
+  &.hidden {
+    display: none;
   }
 }
 
-#ad-centerstage-wrap.has-sponsorship + main.concierge,
-main.concierge + #ad-secondary-wrap.has-sponsorship {
-  border-top: 1px solid #fff;
+.ad-config-wrap {
+  width: 100%;
+  display: table;
+}
+
+.ad-config {
+  clear: both;
+  text-align: center;
+  margin-bottom: 30px;
+  overflow: hidden;
+  transition: 500ms ease;
+  display: table-cell !important; // Needs !important to override 'display: none' set by googleads JS SDK
+  flex-direction: column;
+  vertical-align: middle;
+  height: 250px;
+
+  > div {
+    animation: fadeIn 2s;
+    -webkit-animation: fadeIn 2s;
+    -moz-animation: fadeIn 2s;
+    -o-animation: fadeIn 2s;
+  }
+
+  &.hidden {
+    display: none !important; // needed here to override the !important above under the same specificity
+  }
+}
+
+.ad-header {
+  .sans();
+  font-size: 12px;
+  content: "Sponsor message";
+  display: block;
+  text-align: center;
+  line-height: 1.3;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+  color: #555;
+  padding: 15px;
+}
+
+.ad-footer {
+  padding-top: 25px;
+  content: "";
+  display: block;
+  border-bottom: 1px solid #fff;
+}
+
+// underwriting
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-o-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
