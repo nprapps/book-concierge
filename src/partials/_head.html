@@ -89,9 +89,66 @@ var _sf_startpt=(new Date()).getTime()
     tp.push(["setUseTinypassAccounts", false]);
     // Execute when the page is first loaded
     tp.push(["init", function() {
+        turnOffConsent();
+
+        
+          document.addEventListener('npr:DataConsentAvailable', () => {
+            checkCMPforConsent();
+          })
+        
+
+        document.addEventListener('npr:DataConsentChanged', () => {
+          checkCMPforConsent();
+        });
+
         tp.experience.init();
+        tp.push(["debug", true]);
+
     }]);
-    tp.push(["debug", true]);
+
+    function hasConsentedTo(category) {
+      if (window && typeof window.OnetrustActiveGroups !== 'undefined') {
+        return window.OnetrustActiveGroups.split(',').includes(category)
+      }
+    }
+
+    const TARGETING_AND_SPONSOR = 'C0004';
+    function checkCMPforConsent() {
+        if (hasConsentedTo(TARGETING_AND_SPONSOR)) {
+            turnOnConsent();
+        } else {
+            turnOffConsent();
+        }
+    }
+
+    function turnOnConsent () {
+        if (tp) {
+            // https://docs.piano.io/consent-management-for-client-storage-cookies/
+            tp.consent.set('COMPOSER', { mode: 'opt-in' })
+            tp.consent.set('DL', { mode: 'opt-in' })
+            tp.consent.set('DMP', { mode: 'opt-in' })
+            tp.consent.set('ESP', { mode: 'opt-in' })
+            tp.consent.set('ID', { mode: 'opt-in' })
+            tp.consent.set('PA', { mode: 'opt-in' })
+            tp.consent.set('Social Flow', { mode: 'opt-in' })
+            tp.consent.set('VX', { mode: 'opt-in' })
+        }
+    }
+
+    function turnOffConsent () {
+        if (tp) {
+            // https://docs.piano.io/consent-management-for-client-storage-cookies/
+            tp.consent.set('COMPOSER', { mode: 'opt-out' })
+            tp.consent.set('DL', { mode: 'opt-out' })
+            tp.consent.set('DMP', { mode: 'opt-out' })
+            tp.consent.set('ESP', { mode: 'opt-out' })
+            tp.consent.set('ID', { mode: 'opt-out' })
+            tp.consent.set('PA', { mode: 'opt-out' })
+            tp.consent.set('Social Flow', { mode: 'opt-out' })
+            tp.consent.set('VX', { mode: 'opt-out' })
+        }
+    }
+
     (function(src) {
         var a = document.createElement("script");
         a.type = "text/javascript";
@@ -100,6 +157,7 @@ var _sf_startpt=(new Date()).getTime()
         var b = document.getElementsByTagName("script")[0];
         b.parentNode.insertBefore(a, b)
     })("//cdn.piano.io/api/tinypass.min.js");
+    
 </script>
 
 <%= t.include("partials/_geoedge.html") %>
