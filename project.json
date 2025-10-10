@@ -6,7 +6,7 @@
     },
     "live": {
       "bucket": "apps.npr.org",
-      "path": "best-books"
+      "path": "books-piano-test"
     }
   },
   "styles": {
