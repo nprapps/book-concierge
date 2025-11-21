@@ -107,7 +107,7 @@ var bookshop = async function(books) {
 
   for (var book of books) {
     if (!book.isbn13) continue;
-    await wait(200);
+    await wait(500);
     var url = new URL(baseUrl + book.isbn13);
     console.log(`Searching for "${book.title}" on Bookshop.org...`);
     try {
