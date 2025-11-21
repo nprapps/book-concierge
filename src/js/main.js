@@ -144,6 +144,11 @@ channel.on("filterchange", function(state) {
   hash.replace(state);
 });
 
+channel.on("hashchange", function() {
+  var url = window.location.href;
+  tp.experience.execute();
+})
+
 document.body.addEventListener("click", function(e) {
   var target = e.target;
   if (target.dataset.track) {

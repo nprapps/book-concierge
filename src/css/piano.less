@@ -1,0 +1,30 @@
+// Media queries
+@mobile: ~"(max-width: 600px)";
+@mobile-above: ~"(min-width: 601px)";
+@tablet: ~"(max-width: 768px)";
+@tablet-above: ~"(min-width: 769px)";
+@desktop: ~"(max-width: 1000px)";
+@desktop-above: ~"(min-width: 1001px)";
+
+.global-stickybar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+  padding: 0;
+  z-index: 1000;
+
+  //   @media @mobile-above {
+  //     margin: 0 355px 0 0;
+  //     padding-right: 1px;
+  //     width: auto;
+  //     left: 0;
+  //     right: 0;
+  // }
+}
+
+.global-stickybar-mount-piano {
+  width: 100%;
+}
