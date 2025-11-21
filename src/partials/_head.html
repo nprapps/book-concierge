@@ -16,6 +16,11 @@
 <!-- GDPR compliance -->
 <script src="gdpr-compliance.js"></script>
 
+<!-- Piano -->
+<meta property="piano:piano_id" content="9ENxKQ58pu">
+
+<meta property="piano:subscription_url" content="https://identity.api.npr.org/v2/web/subscriptions">
+
 <% if (!project.embedded) { %>
 
 <!-- BEGIN TWITTER SUMMARY CARD -->
@@ -74,7 +79,210 @@
 </script>
 
 <!-- Chartbeat top -->
-<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+<script type="text/javascript">
+var _sf_startpt=(new Date()).getTime()
+</script>
+
+<!-- Piano -->
+<script>
+      (function(src) {
+        var a = document.createElement("script");
+        a.type = "text/javascript";
+        a.async = true;
+        a.src = src;
+        var b = document.getElementsByTagName("script")[0];
+        b.parentNode.insertBefore(a, b)
+    })("//cdn.piano.io/api/tinypass.min.js");
+
+    var iframeId = '';
+    const pianoSubscriptionURLMetaTag = document.querySelector('meta[property="piano:subscription_url"]')
+    const subscriptionURL = pianoSubscriptionURLMetaTag ? pianoSubscriptionURLMetaTag.content : null
+
+
+    tp = window.tp || [];
+    // Set Application ID
+    tp.push(["setAid", '9ENxKQ58pu']);
+    // Is application in sandbox?
+    tp.push(["setSandbox", false]);
+    // Does application use Piano ID?
+    tp.push(["setUseTinypassAccounts", false]);
+
+    tp.push(["setDebug", true]);
+
+    // Execute when the page is first loaded
+    tp.push(["init", function() {
+        setupCustomEventCallbacks(event)
+
+      turnOffConsent();
+
+
+        
+          document.addEventListener('npr:DataConsentAvailable', () => {
+            checkCMPforConsent();
+          })
+        
+
+        document.addEventListener('npr:DataConsentChanged', () => {
+          checkCMPforConsent();
+        });
+
+        tp.experience.init();
+
+    }]);
+
+    function hasConsentedTo(category) {
+      if (window && typeof window.OnetrustActiveGroups !== 'undefined') {
+        return window.OnetrustActiveGroups.split(',').includes(category)
+      }
+    }
+
+    const TARGETING_AND_SPONSOR = 'C0004';
+    function checkCMPforConsent() {
+        if (hasConsentedTo(TARGETING_AND_SPONSOR)) {
+            turnOnConsent();
+        } else {
+            turnOffConsent();
+        }
+    }
+
+    function turnOnConsent () {
+        if (tp) {
+            // https://docs.piano.io/consent-management-for-client-storage-cookies/
+            tp.consent.set('COMPOSER', { mode: 'opt-in' })
+            tp.consent.set('DL', { mode: 'opt-in' })
+            tp.consent.set('DMP', { mode: 'opt-in' })
+            tp.consent.set('ESP', { mode: 'opt-in' })
+            tp.consent.set('ID', { mode: 'opt-in' })
+            tp.consent.set('PA', { mode: 'opt-in' })
+            tp.consent.set('Social Flow', { mode: 'opt-in' })
+            tp.consent.set('VX', { mode: 'opt-in' })
+        }
+    }
+
+    function turnOffConsent () {
+        if (tp) {
+            // https://docs.piano.io/consent-management-for-client-storage-cookies/
+            tp.consent.set('COMPOSER', { mode: 'opt-out' })
+            tp.consent.set('DL', { mode: 'opt-out' })
+            tp.consent.set('DMP', { mode: 'opt-out' })
+            tp.consent.set('ESP', { mode: 'opt-out' })
+            tp.consent.set('ID', { mode: 'opt-out' })
+            tp.consent.set('PA', { mode: 'opt-out' })
+            tp.consent.set('Social Flow', { mode: 'opt-out' })
+            tp.consent.set('VX', { mode: 'opt-out' })
+        }
+    }
+
+    function setupCustomEventCallbacks(event) {
+        tp.push(["addHandler", "customEvent", function(event, b, c, d) {
+             switch (event.eventName) {
+              case 'email-signup': {
+                let email = '';
+                var newsletter = '';
+                // We are parsing the params object sent from the template to find out which iframe triggered it
+                let params = JSON.parse(event.params.params);
+                iframeId = params.iframeId; // global
+                let templateId = params.templateId;
+
+                if ((typeof event.params.email != 'undefined') && (event.params.email.length > 0)) {
+                    email = event.params.email;
+                }
+
+                if ((typeof event.params.newsletter != 'undefined') && (event.params.newsletter.length > 0)) {
+                    newsletter = event.params.newsletter;
+                }
+
+                if (email && newsletter) {
+                    subscribeToNewsletter(email, newsletter).then(res => {
+                        pianoJWT = res
+                        sendTokenToPiano()
+                        // createTokenCookie()
+                        createGA4Event(event, 'newsletter_subscribe', newsletter, 'newsletter')
+                    })
+                    .catch(error => {
+                        console.error(error)
+                    })           
+                }
+                break;
+             } // end case 'email'
+              case 'donations-streamlined-2':
+              case 'donations-streamlined-3':
+              case 'donations-streamlined-4': {
+                createGA4Event(event, 'donations-cta', 'donation', 'donation')
+                break;
+             }
+         } // end switch
+       }]); // end tp.push([addHandler
+     } // end function setupCustomEventCallbacks
+
+    function subscribeToNewsletter(email, newsletter) {
+        const form = new FormData();
+        if (email) {
+            form.append('email', email);
+        }
+        if (newsletter) {
+            form.append('newsletterId', newsletter);
+        }
+        const options = {
+            method: 'POST',
+            body: form,
+        };
+
+        const carbonTimeout = 10000;
+        return fetchWithTimeout(carbonTimeout, subscriptionURL, options) 
+            .then((res) => {
+                if (res.ok) {
+                    return Promise.resolve(res.json());
+                }
+                return Promise.reject('server error occurred');
+            })
+            .catch(ex => Promise.reject(ex));
+    }
+
+    // Call Subscription service
+    function fetchWithTimeout(timeout, input, options = {}) {
+        return new Promise((resolve, reject) => {
+            const method = options.method || 'GET';
+            setTimeout(() => reject(`TIMEOUT: ${method} ${input} ${timeout}ms`), timeout);
+
+            fetch(input, options)
+                .then(result => {
+                    sendPostMessageToPiano(true, '');
+                    resolve(result)
+                })
+                .catch(error => {
+                sendPostMessageToPiano(false, 'There was an error subscribing, Please try again.');
+                console.error(error)
+                reject(error)
+                });
+        });
+    }
+
+    function sendTokenToPiano() {
+        if (hasDataBeenSentToPiano && hasConsentedTo(TARGETING_AND_SPONSOR))  {
+            tp.api.callApi("/anon/user/get", 
+            { aid:  pianoAid,
+              user_token: pianoJWT.token }, 
+            function () { return true; });
+        }
+        tp.push(["setExternalJWT", pianoJWT.token ]);  
+    }
+
+    function sendPostMessageToPiano(success, message, object) {
+        var iframe = document.getElementById(iframeId)
+
+        if (iframe) {
+            iframe.contentWindow.postMessage({
+                piano: {
+                    success: success,
+                    message: message,
+                    object: object
+                }
+            }, '*');
+        }
+    }
+    
+</script>
 
 <%= t.include("partials/_geoedge.html") %>
 <!-- Header Bidding Head Scripts -->
