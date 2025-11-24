@@ -161,6 +161,6 @@ if (here.searchParams.has("screenshot")) {
   document.body.classList.add("screenshot");
 }
 
-window.onload = function() {
-  tp.experience.execute();
-  }
+var oldonload = window.onload;
+
+window.onload = (typeof window.onload != 'function') ? tp.experience.execute() : function() { oldonload(); tp.experience.execute(); };
