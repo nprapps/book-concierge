@@ -37,8 +37,27 @@
 <ul class="links">
   <% data.book.links.sort(function(a, b) {
     return 0;
-  }).forEach(function(link) { %>
-  <li> <b><%= link.source %> - </b> <a href="<%= link.url %>"><%= link.text %></a>
+  }).forEach(function(link) { 
+    
+    const addParams = (inputURL, params) => {
+      const url = new URL(inputURL);
+
+      Object.entries(params).forEach(([key,value]) => {
+        url.searchParams.set(key,value);
+      });
+
+      return url.toString()
+    };
+
+    const bookLink = addParams(link.url, {
+      utm_source: "npr.org",
+      utm_medium: "referral",
+      utm_campaign: "books_we_love",
+      utm_content: "links"
+    });
+    
+    %>
+  <li> <b><%= link.source %> - </b> <a href="<%= bookLink %>"><%= link.text %></a>
   <% }); %>
 </ul>
 <ul class="get-this-book">
