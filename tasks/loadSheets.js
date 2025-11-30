@@ -46,6 +46,7 @@ module.exports = function(grunt) {
       auth = authenticate();
     } catch (err) {
       console.log("No access token from ~/.google_oauth_token, private spreadsheets will be unavailable.", err)
+      return grunt.fail.warn("Couldn't load access token for sheet, try running `grunt google-auth`");
     };
 
     var sheetKeys = project.sheets;
