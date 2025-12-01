@@ -31,7 +31,12 @@ module.exports = function(grunt) {
     var rareTags = Object.keys(counts).filter(t => counts[t].length < 20);
     if (!rareTags.length) return true;
     for (var t of rareTags) {
-      console.log(`Tag "${t}" has very few books (used: ${counts[t].join(", ")})`);
+      var yearCounts = counts[t].reduce((acc, year) => {
+        acc[year] = (acc[year] || 0) + 1;
+        return acc;
+      }, {});
+      var yearList = Object.entries(yearCounts).map(([year, count]) => `${year} (${count})`).join(", ");
+      console.log(`Tag "${t}" has very few books: ${yearList}`);
     }
   };
 
@@ -98,8 +103,8 @@ module.exports = function(grunt) {
 
   var links = async function() {
     // Are all links accounted for?
-    var unreferencedLinks = grunt.data.json.links.filter(link => !(grunt.data.shelf.some(b => b.id == link.id && b.year == link.year))) 
-      // Only find unreferenced links from the specified year 
+    var unreferencedLinks = grunt.data.json.links.filter(link => !(grunt.data.shelf.some(b => b.id == link.id && b.year == link.year)))
+      // Only find unreferenced links from the specified year
       .filter(link => yearOption ? link.year == yearOption : true);
     unreferencedLinks.forEach(link => console.log(`Unreferenced link: ${link.source} on ${link.book} (${link.year}).`))
     return !unreferencedLinks.length;

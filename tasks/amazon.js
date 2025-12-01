@@ -24,7 +24,7 @@ module.exports = function(grunt) {
     // check that a title substring matches
     var trimmedTitle = npr.title.toLowerCase().replace(/:.*?$/, "").trim();
     if (!amazon.title.toLowerCase().includes(trimmedTitle)) return false;
-    
+
     // check that the year is the same or later
     if (amazon.published || amazon.released) {
       var d = amazon.published || amazon.released;
@@ -67,7 +67,8 @@ module.exports = function(grunt) {
           }
           break;
         } catch (err) {
-          console.log(`  Retrying...`);
+          console.log("  Error during search:", err.message);
+          console.log("  Retrying...");
         }
       }
       await wait(1000);
