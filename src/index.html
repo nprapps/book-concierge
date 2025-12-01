@@ -133,14 +133,13 @@
     <div id="global-stickybar-mount-piano-wrap" class="global-stickybar">
       <div id="global-stickybar-mount-piano" class="global-stickybar-mount-piano"></div>
     </div>
-    
+
     <div id="global-header-sticky-cta-mount"></div>
     <div id="global-header-cta-mount"></div>
     </main>
-    
 
     <%= t.include("partials/_footer.html", { content: t.include("_footer.html") }) %>
-    <%= t.include("partials/_schema.html", { data: json.year2024 }) %>
+    <%= t.include("partials/_schema.html", { data: json[json.years.filter(y => y.current === true)[0].year] }) %>
     <script>
     window.conciergeData = {
       reviewers: <%= JSON.stringify(json.reviewers) %>
