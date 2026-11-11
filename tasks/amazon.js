@@ -42,8 +42,8 @@ module.exports = function(grunt) {
       console.log(`Product search: ${book.title}...`);
       var attempts = 0;
       var query = {
-        Keywords: book.title.replace(/:.*?$/, ""),
-        Author: book.author.replace(/,.*?$|\sand\s.*?$|\swith\s.*?$|\(.*?\)/g, "")
+        keywords: book.title.replace(/:.*?$/, ""),
+        author: book.author.replace(/,.*?$|\sand\s.*?$|\swith\s.*?$|\(.*?\)/g, "")
       }
       // console.log(query);
       while (attempts < 10) {
@@ -67,7 +67,9 @@ module.exports = function(grunt) {
           }
           break;
         } catch (err) {
-          console.log(`  Retrying...`);
+          if (err.fatal) throw err;
+          console.log(`  Retrying... (${err.message})`);
+          await wait(1000);
         }
       }
       await wait(1000);
