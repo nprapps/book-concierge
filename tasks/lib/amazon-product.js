@@ -104,7 +104,7 @@ var flattenAmazon = function(result) {
   return {
     title: p("itemInfo.title.displayValue"),
     isbn: p("itemInfo.externalIds.isbns.displayValues", [])[0],
-    image: p("itemInfo.images.primary.large.url"),
+    image: p("images.primary.large.url"),
     author: p("itemInfo.byLineInfo.contributors", []).map(d => d.name).join("; "),
     publisher: p("itemInfo.byLineInfo.brand.displayValue") || p("itemInfo.byLineInfo.manufacturer.displayValue"),
     language: p("itemInfo.contentInfo.languages.displayValues", []).map(d => d.displayValue)[0],
