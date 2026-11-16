@@ -111,8 +111,9 @@ var bookshop = async function(books) {
     var url = new URL(baseUrl + book.isbn13);
     console.log(`Searching for "${book.title}" on Bookshop.org...`);
     try {
-      var response = await fetch(url.toString(), { method: 'HEAD' });
-      if (response.status == 200) {
+      var response = await fetch(url.toString(), { method: 'HEAD', redirect: 'manual' });
+      var location = response.headers.get("Location") || "";
+      if (response.status == 200 || location.includes("/p/books/")) {
         output[book.id] = book.isbn13;
       }
     } catch (err) {

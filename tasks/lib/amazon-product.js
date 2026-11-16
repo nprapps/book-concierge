@@ -1,269 +1,98 @@
-/**
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
- * A copy of the License is located at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * or in the "license" file accompanying this file. This file is distributed
- * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing
- * permissions and limitations under the License.
- */
+// Amazon Creators API (replaces Product Advertising API, retired 2026)
 
-/**
- * ProductAdvertisingAPI
- * https://webservices.amazon.com/paapi5/documentation/index.html
- *
- * This file is for signing PAAPI request with AWS V4 Signing. For more details, see
- * https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html
- *
- * Do not edit the class manually.
- *
- */
+var fetch = require("node-fetch")
 
-// sources of inspiration:
-// http://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-query-string-auth.html
-
-var crypto = require("crypto-js");
-
-var createAuthHeader = function (
-  accessKey,
-  secretKey,
-  requestHeaders,
-  httpMethod,
-  path,
-  payload,
-  region,
-  service,
-  timestamp
-) {
-  /* Step 1: Create Signed Headers */
-  var signedHeaders = createSignedHeaders(requestHeaders);
-
-  /* Step 2: Create Canonical Request */
-  var canonicalRequest = createCanonicalRequest(
-    httpMethod,
-    path,
-    {},
-    requestHeaders,
-    payload
-  );
-
-  /* Step 3: Create String To Sign */
-  var stringToSign = createStringToSign(
-    timestamp,
-    region,
-    service,
-    canonicalRequest
-  );
-
-  /* Step 4: Create Signature Headers */
-  var signature = createSignature(
-    secretKey,
-    timestamp,
-    region,
-    service,
-    stringToSign
-  );
-
-  /* Step 5: Create Authorization Header */
-  var authorizationHeader = createAuthorizationHeaders(
-    timestamp,
-    accessKey,
-    region,
-    service,
-    signedHeaders,
-    signature
-  );
-
-  return authorizationHeader;
-};
-
-var createAuthorizationHeaders = function (
-  timestamp,
-  accessKey,
-  region,
-  service,
-  signedHeaders,
-  signature
-) {
-  return [
-    `AWS4-HMAC-SHA256 Credential=${accessKey}/${createCredentialScope(
-      timestamp,
-      region,
-      service
-    )}`,
-    `SignedHeaders=${signedHeaders}`,
-    `Signature=${signature}`
-  ].join(", ");
-};
-
-var createCanonicalRequest = function (
-  method,
-  pathname,
-  query,
-  headers,
-  payload
-) {
-  return [
-    method.toUpperCase(),
-    pathname,
-    "",
-    createCanonicalHeaders(headers),
-    createSignedHeaders(headers),
-    hexEncodedHash(payload)
-  ].join("\n");
-};
-
-var createCanonicalQueryString = function (params) {
-  return Object.keys(params)
-    .sort()
-    .map(function (key) {
-      return encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
-    })
-    .join("&");
-};
-
-var createCanonicalHeaders = function (headers) {
-  return Object.keys(headers)
-    .sort()
-    .map(
-      (name) =>
-        `${name.toLowerCase().trim()}:${headers[name].toString().trim()}\n`
-    )
-    .join("");
-};
-
-var createSignedHeaders = function (headers) {
-  return Object.keys(headers)
-    .sort()
-    .map((name) => name.toLowerCase().trim())
-    .join(";");
-};
-
-var createCredentialScope = function (time, region, service) {
-  return [toDate(time), region, service, "aws4_request"].join("/");
-};
-
-var createStringToSign = function (time, region, service, request) {
-  return [
-    "AWS4-HMAC-SHA256",
-    toTime(time),
-    createCredentialScope(time, region, service),
-    hexEncodedHash(request)
-  ].join("\n");
-};
-
-var createSignature = function (secret, time, region, service, stringToSign) {
-  var h1 = hmac("AWS4" + secret, toDate(time)); // date-key
-  var h2 = hmac(h1, region); // region-key
-  var h3 = hmac(h2, service); // service-key
-  var h4 = hmac(h3, "aws4_request"); // signing-key
-  return hmac(h4, stringToSign).toString(crypto.enc.Hex);
-};
-
-var toTime = (time) =>
-  new Date(time).toISOString().replace(/[:\-]|\.\d{3}/g, "");
-
-var toDate = (time) => toTime(time).substring(0, 8);
-
-var hmac = (key, data) => crypto.HmacSHA256(data, key);
-
-var hexEncodedHash = (data) => crypto.SHA256(data).toString(crypto.enc.Hex);
-
-// NPR code follows:
-
-var fetch = require("node-fetch");
-
-const KEY = process.env.AMAZON_PRODUCT_ADVERTISING_KEY;
-const SECRET = process.env.AMAZON_PRODUCT_ADVERTISING_SECRET;
+const ID = process.env.AMAZON_CREATORS_ID;
+const SECRET = process.env.AMAZON_CREATORS_SECRET;
 const TAG = process.env.AMAZON_PRODUCT_ADVERTISING_TAG;
 
-var searchProductAPI = async function (query) {
-  const host = "webservices.amazon.com";
-  const path = "/paapi5/searchitems";
-  const url = `https://${host}${path}`;
-  const region = "us-east-1";
-  const service = "ProductAdvertisingAPI";
-  const method = "POST";
+const TOKEN_URL = "https://api.amazon.com/auth/o2/token";
+const SEARCH_URL = "https://creatorsapi.amazon/catalog/v1/searchItems";
+const MARKETPLACE = "www.amazon.com";
 
-  var timestamp = Date.now();
+var fatal = function(message) {
+  var err = new Error(message);
+  err.fatal = true;
+  return err;
+};
 
-  const requestHeaders = {
-    host,
-    "content-encoding": "amz-1.0",
-    "content-type": "application/json; charset=utf-8",
-    "x-amz-target": `com.amazon.paapi5.v1.ProductAdvertisingAPIv1.SearchItems`,
-    "x-amz-date": toTime(timestamp)
+var token = null;
+
+var getToken = async function() {
+  if (token && token.expires > Date.now()) return token.value;
+  if (!ID || !SECRET || !TAG) {
+    throw fatal("Set AMAZON_CREATORS_ID, AMAZON_CREATORS_SECRET and AMAZON_PRODUCT_ADVERTISING_TAG");
+  }
+  var response = await fetch(TOKEN_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      grant_type: "client_credentials",
+      client_id: ID,
+      client_secret: SECRET,
+      scope: "creatorsapi::default"
+    })
+  });
+  var json = await response.json();
+  if (!response.ok) {
+    var message = `Token request failed: HTTP ${response.status} ${JSON.stringify(json)}`;
+    throw response.status = 429 ? new Error(message) : fatal(message);
+  }
+  token = {
+    value: json.access_token,
+    expires: Date.now() + (json.expires_in - 60) * 1000
   };
+  return token.value;
+}
 
-  // Returning only the first page of results, i.e. ({ ItemPage: 1 }),
-  // which has been sufficient
+var searchProductAPI = async function(query) {
   var payload = JSON.stringify({
     ...query,
-    PartnerTag: TAG,
-    PartnerType: "Associates",
-    SearchIndex: "Books",
-    Merchant: "All",
-    Availability: "IncludeOutOfStock",
-    ItemCount: 10, // Increase to get more results (max. of 10)
-    Resources: [
-      "Images.Primary.Large", // Cover photo
-      "ItemInfo.Title", // Title
-      "ItemInfo.ByLineInfo", // Author, publisher
-      "ItemInfo.ExternalIds", // ISBNs,
-      "ItemInfo.ContentInfo",
-      "ItemInfo.ProductInfo"
+    partnerTag: TAG,
+    marketplace: MARKETPLACE,
+    searchIndex: "Books",
+    availability: "IncludeOutOfStock",
+    itemCount: 10,
+    resources: [
+      "images.primary.large",
+      "itemInfo.title",
+      "itemInfo.byLineInfo",
+      "itemInfo.externalIds",
+      "itemInfo.contentInfo",
+      "itemInfo.productInfo"
     ]
   });
 
-  var authorizationHeader = createAuthHeader(
-    KEY,
-    SECRET,
-    requestHeaders,
-    method,
-    path,
-    payload,
-    region,
-    service,
-    timestamp
-  );
-
-  var headers = {
-    Authorization: authorizationHeader,
-    ...requestHeaders
-  };
-
-  // Send the request
-  var response = await fetch(url, {
-    headers,
-    method,
+  var response = await fetch(SEARCH_URL, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${await getToken()}`,
+      "Content-Type": "application/json",
+      "x-marketplace": MARKETPLACE
+    },
     body: payload
   });
 
-  if (response.status == 429) {
-    throw new Error("Rate limited");
-  }
-
-  if (response.status == 401) {
-    throw new Error("Signature error");
-  }
-
   var json = await response.json();
-  if (!json.SearchResult) return [];
-  return json.SearchResult.Items || [];
+  if (response.ok) {
+    return json.searchResult ? json.searchResult.items || [] : [];
+  }
+
+  var message = `HTTP ${response.status} ${json.type || ""} ${json.reason || ""} ${json.message || ""}`.trim();
+  if (response.status == 404) {
+    console.log(`  ${message}`);
+    return [];
+  }
+  if (response.status == 401) token = null;
+  if (response.status == 400 || response.status == 403) throw fatal(message);
+  throw new Error(message);
 };
 
-// using this instead of optional chaining in case of older Node versions
-// after v14, easier to just write result.ItemInfo?.Title?.DisplayValue
 var prop = function(target, key, fallback) {
   var path = key.split(".");
-  while (path.length) {
+  while(path.length) {
     var segment = path.shift();
-    if (!(segment in target)) return fallback;
+    if (!target || !(segment in target)) return fallback;
     target = target[segment];
   }
   return target;
@@ -273,17 +102,17 @@ var flattenAmazon = function(result) {
   var p = prop.bind(null, result);
 
   return {
-    title: p("ItemInfo.Title.DisplayValue"),
-    isbn: p("ItemInfo.ExternalIds.ISBNs.DisplayValues", [])[0],
-    image: p("Images.Primary.Large.URL"),
-    author: p("ItemInfo.ByLineInfo.Contributors", []).map(d => d.Name).join("; "),
-    publisher: p("ItemInfo.ByLineInfo.Brand.DisplayValue") || p("ItemInfo.ByLineInfo.Manufacturer.DisplayValue"),
-    language: p("ItemInfo.ContentInfo.Languages.DisplayValues", []).map(d => d.DisplayValue)[0],
-    published: new Date(p("ItemInfo.ContentInfo.PublicationDate.DisplayValue")).getFullYear(),
-    released: new Date(p("ItemInfo.ProductInfo.ReleaseDate.DisplayValue")).getFullYear(),
-    pages: p("ItemInfo.ContentInfo.PagesCount.DisplayValue"),
-    asin: result.ASIN,
-    url: result.DetailPageURL
+    title: p("itemInfo.title.displayValue"),
+    isbn: p("itemInfo.externalIds.isbns.displayValues", [])[0],
+    image: p("images.primary.large.url"),
+    author: p("itemInfo.byLineInfo.contributors", []).map(d => d.name).join("; "),
+    publisher: p("itemInfo.byLineInfo.brand.displayValue") || p("itemInfo.byLineInfo.manufacturer.displayValue"),
+    language: p("itemInfo.contentInfo.languages.displayValues", []).map(d => d.displayValue)[0],
+    published: new Date(p("itemInfo.contentInfo.publicationDate.displayValue")).getFullYear(),
+    released: new Date(p("itemInfo.productInfo.releaseDate.displayValue")).getFullYear(),
+    pages: p("itemInfo.contentInfo.pagesCount.displayValue"),
+    asin: result.asin,
+    url: result.detailPageURL
   };
 };
 
