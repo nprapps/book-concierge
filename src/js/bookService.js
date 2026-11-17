@@ -52,6 +52,23 @@ var facade = {
     return [].concat(...indices);
   },
 
+  getReviewer: async function(name) {
+    var index = await request("./reviewers.json");
+    var known = Object.prototype.hasOwnProperty.call(index, name);
+    if (!known) return null;
+    var refs = index[name];
+    var years = new Set(refs.map(ref => ref.split(":")[0] * 1));
+    var shelves = await Promise.all([...years].map(y => facade.getYear(y)));
+    var lookup = {};
+    shelves.forEach(shelf => 
+      shelf.forEach(book => (lookup[book.year + ":" + book.id] = book))
+    );
+    return refs
+      .map(ref => lookup[ref])
+      .filter(book => book)
+      .sort((a, b) => b.year - a.year)
+  },
+
   getDetail: async function(year, id) {
     var response = request(`${year}-detail.json`);
     // if we came straight from a book, prep the index

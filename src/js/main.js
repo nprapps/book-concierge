@@ -9,6 +9,7 @@ var channel = require("./pubsub");
 var bookService = require("./bookService");
 var {
   renderBook,
+  renderReviewer,
   renderList,
   renderCovers,
   createCover,
@@ -23,7 +24,8 @@ hash.define({
   years: [Number],
   tags: [String],
   view: String,
-  reset: Boolean
+  reset: Boolean,
+  reviewer: String
 });
 
 /*
@@ -51,6 +53,26 @@ channel.on("hashchange", async function(params, pastParams = {}) {
   bodyData.tags = (merged.tags || []).length;
 
   setFilters(merged);
+
+  if (merged.reviewer) {
+    var reviewed = await bookService.getReviewer(merged.reviewer);
+    if (reviewed) {
+      var profile = window.conciergeData.reviewers[merged.reviewer] || {};
+      track("reviewer-selected", merged.reviewer, reviewed.length);
+      renderReviewer({
+        name: merged.reviewer,
+        title: profile.title,
+        link: profile.link,
+        books: reviewed,
+        back: hash.serialize({
+          year: merged.year,
+          view: merged.view,
+          tags: merged.tags
+        })
+      });
+      return;
+    }
+  }
 
   // single book rendering
   if (merged.book) {
@@ -130,7 +152,7 @@ channel.on("hashchange", async function(params, pastParams = {}) {
 // on startup, check for a pre-existing hash
 var startup = hash.parse();
 // years is guaranteed to be an array because of the define() above
-if (startup.year || startup.tags) {
+if (startup.year || startup.tags || startup.reviewer) {
   // if found, force a render from the hash, which will update filters accordingly
   hash.force();
 } else {

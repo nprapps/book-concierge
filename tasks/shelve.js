@@ -11,6 +11,19 @@ var normalizeTags = function(tags) {
     .filter(s => s);
 };
 
+var indexReviewers = function(shelf) {
+  var byReviewer = Object.create(null);
+  shelf.forEach(function(book) {
+    book.reviewers.forEach(function(name) {
+      name = name.trim();
+      if (!name) return;
+      if (!byReviewer[name]) byReviewer[name] = [];
+      byReviewer[name].push(book.year + ":" + book.id);
+    });
+  });
+  return byReviewer;
+};
+
 var shelve = async function(grunt) {
   var shelf = [];
 
@@ -107,6 +120,7 @@ var shelve = async function(grunt) {
   grunt.data.shelf = shelf;
 
   grunt.file.write("build/shelf.json", JSON.stringify(shelf, null, 2));
+  grunt.file.write("build/reviewers.json", JSON.stringify(indexReviewers(shelf), null, 2));
 }
 
 
@@ -123,3 +137,5 @@ module.exports = function(grunt) {
   });
 
 }
+
+module.exports.indexReviewers = indexReviewers;
