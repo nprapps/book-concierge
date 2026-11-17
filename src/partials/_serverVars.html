@@ -1,0 +1,28 @@
+<%
+  var sponsorship = project.sponsorship;
+  var serverVars = {
+    storyId: sponsorship.targets.storyId,
+    pageTypeId: "",
+    pageLayoutName: "",
+    sponsorship: Object.assign(
+      {
+        baseAdConfig: {
+          network: sponsorship.network,
+          zone: sponsorship.zone,
+          targets: sponsorship.targets
+        }
+      },
+      // Yield Manager treats every key other than baseAdConfig as a placement.
+      Object.fromEntries(Object.entries(sponsorship.locations).map(function(entry) {
+        return [entry[0], { site: entry[1].site }];
+      }))
+    )
+  };
+%>
+<script>
+  window.NPR = window.NPR || {};
+  window.NPR.serverVars = <%= JSON.stringify(serverVars) %>;
+
+  const isTesting = ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname);
+  window.NPR.serverVars.sponsorship.baseAdConfig.targets.testserver = isTesting ? "true" : "false";
+</script>

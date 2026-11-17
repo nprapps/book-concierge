@@ -1,0 +1,12 @@
+<script class="remove-embedded">
+  // Gating on the param rather than leaning on the `.remove-embedded` sweep below: YM actively
+  // scans for slots, so letting it load and then removing the tag would be a race.
+  if (!new URL(window.location).searchParams.has("embedded")) {
+    var ymScript = document.createElement("script");
+    ymScript.className = "remove-embedded";
+    ymScript.async = true;
+    ymScript.referrerPolicy = "no-referrer-when-downgrade";
+    ymScript.src = "https://CPfTuHdzdsTC5RZ8x.ay.delivery/manager/CPfTuHdzdsTC5RZ8x";
+    document.head.appendChild(ymScript);
+  }
+</script>

@@ -15,8 +15,7 @@
   "scripts": {
     "src/js/main.js": "build/app.js",
     "src/js/sponsorship.js": "build/sponsorship.js",
-    "src/js/gdpr-compliance.js": "build/gdpr-compliance.js",
-    "src/js/loadHeaderBidding.js": "build/loadHeaderBidding.js"
+    "src/js/gdpr-compliance.js": "build/gdpr-compliance.js"
   },
   "title": "Books We Love",
   "description": "Great reads, thoughtfully curated by NPR",
@@ -32,26 +31,29 @@
     "secondaryTopics": ["Books", "Arts \u0026amp; Life"]
   },
   "sponsorship": {
+    "network": "/6735/",
+    "zone": "news_politics_elections",
+    "targets": {
+      "storyId": "g-s1-148800"
+    },
     "locations": {
-      "centerstage": {
-        "location": "centerstage",
-        "desktop_ad_unit": "n6735.NPR",
-        "mobile_ad_unit": "n6735.NPRMOBILE",
-        "gam_sizes": [[320, 240], [300, 250], [728, 90], [970, 250], [1300, 250], ["fluid"]],
-        "header_bidding_sizes": {
-          "aps": [[300, 250], [728, 90], [970, 250]],
-          "openwrap": [[300, 250], [728, 90], [970, 250]]
-        }
+      "backstage": {
+        "location": "backstage",
+        "site": { "desktop": "n6735.NPR", "mobile": "n6735.NPRMOBILE" },
+        "size_mapping": [
+          [[985, 1], "fluid", [300, 250], [320, 240], [728, 90], [970, 250], [1300, 250]],
+          [[743, 1], "fluid", [300, 250], [320, 240], [728, 90], [1300, 250]],
+          [[300, 1], "fluid", [300, 250], [320, 240], [1300, 250]]
+        ]
       },
       "secondary": {
         "location": "secondary",
-        "desktop_ad_unit": "NPRSecondary",
-        "mobile_ad_unit": "NPRMobileSecondary",
-        "gam_sizes": [[320, 240], [300, 250], [728, 90], [970, 250], [1300, 250], ["fluid"]],
-        "header_bidding_sizes": {
-          "aps": [[300, 250], [728, 90], [970, 250]],
-          "openwrap": [[300, 250], [728, 90], [970, 250]]
-        }
+        "site": { "desktop": "NPRSecondary", "mobile": "NPRMobileSecondary" },
+        "size_mapping": [
+          [[985, 1], "fluid", [300, 250], [320, 240], [728, 90], [970, 250], [1300, 250]],
+          [[743, 1], "fluid", [300, 250], [320, 240], [728, 90], [1300, 250]],
+          [[300, 1], "fluid", [300, 250], [320, 240], [1300, 250]]
+        ]
       }
     }
   },

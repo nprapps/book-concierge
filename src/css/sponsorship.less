@@ -1,16 +1,40 @@
-.ad-wrap {
-  animation: fadeIn 2s;
-  -webkit-animation: fadeIn 2s;
-  -moz-animation: fadeIn 2s;
-  -o-animation: fadeIn 2s;
-  visibility: hidden;
+#ad-backstage-wrap,
+#ad-secondary-wrap {
+  // max-width: 970px;
+  margin: 0 auto;
+  text-align: center;
+  background: var(--bg-secondary);
+  // A minimum rather than a fixed height: it reserves the usual slot so the page does not jump,
+  // but a creative taller than 250 grows the wrap instead of spilling out of it.
+  min-height: 320px;
 
-  &.visible {
-    visibility: visible;
+  iframe {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
   }
 
-  &.hidden {
-    display: none;
+  // `unfilled` is set by sponsorship.js when a slot renders empty. The reserved height is given
+  // back and the contents collapse, so nothing is left but a zero-height element.
+  &.unfilled {
+    height: 0;
+    min-height: 0;
+  }
+}
+
+#ad-backstage-wrap {
+  border-bottom: 2px solid var(--fg-quaternary);
+
+  &.unfilled {
+    border-bottom: none;
+  }
+}
+
+#ad-secondary-wrap {
+  border-top: 2px solid var(--fg-quaternary);
+
+  &.unfilled {
+    border-top: none;
   }
 }
 
@@ -22,13 +46,13 @@
 .ad-config {
   clear: both;
   text-align: center;
-  margin-bottom: 30px;
   overflow: hidden;
   transition: 500ms ease;
   display: table-cell !important; // Needs !important to override 'display: none' set by googleads JS SDK
   flex-direction: column;
   vertical-align: middle;
   height: 250px;
+
 
   > div {
     animation: fadeIn 2s;
@@ -37,8 +61,21 @@
     -o-animation: fadeIn 2s;
   }
 
-  &.hidden {
-    display: none !important; // needed here to override the !important above under the same specificity
+  // The creative itself, which is what actually arrives late now that the slot reserves its own
+  // height. 'forwards' holds the end state so it cannot flicker back once the animation is done.
+  > div > div,
+  iframe {
+    animation: fadeIn 0.5s ease-in forwards;
+    -webkit-animation: fadeIn 0.5s ease-in forwards;
+    -moz-animation: fadeIn 0.5s ease-in forwards;
+    -o-animation: fadeIn 0.5s ease-in forwards;
+  }
+
+  .ad-wrap.unfilled & {
+    height: 0;
+    min-height: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
   }
 }
 
@@ -51,15 +88,40 @@
   line-height: 1.3;
   font-weight: 500;
   -webkit-font-smoothing: antialiased;
-  color: #555;
+  color: var(--fg-tertiary);
   padding: 15px;
+
+  .unfilled & {
+    display: none;
+  }
 }
 
 .ad-footer {
   padding-top: 25px;
   content: "";
   display: block;
-  border-bottom: 1px solid #fff;
+
+  .unfilled & {
+    display: none;
+  }
+}
+
+// Our AdX is enabled for "ad expansion" on mobile, which allows creatives to sometimes render edge to edge or
+// far taller than the requested size. This gates against having them show up above mobile.
+@media @mobile-above {
+  .ad-config-wrap {
+    display: block;
+  }
+
+  .ad-config {
+    display: flex !important; // still has to beat the googleads SDK's inline 'display: none'
+    flex-direction: row;
+    align-items: center;
+    align-items: safe center; // top-align instead of centre-cropping an oversized creative
+    justify-content: center;
+    height: 250px;
+    max-height: 250px;
+  }
 }
 
 // underwriting
