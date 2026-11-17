@@ -10,7 +10,9 @@
     <%= t.include("partials/_head.html", { project }) %>
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
-  <body data-mode="covers">
+  <% var current = json.years.find(y => y.current) || json.years[0]; %>
+
+  <body data-year="<%= current.year %>">
 
     <header class="hero">
       <svg class="texture">
@@ -49,12 +51,17 @@
           <li><a href="https://www.npr.org/podcasts/510364/daily-books">Book of the Day Podcast</a></li>
           <li><a href="https://www.npr.org/newsletter/books">Newsletter</a></li>
         </ul>
+        <p class="back-link">
+          <a href="index.html">&lsaquo; Back to the bookshelf</a>
+        </p>
+
       </div>
 
         <!-- <h3>Filters</h3> -->
     </header>
 
     <%= t.include("partials/_ad.html", {config: project.sponsorship.locations.backstage}) %>
+    <div class="divider"></div>
 
     <main class="about reviewers">
       <h2>Reviewers</h2>
