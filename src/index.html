@@ -53,7 +53,7 @@
         <!-- <h3>Filters</h3> -->
     </header>
 
-    <%= t.include("partials/_ad.html", {config: project.sponsorship.locations.centerstage}) %>
+    <%= t.include("partials/_ad.html", {config: project.sponsorship.locations.backstage}) %>
 
     <main class="concierge">
       <div class="years-outer-container">
@@ -127,7 +127,6 @@
       </div>
       </div>
       <div class="divider"></div>
-      <%= t.include("partials/_ad.html", {config: project.sponsorship.locations.secondary}) %>
 
     </div>
     <div id="global-stickybar-mount-piano-wrap" class="global-stickybar">
@@ -138,6 +137,7 @@
     <div id="global-header-cta-mount"></div>
     </main>
     
+    <%= t.include("partials/_ad.html", {config: project.sponsorship.locations.secondary}) %>
 
     <%= t.include("partials/_footer.html", { content: t.include("_footer.html") }) %>
     <%= t.include("partials/_schema.html", { data: json.year2024 }) %>
@@ -148,8 +148,8 @@
     window.PROJECT_ANALYTICS = <%= JSON.stringify(json.project.analytics || {}) %>;
     </script>
     <script src="app.js" async></script>
-    <script class="remove-embedded" async="async" src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
-    <script src="sponsorship.js" async></script>
+    <script src="sponsorship.js"></script>
+    <%= t.include("partials/_ymManager.html") %>
     <%= t.include("partials/_analytics.html") %>
   </body>
 </html>

@@ -83,6 +83,9 @@
 var _sf_startpt=(new Date()).getTime()
 </script>
 
+<!-- Sponsorship -->
+<%= t.include("partials/_serverVars.html", { "project": project }) %>
+
 <!-- Piano -->
 <script>
       (function(src) {
@@ -283,10 +286,6 @@ var _sf_startpt=(new Date()).getTime()
     }
     
 </script>
-
-<%= t.include("partials/_geoedge.html") %>
-<!-- Header Bidding Head Scripts -->
-<script src="loadHeaderBidding.js" async></script>
 
 <%
 // if !project.embedded...
