@@ -32,9 +32,9 @@
   },
   "sponsorship": {
     "network": "/6735/",
-    "zone": "news_politics_elections",
+    "zone": "arts___life_books/book_concierge",
     "targets": {
-      "storyId": "g-s1-148800"
+      "storyId": "nx-s1-5928321"
     },
     "locations": {
       "backstage": {
@@ -58,5 +58,5 @@
     }
   },
   "embedded": false,
-  "production": true
+  "production": false
 }
