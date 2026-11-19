@@ -2,10 +2,10 @@
 <p class="back-link"><a href="#<%= data.back %>">&lsaquo; back to the shelf</a></p>
 
 <h2 tabindex="-1"><%= data.name %></h2>
-<% if (data.title) { %>
-  <p class="reviewer-title"><% if (data.link) { %>
-  <a href="<%= data.link %>"><%= formatter(data.title) %></a>
-<% } else { %><%= formatter(data.title) %><% } %></p>
+<% if (data.link) { %>
+  <p class="reviewer-title">
+    <a href="<%= data.link %>">About the reviewer</a>
+  </p>
 <% } %>
 
 <h3>

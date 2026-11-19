@@ -77,9 +77,10 @@ channel.on("hashchange", async function(params, pastParams = {}) {
   // single book rendering
   if (merged.book) {
     // get book data
-    var [book, books] = await Promise.all([
+    var [book, books, counts] = await Promise.all([
       bookService.getDetail(merged.year, merged.book),
-      bookService.getYear(merged.year, merged.view)
+      bookService.getYear(merged.year, merged.view),
+      bookService.getReviewerCounts().catch(() => ({}))
     ]);
     // find the location of this book in the current filter view
     var shelf = filterBooks(books, merged.tags);
@@ -102,7 +103,7 @@ channel.on("hashchange", async function(params, pastParams = {}) {
     var all_rev = [];
     book.reviewers.forEach(function(rev){
       var one_rev = window.conciergeData.reviewers[rev] || {};
-      all_rev.push(one_rev)
+      all_rev.push(Object.assign({}, one_rev, { picks: counts[rev] || 0 }))
     });
     var reviewers = all_rev || {};
 

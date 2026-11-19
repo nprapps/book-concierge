@@ -69,6 +69,13 @@ var facade = {
       .sort((a, b) => b.year - a.year)
   },
 
+  getReviewerCounts: async function() {
+    var index = await request("./reviewers.json");
+    var counts = Object.create(null);
+    for (var name in index) counts[name] = index[name].length;
+    return counts;
+  },
+
   getDetail: async function(year, id) {
     var response = request(`${year}-detail.json`);
     // if we came straight from a book, prep the index
