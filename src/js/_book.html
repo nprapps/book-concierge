@@ -28,7 +28,8 @@
       var others = (rev.picks || 0 ) - 1;
       if (rev.key && others > 0) {
         var picksHref = `#${data.hash.serialize({ reviewer: rev.key })}`;
-        output += ` <span class="picks">&bull; <a href="${picksHref}">more reviews</a></span>`
+        var firstName = String(rev.first_name || "").trim() || rev.key.split(" ")[0];
+        output += ` <span class="picks">&bull; <a href="${picksHref}">more reviews by ${firstName}</a></span>`
       }
       if (i <= data.reviewers.length - 3) {
         output += ", ";
