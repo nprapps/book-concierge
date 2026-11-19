@@ -9,6 +9,7 @@ var channel = require("./pubsub");
 var bookService = require("./bookService");
 var {
   renderBook,
+  renderReviewer,
   renderList,
   renderCovers,
   createCover,
@@ -23,7 +24,8 @@ hash.define({
   years: [Number],
   tags: [String],
   view: String,
-  reset: Boolean
+  reset: Boolean,
+  reviewer: String
 });
 
 /*
@@ -37,7 +39,7 @@ The hash is always the source of truth.
 
 var defaults = {
   view: "covers",
-  year: 2024
+  year: 2026
 };
 
 // hashes update filters (usually redundant) and render the main panel
@@ -52,12 +54,33 @@ channel.on("hashchange", async function(params, pastParams = {}) {
 
   setFilters(merged);
 
+  if (merged.reviewer) {
+    var reviewed = await bookService.getReviewer(merged.reviewer);
+    if (reviewed) {
+      var profile = window.conciergeData.reviewers[merged.reviewer] || {};
+      track("reviewer-selected", merged.reviewer, reviewed.length);
+      renderReviewer({
+        name: merged.reviewer,
+        title: profile.title,
+        link: profile.link,
+        books: reviewed,
+        back: hash.serialize({
+          year: merged.year,
+          view: merged.view,
+          tags: merged.tags
+        })
+      });
+      return;
+    }
+  }
+
   // single book rendering
   if (merged.book) {
     // get book data
-    var [book, books] = await Promise.all([
+    var [book, books, counts] = await Promise.all([
       bookService.getDetail(merged.year, merged.book),
-      bookService.getYear(merged.year, merged.view)
+      bookService.getYear(merged.year, merged.view),
+      bookService.getReviewerCounts().catch(() => ({}))
     ]);
     // find the location of this book in the current filter view
     var shelf = filterBooks(books, merged.tags);
@@ -80,7 +103,7 @@ channel.on("hashchange", async function(params, pastParams = {}) {
     var all_rev = [];
     book.reviewers.forEach(function(rev){
       var one_rev = window.conciergeData.reviewers[rev] || {};
-      all_rev.push(one_rev)
+      all_rev.push(Object.assign({}, one_rev, { picks: counts[rev] || 0 }))
     });
     var reviewers = all_rev || {};
 
@@ -130,7 +153,7 @@ channel.on("hashchange", async function(params, pastParams = {}) {
 // on startup, check for a pre-existing hash
 var startup = hash.parse();
 // years is guaranteed to be an array because of the define() above
-if (startup.year || startup.tags) {
+if (startup.year || startup.tags || startup.reviewer) {
   // if found, force a render from the hash, which will update filters accordingly
   hash.force();
 } else {

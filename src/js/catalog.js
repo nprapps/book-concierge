@@ -5,10 +5,12 @@ var flip = require("./lib/flip");
 var bookTemplate = dot.compile(require("./_book.html"));
 var listTemplate = dot.compile(require("./_list.html"));
 var coverTemplate = dot.compile(require("./_cover.html"));
+var reviewerTemplate = dot.compile(require("./_reviewer.html"));
 
 var coverContainer = $.one(".catalog-covers");
 var listContainer = $.one(".catalog-list");
 var bookPanel = $.one(".book-detail");
+var reviewerPanel = $.one(".reviewer-detail");
 var bookCounter = $.one(".book-count");
 
 // single book rendering
@@ -25,6 +27,13 @@ var renderBook = async function(data, scroll = false) {
     topAdSlot.scrollIntoView();
   }
 };
+
+var renderReviewer = function(data) {
+  var list = listTemplate({ books: data.books, showYear: true });
+  reviewerPanel.innerHTML = reviewerTemplate(Object.assign({ list }, data));
+  document.body.setAttribute("data-mode", "reviewer");
+  $.one("h2", reviewerPanel).focus();
+}
 
 // check a given book against the filters
 var filterBooks = function(books, tags) {
@@ -90,4 +99,4 @@ var renderList = function(books, year, tags) {
   listContainer.innerHTML = listTemplate({ books: filtered });
 };
 
-module.exports = { renderBook, renderList, renderCovers, filterBooks };
+module.exports = { renderBook, renderReviewer, renderList, renderCovers, filterBooks };

@@ -1,0 +1,16 @@
+<% formatter = text => text.replace(/\*([^*]+)\*/g, "<i>$1</i>"); %>
+<p class="back-link"><a href="#<%= data.back %>">&lsaquo; back to the shelf</a></p>
+
+<h2 tabindex="-1"><%= data.name %></h2>
+<% if (data.link) { %>
+  <p class="reviewer-title">
+    <a href="<%= data.link %>">About the reviewer</a>
+  </p>
+<% } %>
+
+<h3>
+  <%= data.books.length %>
+  <%= data.books.length == 1 ? "review" : "reviews" %>
+</h3>
+
+<div class="reviewer-books"><%= data.list %></div>

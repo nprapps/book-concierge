@@ -25,6 +25,11 @@
     <% if (data.reviewers) data.reviewers.forEach(function(rev, i) {
       var name = rev.link ? `<a href="${rev.link}">${rev.key}</a>` : rev.key;
       var output = `${name}, ${poorMD(rev.title || "NPR Staff")}`;
+      var others = (rev.picks || 0 ) - 1;
+      if (rev.key && others > 0) {
+        var picksHref = `#${data.hash.serialize({ reviewer: rev.key })}`;
+        output += ` <span class="picks">&bull; <a href="${picksHref}">more reviews</a></span>`
+      }
       if (i <= data.reviewers.length - 3) {
         output += ", ";
       } else if (i == data.reviewers.length - 2) {
