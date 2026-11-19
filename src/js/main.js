@@ -146,7 +146,7 @@ channel.on("filterchange", function(state) {
 
 channel.on("hashchange", function() {
   var url = window.location.href;
-  tp.experience.execute();
+  if (window.tp && tp.experience) tp.experience.execute();
 })
 
 document.body.addEventListener("click", function(e) {
@@ -161,6 +161,6 @@ if (here.searchParams.has("screenshot")) {
   document.body.classList.add("screenshot");
 }
 
-var oldonload = window.onload;
-
-window.onload = (typeof window.onload != 'function') ? tp.experience.execute() : function() { oldonload(); tp.experience.execute(); };
+window.addEventListener("load", function() {
+  if (window.tp && tp.experience) tp.experience.execute();
+})

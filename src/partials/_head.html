@@ -98,6 +98,8 @@ var _sf_startpt=(new Date()).getTime()
     })("//cdn.piano.io/api/tinypass.min.js");
 
     var iframeId = '';
+    var pianoJWT = null;
+    var pianoAid = '9ENxKQ58pu';
     const pianoSubscriptionURLMetaTag = document.querySelector('meta[property="piano:subscription_url"]')
     const subscriptionURL = pianoSubscriptionURLMetaTag ? pianoSubscriptionURLMetaTag.content : null
 
