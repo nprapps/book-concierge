@@ -4,8 +4,10 @@
     <%= t.include("partials/_head.html", grunt.data.json) %>
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
-  <body>
-
+<%
+  var current = json.years.find(y => y.current) || json.years[0];
+%>
+<body data-year="<%= current.year %>">
     <header class="hero">
       <h1>
         <img src="./assets/books-we-love.svg" alt="">
@@ -30,6 +32,9 @@
     </header>
 
     <main class="about">
+      <div class="memorial">
+        <%= t.renderMarkdown(archieml.about.memorial) %>
+      </div>
       <%= t.renderMarkdown(archieml.about.content) %>
 
       <div class="credits">
