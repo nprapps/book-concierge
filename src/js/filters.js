@@ -6,9 +6,24 @@ var channel = require("./pubsub");
 var yearFilters = $.one("fieldset.years");
 var tagFilters = $.one("fieldset.tags");
 var viewToggle = $.one(".view-controls");
-var fabSelect = $.one(".fab-form .tags");
+var fabSelect = $.one(".fab-form select.tags");
 var fabCount = $.one(".fab-count");
 var fabClear = $.one(".fab-button.clear");
+
+var yearTags = new Map([["debuts", 2026]]);
+var tagFitsYear = (tag, year) => !yearTags.has(tag) || yearTags.get(tag) == year;
+var tagLabel = tag => (yearTags.has(tag) ? `${yearTags.get(tag)} ${tag}` : tag);
+
+var yearOptions = [];
+$(".filters .tags input").concat($("option", fabSelect)).forEach(function(el) {
+  if (!yearTags.has(el.value)) return;
+  var label = el.tagName == "OPTION" ? el : el.nextElementSibling;
+  label.textContent = `${yearTags.get(el.value)} ${label.textContent}`;
+  if (el.tagName == "OPTION") {
+    fabSelect.prepend(el);
+    yearOptions.push(el);
+  };
+});
 
 var getFilters = function() {
   var years = $(".years input:checked").map(el => el.value * 1);
@@ -27,6 +42,12 @@ var setFilters = function(state) {
     $("input", yearFilters).forEach(
       input => (input.checked = input.value * 1 == year)
     );
+
+    $(".filters .tags input").forEach(function(input) {
+      var display = tagFitsYear(input.value, year) ? "" : "none";
+      input.style.display = input.nextElementSibling.style.display = display;
+    });
+    yearOptions.forEach(o => tagFitsYear(o.value, year) ? fabSelect.prepend(o) : o.remove());
   }
   if (tags) {
     fabCount.innerHTML = tags.length;
@@ -109,4 +130,4 @@ fabSelect.addEventListener("change", function() {
   tagFilters.dispatchEvent(change);
 });
 
-module.exports = { getFilters, setFilters, enableFilters };
+module.exports = { getFilters, setFilters, enableFilters, tagFitsYear, tagLabel };

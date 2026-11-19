@@ -15,7 +15,7 @@ var {
   createCover,
   filterBooks
 } = require("./catalog");
-var { getFilters, setFilters, enableFilters } = require("./filters");
+var { getFilters, setFilters, enableFilters, tagFitsYear, tagLabel } = require("./filters");
 
 var hash = require("./hash");
 hash.define({
@@ -48,6 +48,7 @@ channel.on("hashchange", async function(params, pastParams = {}) {
   var existing = getFilters();
   // hash params override existing filters override defaults
   var merged = Object.assign({}, defaults, existing, params);
+  merged.tags = (merged.tags || []).filter(t => tagFitsYear(t, merged.year));
   bodyData.mode = merged.view;
   bodyData.year = merged.year;
   bodyData.tags = (merged.tags || []).length;
@@ -111,7 +112,7 @@ channel.on("hashchange", async function(params, pastParams = {}) {
     // scroll into view if this is an internal navigation
     // not on page load
     var scrollToBook = !!pastParams.year;
-    renderBook({ book, next, previous, back, hash, reviewers }, scrollToBook);
+    renderBook({ book, next, previous, back, hash, reviewers, tagLabel }, scrollToBook);
     document.body.setAttribute("data-mode", "book");
 
   } else {

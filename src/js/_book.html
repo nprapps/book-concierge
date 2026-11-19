@@ -15,7 +15,7 @@
 <h3 class="author"><%= data.book.author %></h3>
 <ul class="tags">
   <% data.book.tags.sort().forEach(function(t) { %>
-  <li> <a href="#<%= data.hash.serialize({ year: data.book.year, tags: t, reset: true }) %>"><%= t %></a>
+  <li> <a href="#<%= data.hash.serialize({ year: data.book.year, tags: t, reset: true }) %>"><%= data.tagLabel(t) %></a>
   <% }); %>
 </ul>
 <div class="text">
@@ -29,7 +29,7 @@
       if (rev.key && others > 0) {
         var picksHref = `#${data.hash.serialize({ reviewer: rev.key })}`;
         var firstName = String(rev.first_name || "").trim() || rev.key.split(" ")[0];
-        output += ` <span class="picks">&bull; <a href="${picksHref}">more reviews by ${firstName}</a></span>`
+        output += ` <span class="picks">&bull; <a href="${picksHref}">more reviews from ${firstName}</a></span>`
       }
       if (i <= data.reviewers.length - 3) {
         output += ", ";
