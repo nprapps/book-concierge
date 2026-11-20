@@ -1,9 +1,9 @@
 <%
   var poorMD = text => text.replace(/\*([^*]+)\*/g, "<i>$1</i>");
 %><ul class="book-nav">
-  <li class="list"><a href="#<%= data.back %>">back to list</a></li>
-  <li class="previous"><a href="#<%= data.previous %>">&lsaquo; previous book</a></li>
-  <li class="next"><a href="#<%= data.next %>">next book &rsaquo;</a></li>
+  <li class="list"><a href="#<%= data.back %>">Back to list</a></li>
+  <li class="previous"><a href="#<%= data.previous %>">&lsaquo; Previous book</a></li>
+  <li class="next"><a href="#<%= data.next %>">Next book &rsaquo;</a></li>
 </ul>
 
 <img
@@ -29,7 +29,7 @@
       if (rev.key && others > 0) {
         var picksHref = `#${data.hash.serialize({ reviewer: rev.key })}`;
         var firstName = String(rev.first_name || "").trim() || rev.key.split(" ")[0];
-        output += ` <span class="picks">&bull; <a href="${picksHref}">more reviews from ${firstName}</a></span>`
+        output += ` <span class="picks">&bull; <a href="${picksHref}">More picks from ${firstName}</a></span>`
       }
       if (i <= data.reviewers.length - 3) {
         output += ", ";
