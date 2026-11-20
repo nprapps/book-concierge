@@ -1,5 +1,5 @@
 <% formatter = text => text.replace(/\*([^*]+)\*/g, "<i>$1</i>"); %>
-<p class="back-link"><a href="#<%= data.back %>">&lsaquo; Back to the shelf</a></p>
+<%= data.crumbs %>
 
 <h2 tabindex="-1"><%= data.name %></h2>
 <% if (data.link) { %>

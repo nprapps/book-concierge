@@ -1,10 +1,13 @@
 <%
   var poorMD = text => text.replace(/\*([^*]+)\*/g, "<i>$1</i>");
-%><ul class="book-nav">
-  <li class="list"><a href="#<%= data.back %>">Back to list</a></li>
-  <li class="previous"><a href="#<%= data.previous %>">&lsaquo; Previous book</a></li>
-  <li class="next"><a href="#<%= data.next %>">Next book &rsaquo;</a></li>
-</ul>
+%>
+<div class="book-top">
+  <%= data.crumbs %>
+  <ul class="book-nav">
+    <li class="previous"><a href="#<%= data.previous %>">&lsaquo; Previous <%= data.noun %></a></li>
+    <li class="next"><a href="#<%= data.next %>">Next <%= data.noun %> &rsaquo;</a></li>
+  </ul>
+</div>
 
 <img
   src="./assets/synced/covers/<%= data.book.year %>/<%= data.book.cover %>.jpg"
