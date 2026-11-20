@@ -1,5 +1,6 @@
 .book-detail-wrap {
   display: none;
+  min-width: 0;
   padding: 0 15px;
   max-width:  800px;
   flex: 1;
@@ -79,12 +80,21 @@
     padding: 0;
   }
 
+  .book-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 11px;
+    margin: 0 0 33px 0;
+
+    .crumbs ol { margin: 0; }
+  }
+
   .book-nav {
     list-style-type: none;
-    margin: 0 0 33px 0;
+    margin: 0 0 0 auto;
     padding: 0;
     display: flex;
-    justify-content: space-between;
 
     li { margin: 0; }
 
@@ -100,7 +110,6 @@
       }
     }
 
-    .list { flex-grow: 2; }
     .next { margin-left: 11px; }
   }
 

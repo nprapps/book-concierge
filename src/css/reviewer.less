@@ -1,5 +1,6 @@
 .reviewer-detail-wrap {
   display: none;
+  min-width: 0;
   padding: 0 15px;
   max-width: 800px;
   flex: 1;
@@ -36,20 +37,29 @@
     margin: 0 0 4px 0;
     a { color: var(--accent); }
   }
+}
 
-  .back-link {
-    margin: 0 0 20px 0;
+.crumbs ol {
+  list-style-type: none;
+  margin: 0 0 20px 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 
-    a {
-      .buttonBase();
-      border-color: var(--accent);
-      color: var(--accent);
+  li {
+    margin: 0;
+  }
 
-      &:hover, &:focus {
-        background: var(--accent);
-        color: white;
-        opacity: 0.8;
-      }
+  a {
+    .buttonBase();
+    border-color: var(--accent);
+    color: var(--accent);
+
+    &:hover, &:focus {
+      background: var(--accent);
+      color: white;
+      opacity: 0.8;
     }
   }
 }

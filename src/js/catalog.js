@@ -6,6 +6,7 @@ var bookTemplate = dot.compile(require("./_book.html"));
 var listTemplate = dot.compile(require("./_list.html"));
 var coverTemplate = dot.compile(require("./_cover.html"));
 var reviewerTemplate = dot.compile(require("./_reviewer.html"));
+var crumbsTemplate = dot.compile(require("./_crumbs.html"));
 
 var coverContainer = $.one(".catalog-covers");
 var listContainer = $.one(".catalog-list");
@@ -15,7 +16,8 @@ var bookCounter = $.one(".book-count");
 
 // single book rendering
 var renderBook = async function(data, scroll = false) {
-  bookPanel.innerHTML = bookTemplate(data);
+  var crumbs = crumbsTemplate({ crumbs: data.crumbs });
+  bookPanel.innerHTML = bookTemplate(Object.assign({}, data, { crumbs }));
   document.body.setAttribute("data-mode", "book");
   var h2 = $.one("h2", bookPanel);
   h2.focus();
@@ -30,7 +32,8 @@ var renderBook = async function(data, scroll = false) {
 
 var renderReviewer = function(data) {
   var list = listTemplate({ books: data.books, showYear: true });
-  reviewerPanel.innerHTML = reviewerTemplate(Object.assign({ list }, data));
+  var crumbs = crumbsTemplate({ crumbs: data.crumbs });
+  reviewerPanel.innerHTML = reviewerTemplate(Object.assign({}, data, { list, crumbs }));
   document.body.setAttribute("data-mode", "reviewer");
   $.one("h2", reviewerPanel).focus();
 }

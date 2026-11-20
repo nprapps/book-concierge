@@ -23,6 +23,11 @@ main.concierge {
   display: flex;
   flex-flow: row wrap;
   flex: 1;
+  min-width: 0;
+
+  @media @mobile {
+    flex-basis: 100%;
+  }
 }
 
 .divider {

@@ -1,0 +1,7 @@
+<nav class="crumbs" aria-label="Breadcrumb">
+    <ol>
+        <% data.crumbs.forEach(function(crumb, i) { %>
+            <li><a href="#<%= crumb.href %>" title="<%= String(crumb.label).replace(/"/g, "&quot;") %>">&lsaquo; <%= crumb.label %></a></li>
+        <% }); %>
+    </ol>
+</nav>

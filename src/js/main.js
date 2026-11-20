@@ -42,6 +42,17 @@ var defaults = {
   year: 2026
 };
 
+//breadcrumb state
+var lastShelf = null;
+var viaReviewer = null;
+var cameFrom = null;
+var pickedFromList = false;
+
+var shelfCrumb = function(year, view) {
+  var shelf = lastShelf || { year, view, reset: true};
+  return { label: "Back to shelf", href: hash.serialize(shelf)}
+}
+
 // hashes update filters (usually redundant) and render the main panel
 channel.on("hashchange", async function(params, pastParams = {}) {
   var bodyData = document.body.dataset;
@@ -59,17 +70,26 @@ channel.on("hashchange", async function(params, pastParams = {}) {
     var reviewed = await bookService.getReviewer(merged.reviewer);
     if (reviewed) {
       var profile = window.conciergeData.reviewers[merged.reviewer] || {};
+      var crumbs = [shelfCrumb(defaults.year, merged.view)];
+      cameFrom = pastParams.book && !pastParams.reviewer
+        ? { year: pastParams.year, book: pastParams.book, via: viaReviewer }
+        : null;
+      if (cameFrom) {
+        var from = await bookService.getDetail(cameFrom.year, cameFrom.book);
+        if (from) {
+          crumbs.push({
+            label: "Back to book",
+            href: hash.serialize({ year: cameFrom.year, book: cameFrom.book })
+          });
+        }
+      }
       track("reviewer-selected", merged.reviewer, reviewed.length);
       renderReviewer({
         name: merged.reviewer,
         title: profile.title,
         link: profile.link,
         books: reviewed,
-        back: hash.serialize({
-          year: merged.year,
-          view: merged.view,
-          tags: merged.tags
-        })
+        crumbs
       });
       return;
     }
@@ -77,28 +97,42 @@ channel.on("hashchange", async function(params, pastParams = {}) {
 
   // single book rendering
   if (merged.book) {
+    // coming from a year or a reviewer?
+    if (pastParams.reviewer) {
+      var returning = !pickedFromList && cameFrom && cameFrom.year == merged.year && cameFrom.book == merged.book;
+      viaReviewer = returning ? cameFrom.via : pastParams.reviewer;
+    } else if (!pastParams.book) {
+      viaReviewer = null;
+    }
     // get book data
     var [book, books, counts] = await Promise.all([
       bookService.getDetail(merged.year, merged.book),
-      bookService.getYear(merged.year, merged.view),
+      viaReviewer
+        ? bookService.getReviewer(viaReviewer)
+        : bookService.getYear(merged.year, merged.view),
       bookService.getReviewerCounts().catch(() => ({}))
     ]);
-    // find the location of this book in the current filter view
-    var shelf = filterBooks(books, merged.tags);
-    var shelved = shelf.filter(b => b.id == book.id).pop();
-    var index = shelf.indexOf(shelved);
+    // find the location of this book in reviewers picks or the current filter view
+    var shelf = viaReviewer ? books || [] : filterBooks(books, merged.tags);
+    var index = shelf.findIndex(b => b.year == merged.year && b.id == book.id);
+    if (viaReviewer && index == -1) {
+      //somehow not a pick by this reviewer, fallback to year
+      viaReviewer = null;
+      shelf = filterBooks(await bookService.getYear(merged.year, merged.view), merged.tags);
+      index = shelf.findIndex(b => b.id == book.id);
+    }
+    
     // generate next and previous links
     var previous = shelf[index > 0 ? index - 1 : shelf.length - 1];
     var next = shelf[(index + 1) % shelf.length];
-    previous = hash.serialize({ year: merged.year, book: previous.id });
-    next = hash.serialize({ year: merged.year, book: next.id });
-    // generate a back link from the year
-    var back = hash.serialize({
-      year: merged.year,
-      view: merged.view,
-      tags: merged.tags,
-      reset: !pastParams.year // don't restore focus if this is the starting view
-    });
+    previous = hash.serialize({ year: previous.year, book: previous.id });
+    next = hash.serialize({ year: next.year, book: next.id });
+    
+    var crumbs = [shelfCrumb(merged.year, merged.view)];
+    if (viaReviewer) {
+      crumbs.push({ label: "Back to reviewer", href: hash.serialize({ reviewer: viaReviewer }) });
+    }
+    var noun = viaReviewer ? "review" : "book";
 
     // look up the reviewer from the table - inclues entries with two reviewers
     var all_rev = [];
@@ -112,7 +146,7 @@ channel.on("hashchange", async function(params, pastParams = {}) {
     // scroll into view if this is an internal navigation
     // not on page load
     var scrollToBook = !!pastParams.year;
-    renderBook({ book, next, previous, back, hash, reviewers, tagLabel }, scrollToBook);
+    renderBook({ book, next, previous, crumbs, noun, hash, reviewers, tagLabel }, scrollToBook);
     document.body.setAttribute("data-mode", "book");
 
   } else {
@@ -122,6 +156,8 @@ channel.on("hashchange", async function(params, pastParams = {}) {
     enableFilters(false);
 
     var { year, tags, view } = merged;
+    lastShelf = { year, view, tags };
+    viaReviewer = null;
 
     // did the year change? If so, remove those books
     if (merged.year != pastParams.year) {
@@ -175,6 +211,7 @@ channel.on("hashchange", function() {
 
 document.body.addEventListener("click", function(e) {
   var target = e.target;
+  pickedFromList = !!target.closest(".reviewer-books a");
   if (target.dataset.track) {
     track("clicked-link", target.dataset.track, target.href);
   }
