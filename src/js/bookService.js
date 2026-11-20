@@ -31,7 +31,7 @@ var facade = {
       book.year = year;
       if (book.tags instanceof Array) book.tags = new Set(book.tags);
       if (!book.shuffle) book.shuffle = Math.random();
-      book.sortingTitle = book.title.replace(/^the\s+/i, "");
+      book.sortingTitle = book.title.replace(/^(the|a|an)\s+/i, "").toLowerCase();
     });
     var copy = index.slice();
     if (sorting == "list") {
