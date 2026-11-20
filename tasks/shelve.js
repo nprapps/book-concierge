@@ -76,6 +76,12 @@ var shelve = async function(grunt) {
           var check = remainder ? 10 - remainder : 0;
           book.isbn13 = isbn13 + check;
           book.isbn10 = isbn10;
+
+          // Force no amazon link by putting "none" in the ASIN column
+          if (String(book.amazon_asin).trim().toLowerCase() == "none") {
+            delete book.amazon_asin;
+            delete book.isbn10;
+          }
         }
       }
 
