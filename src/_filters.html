@@ -1,4 +1,5 @@
-<form class="filters" autocomplete="off">
+<form class="filters" id="filters" popover autocomplete="off">
+<button type="button" class="close-filters" onclick="document.getElementById('filters').hidePopover()" aria-label="Close filters">&times;</button>
   <h3><%= json.copy.question %></h3>
   <p class="chatter">
     <%= json.copy.chatter %>

@@ -2,8 +2,47 @@
   flex: 0 0 220px;
   padding: 0 0 4px 40px;
 
+  // undo the browser's popover styles so the desktop sidebar is unchanged
+  display: block;
+  position: static;
+  margin: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  overflow: visible;
+
   @media @mobile {
+    position: fixed;
+    margin: auto;
+    padding: 20px;
+    width: 260px;
+    max-height: 80vh;
+    overflow: auto;
+    background: @books-offwhite;
+
+    &:not(:popover-open) { display: none; }
+  }
+
+    .close-filters {
     display: none;
+
+    @media @mobile {
+      display: block;
+      position: sticky;
+      top: -20px; // cancels the panel padding so the X stays in the corner
+      float: right;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      margin: -20px -20px 0 0;
+      padding: 0;
+      border: none;
+      background: @books-offwhite;
+      color: inherit;
+      font-size: 28px;
+      line-height: 1;
+      cursor: pointer;
+    }
   }
 
   fieldset {
