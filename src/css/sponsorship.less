@@ -108,12 +108,14 @@
 
 // Our AdX is enabled for "ad expansion" on mobile, which allows creatives to sometimes render edge to edge or
 // far taller than the requested size. This gates against having them show up above mobile.
+// When a 1300x250 creative renders, sponsorship.js tags its wrap with `has-1300x250` and these
+// overrides are skipped, leaving it on the base table layout.
 @media @mobile-above {
-  .ad-config-wrap {
+  .ad-config-wrap:not(.has-1300x250) {
     display: block;
   }
 
-  .ad-config {
+  .ad-config-wrap:not(.has-1300x250) .ad-config {
     display: flex !important; // still has to beat the googleads SDK's inline 'display: none'
     flex-direction: row;
     align-items: center;

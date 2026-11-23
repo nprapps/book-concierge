@@ -12,8 +12,15 @@ googletag.cmd.push(function () {
     // suffix has to come off before it will match our wrapper's id.
     const id = event.slot.getSlotElementId().replace(/__ayManagerEnv__.+$/, "");
     const adWrap = document.querySelector(`#${id}-wrap`);
-    if (adWrap) {
-      adWrap.classList.toggle("unfilled", event.isEmpty);
+    if (!adWrap) {
+      return;
+    }
+    adWrap.classList.toggle("unfilled", event.isEmpty);
+
+    const [width, height] = Array.isArray(event.size) ? event.size : [];
+    const adConfigWrap = adWrap.querySelector(".ad-config-wrap");
+    if (adConfigWrap) {
+      adConfigWrap.classList.toggle("has-1300x250", !event.isEmpty && width === 1300 && height === 250);
     }
   });
 });
