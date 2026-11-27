@@ -111,6 +111,14 @@ The application expects to have access to a Google Doc with the text for the abo
   * ``key``
   * ``value``
 
+  We require values for the following keys:
+
+  *  ``title`` - screenreader-only text used as the main page title
+  * ``question`` - used as a header above the filters
+  * ``chatter`` - some prose displayed above the filters
+  * ``socialTitle`` - used in the `<title>` element
+  * ``socialDescription`` - used in the `<meta name="description">` element
+
 * **links** - related story links for each book
 
   * ``year`` - year for the book
@@ -135,6 +143,7 @@ The application expects to have access to a Google Doc with the text for the abo
 
   * ``id`` - primary key for the book, used for permalinks and table relationships
   * ``title``
+  * ``author``
   * ``reviewers`` - an array of comma separated names should match keys in the reviewer sheet
   * ``text`` - recommendation blurb
   * ``tags`` - filter categories, separated by ``|`` characters
